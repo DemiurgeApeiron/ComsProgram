@@ -1,0 +1,34 @@
+1) tienes que hacer o buscar en internet un convertidor que transforme un archivo de CSV a un 
+vector de vectores (vector<vector<string>>) es muy importante que los valores del CSV sean considerados strings
+
+ejmeplo de output:
+
+Este ejemplo esta dado con valores alatorios 
+CSV:
+10, ppp, 1983, viernes
+23, aaa, 2000, jueves 
+
+Output:
+vector<vector<string>> lista = [[10, ppp, 1983, viernes], [23, aaa, 2000, jueves]]
+
+
+2) Tienes que crear una clase que reciba un input por el constructor de tipo T ejmeplo: 10-8-2020 tienes que descomponerlo 
+en 3 atrubutos protejidos de la clase: dia, mes, año y crear unos metodos que regresen estas variables 
+como un entero ej int getDia(){return dia;} (tienes que convertirlo en un entero)
+
+para descomponer el input se recomienda el codigo siguiente:
+
+    vector <T> valores;
+    stringstream check1(input); 
+    string intermediate; 
+    while(getline(check1, intermediate, '-')) 
+    { 
+        valores.push_back(intermediate); 
+    }
+    this-> dia = valores[0];
+    this-> mes = valores[1];
+    this-> año = valores[2];
+
+3) tienes que crear una clase que reciba un input en el constructor de tipo T ejemplo: 993 y tienes que convertirlo 
+en un int !importante. y guardarlo en un atrubuto protejido de la clase, tambien tienes que crear un metodo que 
+devuelva este atrubuto como un entero ej: int getPuerto(){return puerto;}
