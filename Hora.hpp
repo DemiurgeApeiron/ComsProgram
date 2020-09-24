@@ -14,6 +14,7 @@ protected:
     int sec;
     T fullHora;
 public:
+    Hora()=default;
     Hora(T &_hora);
     ~Hora();
     int getHora(){return hora;}

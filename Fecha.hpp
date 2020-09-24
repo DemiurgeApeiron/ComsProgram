@@ -14,6 +14,7 @@ protected:
     int mes;
     int dia;
 public:
+    Fecha()=default;
     Fecha(T Fecha);
     ~Fecha();
     int getDia(){return dia;}

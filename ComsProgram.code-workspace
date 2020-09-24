@@ -1,8 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "vector": "cpp",
+            "ostream": "cpp",
+            "iostream": "cpp"
+        }
+    }
 }

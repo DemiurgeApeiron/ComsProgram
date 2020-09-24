@@ -12,6 +12,7 @@ protected:
     T port;
     int puerto;
 public:
+    Puerto()=default;
     Puerto(T _puerto);
     ~Puerto();
     int getPuerto(){return puerto;}

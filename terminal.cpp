@@ -49,17 +49,25 @@ void print(Master<T> &object){
     cout<<endl;
 }
 template<class T>
-Master<T> addRegistro(vector<vector<T>> &_registros, Master<T> _program){
+Master<T> addRegistro(vector<vector<T>> &_registros, Master<T> &_program){
     for(size_t i = 0; i < _registros.size();i++){
         _program.addRegister(_registros[i]);
     }
     cout<<"h1"<<endl;
-    //_program.Display(0);
-    //_program.sortByTime();
-    //_program.Display(0);
-    //cout<<endl;
-    //_program.busquedaDia("10");
-    //return(_program);
+    _program.Display(5);
+    _program.sortByTime();
+    cout<<"h2"<<endl;
+    _program.Display(5);
+    cout<<endl;
+    int diaRelativo = to_string(_program.diaRelativo(2));
+    cout << "el segundo dia es: " << diaRelativo <<endl;
+    _program.busquedaDia(diaRelativo, false);
+    cout<< _program.numeroDeRegistros()<<endl;
+    int num = _program.busquedaMinpuerto("1000", true);
+    if(num != 0){
+        cout<<"si hay un puerto de destino menor a 1000"<<endl;
+    }
+    return(_program);
 }
 template<class T>
 int terminal(T a){
@@ -67,10 +75,8 @@ int terminal(T a){
     CSVReader reader("equipo5.csv");
     vector<vector<string> > regitros = reader.getData();
     string var = "11";
-
-    cout << "the type is: " <<typeid(regitros[0][1]).name() << endl;
-    cout << "the type is: " <<typeid(var).name() << endl;
-
+    int ind = regitros.size()-5000;
+    regitros = vector<vector<string>>(regitros.begin() , regitros.end()-(ind));
 
     program = addRegistro(regitros, program);
     /*cout<< "h1"<<endl;

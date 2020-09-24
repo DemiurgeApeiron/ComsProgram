@@ -13,6 +13,7 @@ protected:
     T userIP;
     T fullIP;
 public:
+    IP()=default;
     IP(T &IP);
     ~IP();
     string getLocalIp(){return localIp;}

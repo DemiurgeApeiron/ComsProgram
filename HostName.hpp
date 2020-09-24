@@ -12,6 +12,7 @@ protected:
     T fullName;
     T name;
 public:
+    HostName()=default;
     HostName(T &HostName);
     ~HostName();
     T display(){return fullName;}
