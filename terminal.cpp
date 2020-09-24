@@ -59,11 +59,11 @@ Master<T> addRegistro(vector<vector<T>> &_registros, Master<T> &_program){
     cout<<"h2"<<endl;
     _program.Display(5);
     cout<<endl;
-    int diaRelativo = to_string(_program.diaRelativo(2));
+    string diaRelativo = to_string(_program.diaRelativo(2));
     cout << "el segundo dia es: " << diaRelativo <<endl;
     _program.busquedaDia(diaRelativo, false);
     cout<< _program.numeroDeRegistros()<<endl;
-    int num = _program.busquedaMinpuerto("1000", true);
+    int num = _program.busquedaMinpuerto("1000", false);
     if(num != 0){
         cout<<"si hay un puerto de destino menor a 1000"<<endl;
     }
