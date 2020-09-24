@@ -10,7 +10,7 @@ public:
     virtual T display();
 };
 template <class T>
-T DataBase<T>::display(){}
+T DataBase<T>::display(){return "name";}
 template <class T>
 DataBase<T>::~DataBase(){}
 

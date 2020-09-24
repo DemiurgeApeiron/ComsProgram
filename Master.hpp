@@ -14,9 +14,11 @@ protected:
     void quickSort(vector<ADT<T>> &list, int low, int high);
     int partition(vector<ADT<T>> &list, int low, int high);
     int busqueda(bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, bool PrintBool);
-    int busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int counter, bool PrintBool);
+    int busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int &contador, bool PrintBool);
     bool puertoMinBusquedaCond(ADT<T> &a, T &num);
     void printVector(ADT<T> list);
+    bool OrdenadorBusquedaCond(ADT<T> &a, T &name);
+    bool ServicioBusquedaCond(ADT<T> &a, T &name);
 
 
 public:
@@ -29,6 +31,8 @@ public:
     int busquedaDia(T num, bool PrintBool);
     int busquedaMinpuerto(T num, bool PrintBool);
     int diaRelativo(int _dia);
+    int busquedaServicio(T nombre, bool PrintBool);
+    int busquedaOrdenador(T nombre, bool PrintBool);
     
 
 };
@@ -151,32 +155,26 @@ void Master<T>::printVector(ADT<T> list){
 }
 template <class T>
 int Master<T>:: busqueda(bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, bool PrintBool){
-    busquedaArbol(0,lista.size()-1, (compare), var, 0, PrintBool);
+    int contador = 0;
+    return(busquedaArbol(0,lista.size()-1, (compare), var, contador, PrintBool));
 }
 template <class T>
-int Master<T>:: busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int counter, bool PrintBool){
+int Master<T>:: busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int &contador, bool PrintBool){
     if(ultimo < primer){
-        return counter;
+        return contador;
     }
     int medio = (primer + ultimo)/2;
 
     if((this->*compare)(lista[medio], var)){
-        counter++;
         if(PrintBool){
             printVector(lista[medio]);
         }
+        contador++;
     }
-    int izquierda = busquedaArbol(primer, medio-1, (compare), var, counter, PrintBool);
-    int derecha = busquedaArbol(medio+1, ultimo, (compare), var, counter, PrintBool);
-    if(derecha != -1){
-        return derecha;
-    }
-    else if(izquierda != -1){
-        return izquierda;
-    }
-    else{
-        return -1;
-    }
+    int izquierda = busquedaArbol(primer, medio-1, (compare), var, contador, PrintBool);
+    int derecha = busquedaArbol(medio+1, ultimo, (compare), var, contador, PrintBool);
+    //cout << "after: " << "izquierda: "<< izquierda << " derecha: "<< derecha <<endl;
+    return(contador);
     
 }
 
@@ -196,14 +194,38 @@ bool Master<T>:: puertoMinBusquedaCond(ADT<T> &a, T &num){
     }
     return(false);
 }
+template <class T>
+bool Master<T>:: OrdenadorBusquedaCond(ADT<T> &a, T &name){
+    HostName<T> tempHost = a.getHostO();
+    if(tempHost.getName() == name){
+        return(true);
+    }
+    return(false);
+}
+template <class T>
+bool Master<T>:: ServicioBusquedaCond(ADT<T> &a, T &name){
+    HostName<T> tempHost = a.getHostD();
+    if(tempHost.getName() == name){
+        return(true);
+    }
+    return(false);
+}
 
 template <class T>
 int Master<T>:: busquedaDia(T num, bool PrintBool){
-    busqueda(&Master<T>::dayBusquedaCond, num, PrintBool);
+    return(busqueda(&Master<T>::dayBusquedaCond, num, PrintBool));
 }
 template <class T>
 int Master<T>:: busquedaMinpuerto(T num, bool PrintBool){
-    busqueda(&Master<T>::puertoMinBusquedaCond, num, PrintBool);
+    return(busqueda(&Master<T>::puertoMinBusquedaCond, num, PrintBool));
+}
+template <class T>
+int Master<T>:: busquedaServicio(T nombre, bool PrintBool){
+    return(busqueda(&Master<T>::ServicioBusquedaCond, nombre, PrintBool));
+}
+template <class T>
+int Master<T>:: busquedaOrdenador(T nombre, bool PrintBool){
+    return(busqueda(&Master<T>::OrdenadorBusquedaCond, nombre, PrintBool));
 }
 
 template <class T>

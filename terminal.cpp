@@ -53,20 +53,6 @@ Master<T> addRegistro(vector<vector<T>> &_registros, Master<T> &_program){
     for(size_t i = 0; i < _registros.size();i++){
         _program.addRegister(_registros[i]);
     }
-    cout<<"h1"<<endl;
-    _program.Display(5);
-    _program.sortByTime();
-    cout<<"h2"<<endl;
-    _program.Display(5);
-    cout<<endl;
-    string diaRelativo = to_string(_program.diaRelativo(2));
-    cout << "el segundo dia es: " << diaRelativo <<endl;
-    _program.busquedaDia(diaRelativo, false);
-    cout<< _program.numeroDeRegistros()<<endl;
-    int num = _program.busquedaMinpuerto("1000", false);
-    if(num != 0){
-        cout<<"si hay un puerto de destino menor a 1000"<<endl;
-    }
     return(_program);
 }
 template<class T>
@@ -75,15 +61,50 @@ int terminal(T a){
     CSVReader reader("equipo5.csv");
     vector<vector<string> > regitros = reader.getData();
     string var = "11";
-    int ind = regitros.size()-5000;
+    int ind = regitros.size()*3/4;
     regitros = vector<vector<string>>(regitros.begin() , regitros.end()-(ind));
 
     program = addRegistro(regitros, program);
-    /*cout<< "h1"<<endl;
-    cout << program.numeroDeRegistros() <<endl;
-    program.Display(0);
-    print(program);
-    program.sortByTime();*/
+
+    cout<<"display head(5)"<<endl;
+    program.Display(1);
+    cout<<endl;
+    cout<< "En total hay: " <<program.numeroDeRegistros()<< " Registros" <<endl;
+    cout<<endl;
+    cout<<"sorting by time"<<endl;
+    program.sortByTime();
+    cout<<"display head(5)"<<endl;
+    program.Display(1);
+    cout<<endl;
+    string diaRelativo = to_string(program.diaRelativo(2));
+    cout << "El segundo dia es: " << diaRelativo <<endl;
+    int numRegistros = program.busquedaDia(diaRelativo, false);
+    cout << "El segundo dia hay: " << numRegistros << " registros" <<endl;
+    cout << "son:  "<<endl;
+    program.busquedaDia(diaRelativo, false);
+    cout<<endl;
+    int num = program.busquedaMinpuerto("1000", false);
+    if(num != 0){
+        cout<<"Si hay un puerto de destino menor a 1000"<<endl;
+    }
+    cout<<endl;
+    vector<string> names = {"jeffrey", "betty", "katherine", "scott", "benjamin"};
+    for(size_t i = 0; i < names.size(); i++){
+        int busquedaNames = program.busquedaOrdenador(names[i], false);
+        if(busquedaNames != 0){
+            cout << "En el registro " << names[i] << " si tiene una compu" << endl;
+        }
+    }
+    cout<<endl;
+    vector<string> servicios = {"gmail", "hotmail", "outlook", "prontonmail"};
+    for(size_t i = 0; i < servicios.size(); i++){
+        int busquedaOrdenadores = program.busquedaServicio(servicios[i], false);
+        if(busquedaOrdenadores != 0){
+            cout << "En el registro se ocupa el servicio: " << servicios[i] << endl;
+        }
+    }
+    return(0);
+    
 }
 
 int main(){
