@@ -32,7 +32,7 @@ HostName<T>::HostName(T &_HostName){
         { 
             valores.push_back(intermediate); 
         }
-        if(valores.size() > 2){
+        if(valores.size() > 1){
             this-> name = valores[0]; 
         }
         else{

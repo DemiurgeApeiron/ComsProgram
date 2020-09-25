@@ -199,6 +199,7 @@ bool Master<T>:: OrdenadorBusquedaCond(ADT<T> &a, T &name){
 template <class T>
 bool Master<T>:: ServicioBusquedaCond(ADT<T> &a, T &name){
     HostName<T> tempHost = a.getHostD();
+    //cout << tempHost.getName() <<endl;
     if(tempHost.getName() == name){
         return(true);
     }
