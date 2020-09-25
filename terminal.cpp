@@ -61,7 +61,7 @@ int terminal(T a){
     CSVReader reader("equipo5.csv");
     vector<vector<string> > regitros = reader.getData();
     string var = "11";
-    int ind = regitros.size()*3/4;
+    int ind = regitros.size()*3/4*0;
     regitros = vector<vector<string>>(regitros.begin() , regitros.end()-(ind));
 
     program = addRegistro(regitros, program);
