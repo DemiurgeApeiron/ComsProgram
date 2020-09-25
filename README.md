@@ -1,6 +1,9 @@
 # ComsProgram basic simulation of a ARP comunication
 #Compiled with g++ c++17
+
 #The csv reader uses the library boost, use: $brew install boost
+
+#For windows follow: https://www.youtube.com/watch?v=TEF5U1AaIV8
 
 
 El archivo que se corre es terminal.cpp dentro de este archivo ya se encuentran las pruebas para contestar las preguntas, sin embargo se han hecho algunas modificaciones a ciertas funciones para que pueda ser leíble la información 

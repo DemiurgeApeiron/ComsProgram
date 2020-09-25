@@ -39,11 +39,6 @@ public:
 
 template <class T>
 Master<T>::~Master(){
-    /*for(size_t i = 0; i < lista.size();i++){
-        for(size_t j = 0; j < lista.size();j++){
-            delete(lista[i][j]);
-        }
-    }*/
 }
 
 template <class T>
@@ -173,14 +168,13 @@ int Master<T>:: busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)
     }
     int izquierda = busquedaArbol(primer, medio-1, (compare), var, contador, PrintBool);
     int derecha = busquedaArbol(medio+1, ultimo, (compare), var, contador, PrintBool);
-    //cout << "after: " << "izquierda: "<< izquierda << " derecha: "<< derecha <<endl;
     return(contador);
     
 }
 
 template <class T>
 bool Master<T>:: dayBusquedaCond(ADT<T> &a, T &num){
-    Fecha<T> tempFecha = a.getFecha();;
+    Fecha<T> tempFecha = a.getFecha();
     if(tempFecha.getDia() == stoi(num)){
         return(true);
     }
@@ -234,5 +228,4 @@ int Master<T>:: diaRelativo(int _dia){
     Fecha<T> fecha = lista[0].getFecha();
     return(fecha.getDia()+ _dia -1);
 }
-
 
