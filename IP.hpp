@@ -37,9 +37,15 @@ IP<T>::IP(T &IP){
         { 
             valores.push_back(intermediate); 
         } 
-
-        localIp = valores[0] + "." + valores[1] + "." + valores[2];
-        userIP = valores[valores.size()-1];
+        if(valores.size() == 4){
+            this->localIp = valores[0] + "." + valores[1] + "." + valores[2];
+            this->userIP = valores[valores.size()-1];
+        }
+        else{
+            this->localIp= "0";
+            this->userIP= "0";
+        }
+        
     }
 
     

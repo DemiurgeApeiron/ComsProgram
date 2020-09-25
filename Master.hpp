@@ -69,7 +69,7 @@ int Master<T>::partition(vector<ADT<T>> &list, int low, int high){
     for (int j = low; j < high; j++){
         Fecha<T> tempFechaA = lista[j].getFecha();
         Fecha<T> tempFechaB = pivote.getFecha();
-        if((tempFechaA.getAño() == tempFechaB.getAño()) && (tempFechaA.getMes() == tempFechaB.getMes()) && (tempFechaA.getDia() == tempFechaB.getDia())){
+        if((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() == tempFechaB.getMes()) && (tempFechaA.getDia() == tempFechaB.getDia())){
             if(horaCond(lista[j],pivote)){
                 i++;
                 ADT<T> temp = list[i];
@@ -96,13 +96,13 @@ template <class T>
 bool Master<T>::dayCond(ADT<T> &a, ADT<T> &b){
     Fecha<T> tempFechaA = a.getFecha();
     Fecha<T> tempFechaB = b.getFecha();
-    if(tempFechaA.getAño() < tempFechaB.getAño()){
+    if(tempFechaA.getYear() < tempFechaB.getYear()){
         return(true);
     }
-    else if((tempFechaA.getAño() == tempFechaB.getAño()) && (tempFechaA.getMes() < tempFechaB.getMes())){
+    else if((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() < tempFechaB.getMes())){
         return(true);
     }
-    else if((tempFechaA.getAño() == tempFechaB.getAño()) && (tempFechaA.getMes() == tempFechaB.getMes()) && (tempFechaA.getDia() < tempFechaB.getDia())){
+    else if((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() == tempFechaB.getMes()) && (tempFechaA.getDia() < tempFechaB.getDia())){
         return(true);
     }
     else

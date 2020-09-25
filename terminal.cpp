@@ -67,14 +67,14 @@ int terminal(T a){
     program = addRegistro(regitros, program);
 
     cout<<"display head(5)"<<endl;
-    program.Display(1);
+    program.Display(5);
     cout<<endl;
     cout<< "En total hay: " <<program.numeroDeRegistros()<< " Registros" <<endl;
     cout<<endl;
     cout<<"sorting by time"<<endl;
     program.sortByTime();
     cout<<"display head(5)"<<endl;
-    program.Display(1);
+    program.Display(5);
     cout<<endl;
     string diaRelativo = to_string(program.diaRelativo(2));
     cout << "El segundo dia es: " << diaRelativo <<endl;
