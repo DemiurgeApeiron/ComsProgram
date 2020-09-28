@@ -1,3 +1,8 @@
+/* 
+programa para probar la funcionalidad de ComsProgram
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -7,6 +12,7 @@
 #include "CsvReader.hpp"
 using namespace std;
 
+//funcion para imprimir el registro
 template<class T>
 void print(Master<T> &object){
     int resp;
@@ -16,6 +22,7 @@ void print(Master<T> &object){
     object.Display(resp);
     cout<<endl;
 }
+//funcion para añadir regitros
 template<class T>
 Master<T> addRegistro(vector<vector<T>> &_registros, Master<T> &_program){
     for(size_t i = 0; i < _registros.size();i++){
@@ -23,6 +30,7 @@ Master<T> addRegistro(vector<vector<T>> &_registros, Master<T> &_program){
     }
     return(_program);
 }
+//funcion para controlar el programa
 template<class T>
 int terminal(T a){
     Master<string> program;

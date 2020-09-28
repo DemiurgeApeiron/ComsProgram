@@ -1,3 +1,8 @@
+/* 
+clase para procesar y ordenar los puertos
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include <string>
@@ -19,6 +24,7 @@ public:
     T display(){return port;}
 
 };
+//constructor para procesar el imput
 template <class T>
 Puerto<T>::Puerto(T _puerto){
     if(_puerto == "-"){

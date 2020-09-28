@@ -1,3 +1,8 @@
+/* 
+clase para procesar y ordenar las fechas
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include <string>
@@ -22,6 +27,7 @@ public:
     int getYear(){return year;}
     T display(){return fullFecha;}
 };
+//constructor para procesar el imput
 template <class T>
 Fecha<T>::Fecha(T Fecha){
     this->fullFecha= Fecha;

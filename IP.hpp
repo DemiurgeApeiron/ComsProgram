@@ -1,3 +1,8 @@
+/* 
+clase para procesar y ordenar las IP
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include <string>
@@ -20,6 +25,7 @@ public:
     string getUserIP(){return userIP;}
     T display(){return fullIP;}
 };
+//constructor para procesar el imput
 template <class T>
 IP<T>::IP(T &IP){
     this->fullIP = IP;

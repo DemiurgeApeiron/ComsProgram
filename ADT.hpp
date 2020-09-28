@@ -1,3 +1,8 @@
+/* 
+clase para regitrar datos abstractos
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include "Puerto.hpp"
@@ -44,6 +49,7 @@ public:
     string getPuertoDDisplay(){return PuertoDestino.display();}
     
 };
+//constructor para procesar las diferentes entradas del vector
 template <class T>
 ADT<T>::ADT(vector<T> &_lista){
     this-> fecha = Fecha(_lista[0]);

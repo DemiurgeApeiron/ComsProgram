@@ -1,3 +1,8 @@
+/* 
+clase para procesar y ordenar los host
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include <string>
@@ -18,6 +23,7 @@ public:
     T display(){return fullName;}
     T getName(){return name;}
 };
+//constructor para procesar el imput
 template <class T>
 HostName<T>::HostName(T &_HostName){
     this-> fullName = _HostName;

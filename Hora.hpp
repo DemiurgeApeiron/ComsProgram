@@ -1,3 +1,8 @@
+/* 
+clase para procesar y ordenar las horas
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include <string>
@@ -22,6 +27,7 @@ public:
     int getSec(){return sec;}
     T display(){return fullHora;}
 };
+//constructor para procesar el imput
 template <class T>
 Hora<T>::Hora(T &_hora){
     this->fullHora = _hora;

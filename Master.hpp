@@ -1,3 +1,8 @@
+/* 
+clase para procesar y ordenar los datos
+javier alejandro martinez noe
+27/9/20
+*/
 #include <iostream>
 #include <vector>
 #include "ADT.hpp"
@@ -48,19 +53,20 @@ public:
 template <class T>
 Master<T>::~Master(){
 }
-
+//metodo para incluir los registros a la clase abstracta
 template <class T>
 void Master<T>::addRegister(vector<T> &_lista){
     ADT<T> registro = ADT(_lista);
     lista.push_back(registro);
     
 }
-
+//metodo para ordenar los registros por fecha
 template <class T>
 vector<ADT<T>>  Master<T>:: sortByTime(){
     quickSort(lista, 0, lista.size()-1);
     return(lista); 
 }
+//metodo de ordenamiento Quick Sort
 template <class T>
 void Master<T>::quickSort(vector<ADT<T>>  &list, int low, int high){
     if(low < high){
@@ -69,6 +75,7 @@ void Master<T>::quickSort(vector<ADT<T>>  &list, int low, int high){
         quickSort(list,piv+1, high);
     }
 }
+//metodo que trbaja en conjunto con quicksort y hace las comparaciones 
 template <class T>
 int Master<T>::partition(vector<ADT<T>> &list, int low, int high){
     ADT<T> pivote = lista[high];
@@ -99,7 +106,7 @@ int Master<T>::partition(vector<ADT<T>> &list, int low, int high){
     
 
 }
-
+//metodo para comparar fechas
 template <class T>
 bool Master<T>::dayCond(ADT<T> &a, ADT<T> &b){
     Fecha<T> tempFechaA = a.getFecha();
@@ -118,7 +125,7 @@ bool Master<T>::dayCond(ADT<T> &a, ADT<T> &b){
         return(false);
     }
 }
-
+//metodo para comparar horas
 template <class T>
 bool Master<T>::horaCond(ADT<T> &a, ADT<T> &b){
     Hora<T> tempHoraA = a.getHora();
@@ -137,6 +144,7 @@ bool Master<T>::horaCond(ADT<T> &a, ADT<T> &b){
         return(false);
     }
 }
+// funcion para imprimir el registro el input es cuatas filas quieres imprimir. 0 es todas 
 template <class T>
 void Master<T>::Display(int resp){
     size_t size;
@@ -151,16 +159,18 @@ void Master<T>::Display(int resp){
         cout<< lista[i].getFechaDisplay() << ", " << lista[i].getHoraDisplay() << ", " << lista[i].getIPODisplay() << ", " << lista[i].getPuertoODisplay() << ", " << lista[i].getHostODisplay() << ", " << lista[i].getIPDDisplay() << ", " << lista[i].getPuertoDDisplay() << ", " << lista[i].getHostDDisplay() <<endl;   
     }
 }
-
+//funcion para imprimir un solo registro
 template <class T>
 void Master<T>::printVector(ADT<T> list){
     cout<< list.getFechaDisplay() << ", " << list.getHoraDisplay() << ", " << list.getIPODisplay() << ", " << list.getPuertoODisplay() << ", " << list.getHostODisplay() << ", " << list.getIPDDisplay() << ", " << list.getPuertoDDisplay() << ", " << list.getHostDDisplay() <<endl;
 }
+//funcion para iniciar las busquedas
 template <class T>
 int Master<T>:: busqueda(bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, bool PrintBool){
     int contador = 0;
     return(busquedaArbol(0,lista.size()-1, (compare), var, contador, PrintBool));
 }
+//funcion para hacer una busqueda
 template <class T>
 int Master<T>:: busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int &contador, bool PrintBool){
     if(ultimo < primer){
@@ -179,7 +189,7 @@ int Master<T>:: busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)
     return(contador);
     
 }
-
+//funcion para buscar una fecha espesifica
 template <class T>
 bool Master<T>:: dayBusquedaCond(ADT<T> &a, T &num){
     Fecha<T> tempFecha = a.getFecha();
@@ -188,6 +198,7 @@ bool Master<T>:: dayBusquedaCond(ADT<T> &a, T &num){
     }
     return(false);
 }
+//funcion para buscar el puerto mas chico
 template <class T>
 bool Master<T>:: puertoMinBusquedaCond(ADT<T> &a, T &num){
     Puerto<T> tempPuerto = a.getPuertoD();
@@ -196,6 +207,7 @@ bool Master<T>:: puertoMinBusquedaCond(ADT<T> &a, T &num){
     }
     return(false);
 }
+//funcion para buscar un usuario
 template <class T>
 bool Master<T>:: OrdenadorBusquedaCond(ADT<T> &a, T &name){
     HostName<T> tempHost = a.getHostO();
@@ -204,6 +216,7 @@ bool Master<T>:: OrdenadorBusquedaCond(ADT<T> &a, T &name){
     }
     return(false);
 }
+//funcion para buscar un servicio en espesifico
 template <class T>
 bool Master<T>:: ServicioBusquedaCond(ADT<T> &a, T &name){
     HostName<T> tempHost = a.getHostD();
@@ -212,6 +225,7 @@ bool Master<T>:: ServicioBusquedaCond(ADT<T> &a, T &name){
     }
     return(false);
 }
+//busqueda de un usuario por nombre completo
 template <class T>
 bool Master<T>::busquedaUsuarioCompletoCond(ADT<T> &a, T &name){
   HostName<T> tempCompleto = a.getHostO();
@@ -220,7 +234,7 @@ bool Master<T>::busquedaUsuarioCompletoCond(ADT<T> &a, T &name){
   }
   return (false);
 }
-
+//metodo para encontrar todos los servicios
 template <class T>
 bool Master<T>::getAllServicesCond(ADT<T> &a, T &name){
 HostName<T> servicioTemp = a.getHostD();
@@ -232,7 +246,7 @@ HostName<T> servicioTemp = a.getHostD();
         return (true);
     }
 }
-
+//metodo para encontrar todos los puertos de destino sin repeticion
 template <class T>
 bool Master<T>::getActivePortsDestinyCond(ADT<T> &a, T &name){
 Puerto<T> portDTemp = a.getPuertoD();
@@ -244,6 +258,7 @@ Puerto<T> portDTemp = a.getPuertoD();
         return (true);
     }
 }
+//metodo para encontrar todos los puertos de origen sin repeticion
 template <class T>
 bool Master<T>::getActivePortsOriginCond(ADT<T> &a, T &name){
 Puerto<T> portOTemp = a.getPuertoO();
@@ -255,28 +270,32 @@ Puerto<T> portOTemp = a.getPuertoO();
         return (true);
     }
 }
-
+// metodo para iniciar la busqueda de un dia
 template <class T>
 int Master<T>:: busquedaDia(T num, bool PrintBool){
     return(busqueda(&Master<T>::dayBusquedaCond, num, PrintBool));
 }
+// metodo para iniciar la busqueda de un puerto minimo a un punto
 template <class T>
 int Master<T>:: busquedaMinpuerto(T num, bool PrintBool){
     return(busqueda(&Master<T>::puertoMinBusquedaCond, num, PrintBool));
 }
+// metodo para iniciar la busqueda de un servicio
 template <class T>
 int Master<T>:: busquedaServicio(T nombre, bool PrintBool){
     return(busqueda(&Master<T>::ServicioBusquedaCond, nombre, PrintBool));
 }
+// metodo para iniciar la busqueda de un usuario
 template <class T>
 int Master<T>:: busquedaOrdenador(T nombre, bool PrintBool){
     return(busqueda(&Master<T>::OrdenadorBusquedaCond, nombre, PrintBool));
 }
+// metodo para iniciar la busqueda de un usuario por nombre completo
 template <class T>
 int Master<T>:: busquedaUsuarioCompleto(T nombre, bool PrintBool){
     return(busqueda(&Master<T>::busquedaUsuarioCompletoCond, nombre, PrintBool));
 }
-
+// metodo para iniciar la busqueda de un dia relativo
 template <class T>
 int Master<T>:: diaRelativo(int _dia, bool sort){
     if(sort){
@@ -285,24 +304,27 @@ int Master<T>:: diaRelativo(int _dia, bool sort){
     Fecha<T> fecha = lista[0].getFecha();
     return(fecha.getDia()+ _dia -1);
 }
+// metodo para iniciar la busqueda de todos los servicios
 template<class T>
 vector<string> Master<T>:: GetAllServices(){
     busqueda(&Master<T>::getAllServicesCond, "-", false);
     return(allServices);
 }
+// metodo para iniciar la busqueda de tosos los puertos activos de destino
 template<class T>
 vector<string> Master<T>:: getActivePortsDestiny(){
     activePorts.clear();
     busqueda(&Master<T>::getActivePortsDestinyCond, "-", false);
     return(activePorts);
 }
+// metodo para iniciar la busqueda de todos los puertos activos de origen
 template<class T>
 vector<string> Master<T>:: getActivePortsOrigin(){
     activePorts.clear();
     busqueda(&Master<T>::getActivePortsOriginCond, "-", false);
     return(activePorts);
 }
-
+// metodo para consegir la ip local
 template<class T>
 string Master<T>::conseguirIpLocal(){
   int indice = 0;
