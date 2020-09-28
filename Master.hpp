@@ -8,6 +8,8 @@ template <class T>
 class Master{
 protected:
     vector<ADT<T>> lista;
+    vector<string> allServices;
+    vector<string> activePorts;
     bool dayCond(ADT<T> &a, ADT<T> &b);
     bool dayBusquedaCond(ADT<T> &a, T &num);
     bool horaCond(ADT<T> &a, ADT<T> &b);
@@ -19,7 +21,10 @@ protected:
     void printVector(ADT<T> list);
     bool OrdenadorBusquedaCond(ADT<T> &a, T &name);
     bool ServicioBusquedaCond(ADT<T> &a, T &name);
-
+    bool busquedaUsuarioCompletoCond(ADT<T> &a, T &name);
+    bool getAllServicesCond(ADT<T> &a, T &name);
+    bool getActivePortsDestinyCond(ADT<T> &a, T &name);
+    bool getActivePortsOriginCond(ADT<T> &a, T &name);
 
 public:
     Master()=default;
@@ -30,11 +35,14 @@ public:
     void Display(int resp);
     int busquedaDia(T num, bool PrintBool);
     int busquedaMinpuerto(T num, bool PrintBool);
-    int diaRelativo(int _dia);
+    int diaRelativo(int _dia, bool sort);
     int busquedaServicio(T nombre, bool PrintBool);
     int busquedaOrdenador(T nombre, bool PrintBool);
-    
-
+    int busquedaUsuarioCompleto(T nombre, bool PrintBool);
+    string conseguirIpLocal();
+    vector<string> GetAllServices();
+    vector<string> getActivePortsDestiny();
+    vector<string> getActivePortsOrigin();
 };
 
 template <class T>
@@ -199,11 +207,53 @@ bool Master<T>:: OrdenadorBusquedaCond(ADT<T> &a, T &name){
 template <class T>
 bool Master<T>:: ServicioBusquedaCond(ADT<T> &a, T &name){
     HostName<T> tempHost = a.getHostD();
-    //cout << tempHost.getName() <<endl;
     if(tempHost.getName() == name){
         return(true);
     }
     return(false);
+}
+template <class T>
+bool Master<T>::busquedaUsuarioCompletoCond(ADT<T> &a, T &name){
+  HostName<T> tempCompleto = a.getHostO();
+  if (tempCompleto.display() == name){
+    return (true);
+  }
+  return (false);
+}
+
+template <class T>
+bool Master<T>::getAllServicesCond(ADT<T> &a, T &name){
+HostName<T> servicioTemp = a.getHostD();
+    if (find(allServices.begin(), allServices.end(), servicioTemp.getName()) != allServices.end()){
+        return (false);
+    }
+    else{
+        allServices.push_back(servicioTemp.getName());
+        return (true);
+    }
+}
+
+template <class T>
+bool Master<T>::getActivePortsDestinyCond(ADT<T> &a, T &name){
+Puerto<T> portDTemp = a.getPuertoD();
+    if (find(activePorts.begin(), activePorts.end(), portDTemp.display()) != activePorts.end()){
+        return (false);
+    }
+    else{
+        activePorts.push_back(portDTemp.display());
+        return (true);
+    }
+}
+template <class T>
+bool Master<T>::getActivePortsOriginCond(ADT<T> &a, T &name){
+Puerto<T> portOTemp = a.getPuertoO();
+    if (find(activePorts.begin(), activePorts.end(), portOTemp.display()) != activePorts.end()){
+        return (false);
+    }
+    else{
+        activePorts.push_back(portOTemp.display());
+        return (true);
+    }
 }
 
 template <class T>
@@ -222,11 +272,46 @@ template <class T>
 int Master<T>:: busquedaOrdenador(T nombre, bool PrintBool){
     return(busqueda(&Master<T>::OrdenadorBusquedaCond, nombre, PrintBool));
 }
+template <class T>
+int Master<T>:: busquedaUsuarioCompleto(T nombre, bool PrintBool){
+    return(busqueda(&Master<T>::busquedaUsuarioCompletoCond, nombre, PrintBool));
+}
 
 template <class T>
-int Master<T>:: diaRelativo(int _dia){
-    sortByTime();
+int Master<T>:: diaRelativo(int _dia, bool sort){
+    if(sort){
+        sortByTime();
+    }
     Fecha<T> fecha = lista[0].getFecha();
     return(fecha.getDia()+ _dia -1);
 }
+template<class T>
+vector<string> Master<T>:: GetAllServices(){
+    busqueda(&Master<T>::getAllServicesCond, "-", false);
+    return(allServices);
+}
+template<class T>
+vector<string> Master<T>:: getActivePortsDestiny(){
+    activePorts.clear();
+    busqueda(&Master<T>::getActivePortsDestinyCond, "-", false);
+    return(activePorts);
+}
+template<class T>
+vector<string> Master<T>:: getActivePortsOrigin(){
+    activePorts.clear();
+    busqueda(&Master<T>::getActivePortsOriginCond, "-", false);
+    return(activePorts);
+}
+
+template<class T>
+string Master<T>::conseguirIpLocal(){
+  int indice = 0;
+  IP<T> tempUser = lista[indice].getIPO();
+  while (tempUser.getLocalIp() == "0"){
+    indice++;
+    tempUser = lista[indice].getIPO();
+  }
+  return(tempUser.getLocalIp());
+}
+
 

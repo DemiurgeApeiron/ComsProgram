@@ -7,38 +7,6 @@
 #include "CsvReader.hpp"
 using namespace std;
 
-//codigo obtenido de https://www.gormanalysis.com/blog/reading-and-writing-csv-files-with-cpp/#reading-from-csv
-vector<vector<string>> readCsv(string filename){
-    vector<vector<string>> result;
-    ifstream myFile(filename);
-
-    if(!myFile.is_open()) throw runtime_error("Could not open file");
-
-    string line, colname;
-    string val;
-
-    if(myFile.good()){
-        getline(myFile, line);
-        stringstream ss(line);
-        while(getline(ss, colname, ',')){
-            result.push_back({vector<string> {}});
-        }
-    }
-    while(getline(myFile, line))
-    {
-        stringstream ss(line);
-        int colIdx = 0;
-        while(ss >> val){
-            result.at(colIdx).push_back(val);
-            if(ss.peek() == ',') ss.ignore();
-            colIdx++;
-        }
-    }
-    myFile.close();
-
-    return result;
-}
-
 template<class T>
 void print(Master<T> &object){
     int resp;
@@ -61,7 +29,10 @@ int terminal(T a){
     CSVReader reader("equipo5.csv");
     vector<vector<string> > regitros = reader.getData();
     string var = "11";
-    int ind = regitros.size()*3/4*0;
+    int shortener;
+    cout << "Do you want to shorten the list so it processes it faster? 0: no, 1: yes" <<endl;
+    cin >> shortener;
+    int ind = regitros.size()*3/4*shortener;
     regitros = vector<vector<string>>(regitros.begin() , regitros.end()-(ind));
 
     program = addRegistro(regitros, program);
@@ -71,23 +42,41 @@ int terminal(T a){
     cout<<endl;
     cout<< "En total hay: " <<program.numeroDeRegistros()<< " Registros" <<endl;
     cout<<endl;
-    cout<<"sorting by time"<<endl;
-    program.sortByTime();
-    cout<<"display head(5)"<<endl;
-    program.Display(5);
+    int sorter;
+    cout << "Do you want to sort? naturally the list is sorted but if you want to sort it will take time. 0: no, 1: yes" <<endl;
+    cin >> sorter;
+    bool sort;
+    if(sorter == 1){
+        sort = true;
+    }
+    else{
+        sort = false;
+    }
+    if(sort){
+        cout<<"sorting by time"<<endl;
+        program.sortByTime();
+        cout<<"display head(5)"<<endl;
+        program.Display(5);
+        cout<<endl;
+    }
     cout<<endl;
-    string diaRelativo = to_string(program.diaRelativo(2));
+    string diaRelativo = to_string(program.diaRelativo(2, sort));
     cout << "El segundo dia es: " << diaRelativo <<endl;
     int numRegistros = program.busquedaDia(diaRelativo, false);
     cout << "El segundo dia hay: " << numRegistros << " registros" <<endl;
-    cout << "son:  "<<endl;
-    program.busquedaDia(diaRelativo, false);
     cout<<endl;
     int num = program.busquedaMinpuerto("1000", false);
     if(num != 0){
         cout<<"Si hay un puerto de destino menor a 1000"<<endl;
+        cout <<"Hay " << num << " en el regitro con un puerto de destino menor a 1000"<<endl;
     }
+    int print;
+    cout << "Do you want to print the registers under 1000 in the port. 0: no, 1: yes" <<endl;
+    cin >> print;
     cout<<endl;
+    if(print == 1){
+        program.busquedaMinpuerto("1000", true);
+    }
     vector<string> names = {"jeffrey", "betty", "katherine", "scott", "benjamin"};
     for(size_t i = 0; i < names.size(); i++){
         int busquedaNames = program.busquedaOrdenador(names[i], false);
@@ -103,6 +92,31 @@ int terminal(T a){
             cout << "En el registro se ocupa el servicio: " << servicios[i] << endl;
         }
     }
+    cout<<endl;
+    int reto = program.busquedaUsuarioCompleto("server.reto.com", false);
+    if(reto != 0){
+        cout<< "si hay un usuario llamado server.reto.com en el registo" <<endl;
+    }
+    else{
+        cout<< "No hay un usuario llamado server.reto.com en el registo" <<endl;
+    }
+    cout<<endl;
+    cout << "la Ip local de la red es: " << program.conseguirIpLocal() <<endl;
+    cout<<endl;
+    vector<string> serviciosTodos = program.GetAllServices();
+    cout<< "Se estan Ocupando los servicios:"<<endl;
+    for(size_t i = 0; i < serviciosTodos.size(); i++){
+        cout << serviciosTodos[i] << ", ";
+    }
+    cout<<endl;
+    cout<<endl;
+    vector<string> puertosActivos = program.getActivePortsDestiny();
+    cout<< "Puertos de destino activos:"<<endl;
+    for(size_t i = 0; i < puertosActivos.size(); i++){
+        cout << puertosActivos[i] << ", ";
+    }
+    cout<<endl;
+    cout<<endl;
     return(0);
     
 }
