@@ -333,7 +333,7 @@ string Master<T>::conseguirIpLocal(){
     indice++;
     tempUser = lista[indice].getIPO();
   }
-  return(tempUser.getLocalIp());
+  return(tempUser.getLocalIp() + ".0");
 }
 
 
