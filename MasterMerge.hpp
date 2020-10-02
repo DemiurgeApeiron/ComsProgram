@@ -16,11 +16,12 @@ protected:
     vector<string> allServices;
     vector<string> activePorts;
     bool dayCond(ADT<T> &a, ADT<T> &b);
-    bool timeCond(ADT<T> &a, ADT<T> &b);
+    bool timeCondMin(ADT<T> &a, ADT<T> &b);
+    bool timeCondMax(ADT<T> &a, ADT<T> &b);
     bool dayBusquedaCond(ADT<T> &a, T &num);
     bool horaCond(ADT<T> &a, ADT<T> &b);
-    void quickSort(vector<ADT<T>> &list, int low, int high, bool (Master<T>::*compare)(ADT<T> &a, ADT<T> &b));
-    int partition(vector<ADT<T>> &list, int low, int high, bool (Master<T>::*compare)(ADT<T> &a, ADT<T> &b));
+    void quickSort(vector<ADT<T>> &list, int low, int high);
+    int partition(vector<ADT<T>> &list, int low, int high);
     int busqueda(bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, bool PrintBool);
     int busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int &contador, bool PrintBool);
     bool puertoMinBusquedaCond(ADT<T> &a, T &num);
@@ -31,6 +32,8 @@ protected:
     bool getAllServicesCond(ADT<T> &a, T &name);
     bool getActivePortsDestinyCond(ADT<T> &a, T &name);
     bool getActivePortsOriginCond(ADT<T> &a, T &name);
+    vector<ADT<T>> mergeSort(vector<ADT<T>> &listaToMege, int primer, int ultimo, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b));
+    vector<ADT<T>> merge(vector<ADT<T>> &l, vector<ADT<T>> &r, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b));
 
 public:
     Master()=default;
@@ -64,42 +67,87 @@ void Master<T>::addRegister(vector<T> &_lista){
 //metodo para ordenar los registros por fecha
 template <class T>
 vector<ADT<T>>  Master<T>:: sortByTime(){
-    quickSort(lista, 0, lista.size()-1, &Master<T>::timeCond);
+    lista = mergeSort(lista,0,lista.size()-1, &Master<T>::timeCondMin, &Master<T>::timeCondMax);
     return(lista); 
 }
 //metodo de ordenamiento Quick Sort
 template <class T>
-void Master<T>::quickSort(vector<ADT<T>>  &list, int low, int high, bool (Master<T>::*compare)(ADT<T> &a, ADT<T> &b)){
-    if(low < high){
-        int piv = partition(list,low, high, (compare));
-        quickSort(list,low, piv-1, (compare));
-        quickSort(list,piv+1, high, (compare));
+vector<ADT<T>>  Master<T>::mergeSort(vector<ADT<T>> &listaToMege, int primer, int ultimo, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b)){
+    int n = listaToMege.size();
+    if(primer < ultimo){
+
+        int medio = primer + (ultimo - primer) / 2;
+
+        vector<ADT<T>> izquierda = mergeSort(listaToMege, primer, medio, (compareMin), (compareMax));
+        vector<ADT<T>> derecha = mergeSort(listaToMege, medio+1,ultimo, (compareMin), (compareMax));
+        /*cout <<"iz: ";
+        for(size_t i = 0; i<izquierda.size();i++){
+            cout << izquierda[i].getHoraDisplay()<< ", " ;
+        }
+        cout<<endl;
+        cout <<"dr: ";
+        for(size_t j = 0; j<derecha.size();j++){
+            cout << derecha[j].getHoraDisplay()<< ", " ;
+        }
+        cout<<endl;*/
+        cout << "bing" <<endl;
+        return(merge(izquierda,derecha, (compareMin), (compareMax)));
+    }
+    else{
+        vector<ADT<T>> resp;
+        if(primer-ultimo !=0){
+            resp = vector<ADT<T>>(listaToMege.begin() + primer, listaToMege.end()- (listaToMege.size()-ultimo)); 
+        }
+        else if(primer == 0 && ultimo == 0){
+            resp = vector<ADT<T>>(listaToMege.begin(), listaToMege.end()- (listaToMege.size()-1)); 
+        }
+        else{
+            resp = vector<ADT<T>>(listaToMege.begin() + primer, listaToMege.end()- (listaToMege.size()-ultimo-1));
+        }
+        return(resp);
     }
 }
-//metodo que trbaja en conjunto con quicksort y hace las comparaciones 
-template <class T>
-int Master<T>::partition(vector<ADT<T>> &list, int low, int high, bool (Master<T>::*compare)(ADT<T> &a, ADT<T> &b)){
-    ADT<T> pivote = lista[high];
-    int i = low-1;
 
-    for (int j = low; j < high; j++){
-        if((this->*compare)(lista[j],pivote)){
+template <class T>
+vector<ADT<T>> Master<T>::merge(vector<ADT<T>> &l, vector<ADT<T>> &r, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b)){
+    int n = l.size()+r.size();
+
+    int i =0, j = 0;
+    vector<ADT<T>> result;
+    result.resize(n);
+    for(size_t p = 0; p < n;p++){
+        cout << p << " de inicial "<< n << " i: " << i << " j: " << j << " lsize: " << l.size() << " rsize: " << r.size() <<endl;
+        //cout << "p: " << p <<" de " << n << " li: "<< l[i].getHoraDisplay() << " rj: "<< r[j].getHoraDisplay() << " i: " << i << " j: " << j << " lsize: " << l.size() << " rsize: " << r.size() <<endl;
+        if(i < l.size() && ((this->*compareMin)(l[i],r[j]) || (j >= r.size()))){
+            cout << "enter min" <<endl;
+            cout << p << " de "<< n <<endl;
+            cout << l[i].getHoraDisplay() <<endl;
+            cout << "add" <<endl;
+            result[p] = l[i];
             i++;
-            ADT<T> temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
+            cout << "exito" <<endl;
+        }
+        else if((this->*compareMax)(l[i],r[j]) || i >= l.size()){
+            cout << "enter max" <<endl;
+            result[p] = r[j];
+            j++;    
         }
     }
-    ADT<T> temp = list[i+1];
-    list[i+1] = list[high];
-    list[high] = temp;
-    return i + 1;
+    cout << "exitof" <<endl;
+    /*cout <<"m: ";
+    for(size_t j = 0; j<result.size();j++){
+        cout << result[j].getHoraDisplay()<< ", " ;
+    }
+    cout<<endl;*/
+    return(result); 
 }
 //metodo para comparar fechas y hora
 template <class T>
-bool Master<T>::timeCond(ADT<T> &a, ADT<T> &b){
+bool Master<T>::timeCondMin(ADT<T> &a, ADT<T> &b){
+    cout<<"time min"<<endl;
     Fecha<T> tempFechaA = a.getFecha();
     Fecha<T> tempFechaB = b.getFecha();
+    cout <<"temps"<<endl;
     int tiempoFechaTotalA = tempFechaA.getYear()*365 + tempFechaA.getMes()*30 + tempFechaA.getDia();
     int tiempoFechaTotalB = tempFechaB.getYear()*365 + tempFechaB.getMes()*30 + tempFechaB.getDia();
     if(tiempoFechaTotalA < tiempoFechaTotalB){
@@ -108,9 +156,36 @@ bool Master<T>::timeCond(ADT<T> &a, ADT<T> &b){
     else{
         Hora<T> tempHoraA = a.getHora();
         Hora<T> tempHoraB = b.getHora();
+        //cout << "HorA " << tempHoraA.getHora() << ", " << tempHoraA.getMin() << ", " << tempHoraA.getSec() << " HorB " << tempHoraB.getHora() << ", " << tempHoraB.getMin() << ", " << tempHoraB.getSec() <<endl;
         int tiempoHoraTotalA = tempHoraA.getHora()*3600 + tempHoraA.getMin()*60 + tempHoraA.getSec();
         int tiempoHoraTotalB = tempHoraB.getHora()*3600 + tempHoraB.getMin()*60 + tempHoraB.getSec();
-        if(tiempoHoraTotalA < tiempoHoraTotalB){
+        //cout << "min: " <<"HorA " << tiempoHoraTotalA << " HorB " << tiempoHoraTotalB <<endl;
+        if(tiempoHoraTotalA <= tiempoHoraTotalB){
+            return(true);
+        }
+        return(false);
+    }
+}
+//metodo para comparar fechas y hora
+template <class T>
+bool Master<T>::timeCondMax(ADT<T> &a, ADT<T> &b){
+    cout<<"time max"<<endl;
+    Fecha<T> tempFechaA = a.getFecha();
+    Fecha<T> tempFechaB = b.getFecha();
+    cout <<"temps"<<endl;
+    int tiempoFechaTotalA = tempFechaA.getYear()*365 + tempFechaA.getMes()*30 + tempFechaA.getDia();
+    int tiempoFechaTotalB = tempFechaB.getYear()*365 + tempFechaB.getMes()*30 + tempFechaB.getDia();
+    //cout << "fechA" << tiempoFechaTotalA << "fechB" << tiempoFechaTotalB <<endl;
+    if(tiempoFechaTotalA > tiempoFechaTotalB){
+        return(true);
+    }
+    else{
+        Hora<T> tempHoraA = a.getHora();
+        Hora<T> tempHoraB = b.getHora();
+        int tiempoHoraTotalA = tempHoraA.getHora()*3600 + tempHoraA.getMin()*60 + tempHoraA.getSec();
+        int tiempoHoraTotalB = tempHoraB.getHora()*3600 + tempHoraB.getMin()*60 + tempHoraB.getSec();
+        //cout << "max: " <<"HorA " << tiempoHoraTotalA << " HorB " << tiempoHoraTotalB <<endl;
+        if(tiempoHoraTotalA > tiempoHoraTotalB){
             return(true);
         }
         return(false);
