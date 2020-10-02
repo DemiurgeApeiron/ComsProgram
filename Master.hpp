@@ -80,16 +80,7 @@ vector<ADT<T>>  Master<T>::mergeSort(vector<ADT<T>> &listaToMege, int primer, in
 
         vector<ADT<T>> izquierda = mergeSort(listaToMege, primer, medio, (compareMin), (compareMax));
         vector<ADT<T>> derecha = mergeSort(listaToMege, medio+1,ultimo, (compareMin), (compareMax));
-        /*cout <<"iz: ";
-        for(size_t i = 0; i<izquierda.size();i++){
-            cout << izquierda[i].getHoraDisplay()<< ", " ;
-        }
-        cout<<endl;
-        cout <<"dr: ";
-        for(size_t j = 0; j<derecha.size();j++){
-            cout << derecha[j].getHoraDisplay()<< ", " ;
-        }
-        cout<<endl;*/
+
         return(merge(izquierda,derecha, (compareMin), (compareMax)));
     }
     else{
@@ -127,31 +118,23 @@ vector<ADT<T>> Master<T>::merge(vector<ADT<T>> &l, vector<ADT<T>> &r, bool (Mast
         else{
             y = j;
         }
-        //cout << p << " de inicial "<< n << " i: " << i << " j: " << j << " lsize: " << l.size() << " rsize: " << r.size() <<endl;
-        //cout << "p: " << p <<" de " << n << " li: "<< l[i].getHoraDisplay() << " rj: "<< r[j].getHoraDisplay() << " i: " << i << " j: " << j << " lsize: " << l.size() << " rsize: " << r.size() <<endl;
+       
         if(i < l.size() && ((this->*compareMin)(l[x],r[y]) || (j >= r.size()))){
             result[p] = l[i];
             i++;
-            //cout << "exito" <<endl;
+
         }
         else if((this->*compareMax)(l[x],r[y]) || i >= l.size()){
-            //cout << "enter max" <<endl;
             result[p] = r[j];
             j++;    
         }
     }
-    //cout << "exitof" <<endl;
-    /*cout <<"m: ";
-    for(size_t j = 0; j<result.size();j++){
-        cout << result[j].getHoraDisplay()<< ", " ;
-    }
-    cout<<endl;*/
+ 
     return(result); 
 }
 //metodo para comparar fechas y hora
 template <class T>
 bool Master<T>::timeCondMin(ADT<T> &a, ADT<T> &b){
-    //cout<<"time min"<<endl;
     Fecha<T> tempFechaA = a.getFecha();
     Fecha<T> tempFechaB = b.getFecha();
     int tiempoFechaTotalA = tempFechaA.getYear()*365 + tempFechaA.getMes()*30 + tempFechaA.getDia();
@@ -162,10 +145,8 @@ bool Master<T>::timeCondMin(ADT<T> &a, ADT<T> &b){
     else{
         Hora<T> tempHoraA = a.getHora();
         Hora<T> tempHoraB = b.getHora();
-        //cout << "HorA " << tempHoraA.getHora() << ", " << tempHoraA.getMin() << ", " << tempHoraA.getSec() << " HorB " << tempHoraB.getHora() << ", " << tempHoraB.getMin() << ", " << tempHoraB.getSec() <<endl;
         int tiempoHoraTotalA = tempHoraA.getHora()*3600 + tempHoraA.getMin()*60 + tempHoraA.getSec();
         int tiempoHoraTotalB = tempHoraB.getHora()*3600 + tempHoraB.getMin()*60 + tempHoraB.getSec();
-        //cout << "min: " <<"HorA " << tiempoHoraTotalA << " HorB " << tiempoHoraTotalB <<endl;
         if(tiempoHoraTotalA <= tiempoHoraTotalB){
             return(true);
         }
@@ -175,12 +156,10 @@ bool Master<T>::timeCondMin(ADT<T> &a, ADT<T> &b){
 //metodo para comparar fechas y hora
 template <class T>
 bool Master<T>::timeCondMax(ADT<T> &a, ADT<T> &b){
-    //cout<<"time max"<<endl;
     Fecha<T> tempFechaA = a.getFecha();
     Fecha<T> tempFechaB = b.getFecha();
     int tiempoFechaTotalA = tempFechaA.getYear()*365 + tempFechaA.getMes()*30 + tempFechaA.getDia();
     int tiempoFechaTotalB = tempFechaB.getYear()*365 + tempFechaB.getMes()*30 + tempFechaB.getDia();
-    //cout << "fechA" << tiempoFechaTotalA << "fechB" << tiempoFechaTotalB <<endl;
     if(tiempoFechaTotalA > tiempoFechaTotalB){
         return(true);
     }
@@ -189,7 +168,6 @@ bool Master<T>::timeCondMax(ADT<T> &a, ADT<T> &b){
         Hora<T> tempHoraB = b.getHora();
         int tiempoHoraTotalA = tempHoraA.getHora()*3600 + tempHoraA.getMin()*60 + tempHoraA.getSec();
         int tiempoHoraTotalB = tempHoraB.getHora()*3600 + tempHoraB.getMin()*60 + tempHoraB.getSec();
-        //cout << "max: " <<"HorA " << tiempoHoraTotalA << " HorB " << tiempoHoraTotalB <<endl;
         if(tiempoHoraTotalA > tiempoHoraTotalB){
             return(true);
         }
