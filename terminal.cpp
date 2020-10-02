@@ -8,7 +8,7 @@ javier alejandro martinez noe
 #include <fstream>
 #include <stdexcept> 
 #include <sstream>
-#include "MasterMerge.hpp"
+#include "Master.hpp"
 #include "CsvReader.hpp"
 using namespace std;
 
@@ -36,13 +36,6 @@ int terminal(T a){
     Master<string> program;
     CSVReader reader("equipo5.csv");
     vector<vector<string> > regitros = reader.getData();
-    string var = "11";
-    int shortener;
-    /*cout << "Do you want to shorten the list so it processes it faster? 0: no, 1: yes" <<endl;
-    cin >> shortener;*/
-    int ind = regitros.size() -100;
-    regitros = vector<vector<string>>(regitros.begin() , regitros.end()-(ind));
-
     program = addRegistro(regitros, program);
 
     cout<<"display head(5)"<<endl;
