@@ -13,55 +13,56 @@ javier alejandro martinez noe
 using namespace std;
 #pragma once
 
-template <class T>
 class ADT
 {
 protected:
-    Fecha<T> fecha;
-    Hora<T>  hora;
-    IP<T>  IPOrigen;
-    IP<T>  IPDestino;
-    HostName<T>  HostOrigen;
-    HostName<T>  HostDestino;
-    Puerto<T>  PuertoOrigen;
-    Puerto<T>  PuertoDestino;
+    int indice;
+    Fecha fecha;
+    Hora hora;
+    IP IPOrigen;
+    IP IPDestino;
+    HostName HostOrigen;
+    HostName HostDestino;
+    Puerto PuertoOrigen;
+    Puerto PuertoDestino;
 
 public:
-    ADT()=default;
-    ADT(vector<T> &_lista);
+    ADT() = default;
+    ADT(vector<string> &_lista, int _indice);
     ~ADT();
-    Fecha<T> getFecha(){return fecha;}
-    Hora<T> getHora(){return hora;}
-    IP<T> getIPO(){return IPOrigen;}
-    IP<T> getIPD(){return IPDestino;}
-    HostName<T> getHostO(){return HostOrigen;}
-    HostName<T> getHostD(){return HostDestino;}
-    Puerto<T> getPuertoO(){return PuertoOrigen;}
-    Puerto<T> getPuertoD(){return PuertoDestino;}
-    
-    string getFechaDisplay(){return fecha.display();}
-    string getHoraDisplay(){return hora.display();}
-    string getIPODisplay(){return IPOrigen.display();}
-    string getIPDDisplay(){return IPDestino.display();}
-    string getHostODisplay(){return HostOrigen.display();}
-    string getHostDDisplay(){return HostDestino.display();}
-    string getPuertoODisplay(){return PuertoOrigen.display();}
-    string getPuertoDDisplay(){return PuertoDestino.display();}
-    
+    int getIndice() { return indice; }
+    Fecha getFecha() { return fecha; }
+    Hora getHora() { return hora; }
+    IP getIPO() { return IPOrigen; }
+    IP getIPD() { return IPDestino; }
+    HostName getHostO() { return HostOrigen; }
+    HostName getHostD() { return HostDestino; }
+    Puerto getPuertoO() { return PuertoOrigen; }
+    Puerto getPuertoD() { return PuertoDestino; }
+
+    string getFechaDisplay() { return fecha.display(); }
+    string getHoraDisplay() { return hora.display(); }
+    string getIPODisplay() { return IPOrigen.display(); }
+    string getIPDDisplay() { return IPDestino.display(); }
+    string getHostODisplay() { return HostOrigen.display(); }
+    string getHostDDisplay() { return HostDestino.display(); }
+    string getPuertoODisplay() { return PuertoOrigen.display(); }
+    string getPuertoDDisplay() { return PuertoDestino.display(); }
 };
 //constructor para procesar las diferentes entradas del vector
-template <class T>
-ADT<T>::ADT(vector<T> &_lista){
-    this-> fecha = Fecha(_lista[0]);
-    this-> hora = Hora(_lista[1]);
-    this-> IPOrigen = IP(_lista[2]);
-    this-> PuertoOrigen = Puerto(_lista[3]);
-    this-> HostOrigen = HostName(_lista[4]);
-    this-> IPDestino = IP(_lista[5]);
-    this-> PuertoDestino = Puerto(_lista[6]);
-    this-> HostDestino = HostName(_lista[7]);
+ADT::ADT(vector<string> &_lista, int _indice)
+{
+    this->indice = _indice;
+    this->fecha = Fecha(_lista[0]);
+    this->hora = Hora(_lista[1]);
+    this->IPOrigen = IP(_lista[2]);
+    this->PuertoOrigen = Puerto(_lista[3]);
+    this->HostOrigen = HostName(_lista[4]);
+    this->IPDestino = IP(_lista[5]);
+    this->PuertoDestino = Puerto(_lista[6]);
+    this->HostDestino = HostName(_lista[7]);
 }
-template <class T>
-ADT<T>::~ADT()
+
+ADT::~ADT()
 {
 }

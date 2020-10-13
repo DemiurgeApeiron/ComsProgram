@@ -11,37 +11,40 @@ javier alejandro martinez noe
 using namespace std;
 #pragma once
 
-template <class T>
-class Hora: public DataBase<T>{
+class Hora : public DataBase
+{
 protected:
     int hora;
     int min;
     int sec;
-    T fullHora;
+    string fullHora;
+
 public:
-    Hora()=default;
-    Hora(T &_hora);
+    Hora() = default;
+    Hora(string &_hora);
     ~Hora();
-    int getHora(){return hora;}
-    int getMin(){return min;}
-    int getSec(){return sec;}
-    T display(){return fullHora;}
+    int getHora() { return hora; }
+    int getMin() { return min; }
+    int getSec() { return sec; }
+    string display() { return fullHora; }
 };
 //constructor para procesar el imput
-template <class T>
-Hora<T>::Hora(T &_hora){
+
+Hora::Hora(string &_hora)
+{
     this->fullHora = _hora;
-    vector<T> valores;
-    stringstream check1(_hora); 
-    string intermediate; 
-    while(getline(check1, intermediate, ':')) 
-    { 
-        valores.push_back(intermediate); 
+    vector<string> valores;
+    stringstream check1(_hora);
+    string intermediate;
+    while (getline(check1, intermediate, ':'))
+    {
+        valores.push_back(intermediate);
     }
-    this-> hora = stoi(valores[0]);
-    this-> min = stoi(valores[1]);
-    this-> sec = stoi(valores[2]);
+    this->hora = stoi(valores[0]);
+    this->min = stoi(valores[1]);
+    this->sec = stoi(valores[2]);
 }
-template <class T>
-Hora<T>::~Hora(){
+
+Hora::~Hora()
+{
 }

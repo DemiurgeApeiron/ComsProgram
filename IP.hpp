@@ -11,51 +11,53 @@ javier alejandro martinez noe
 using namespace std;
 #pragma once
 
-template <class T>
-class IP: public DataBase<T>{
+class IP : public DataBase
+{
 protected:
-    T localIp;
-    T userIP;
-    T fullIP;
+    string localIp;
+    string userIP;
+    string fullIP;
+
 public:
-    IP()=default;
-    IP(T &IP);
+    IP() = default;
+    IP(string &IP);
     ~IP();
-    string getLocalIp(){return localIp;}
-    string getUserIP(){return userIP;}
-    T display(){return fullIP;}
+    string getLocalIp() { return localIp; }
+    string getUserIP() { return userIP; }
+    string display() { return fullIP; }
 };
 //constructor para procesar el imput
-template <class T>
-IP<T>::IP(T &IP){
+IP::IP(string &IP)
+{
     this->fullIP = IP;
-    if(fullIP == "-"){
-        this->localIp="0";
-        this->userIP="0";
+    if (fullIP == "-")
+    {
+        this->localIp = "0";
+        this->userIP = "0";
     }
-    else{
-        vector <string> valores;
-        stringstream check1(IP); 
-    
-        string intermediate; 
+    else
+    {
+        vector<string> valores;
+        stringstream check1(IP);
 
-        while(getline(check1, intermediate, '.')) 
-        { 
-            valores.push_back(intermediate); 
-        } 
-        if(valores.size() == 4){
+        string intermediate;
+
+        while (getline(check1, intermediate, '.'))
+        {
+            valores.push_back(intermediate);
+        }
+        if (valores.size() == 4)
+        {
             this->localIp = valores[0] + "." + valores[1] + "." + valores[2];
-            this->userIP = valores[valores.size()-1];
+            this->userIP = valores[valores.size() - 1];
         }
-        else{
-            this->localIp= "0";
-            this->userIP= "0";
+        else
+        {
+            this->localIp = "0";
+            this->userIP = "0";
         }
-        
     }
-
-    
 }
-template <class T>
-IP<T>::~IP(){
+IP::~IP()
+{
 }

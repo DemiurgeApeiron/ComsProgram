@@ -11,40 +11,42 @@ javier alejandro martinez noe
 using namespace std;
 #pragma once
 
-template <class T>
-class Fecha : public DataBase<T>{
+class Fecha : public DataBase
+{
 protected:
-    T fullFecha;
+    string fullFecha;
     int year;
     int mes;
     int dia;
+
 public:
-    Fecha()=default;
-    Fecha(T Fecha);
+    Fecha() = default;
+    Fecha(string Fecha);
     ~Fecha();
-    int getDia(){return dia;}
-    int getMes(){return mes;}
-    int getYear(){return year;}
-    T display(){return fullFecha;}
+    int getDia() { return dia; }
+    int getMes() { return mes; }
+    int getYear() { return year; }
+    string display() { return fullFecha; }
 };
 //constructor para procesar el imput
-template <class T>
-Fecha<T>::Fecha(T Fecha){
-    this->fullFecha= Fecha;
-    vector <string> valores;
-    stringstream check1(Fecha); 
-    string intermediate; 
 
-    while(getline(check1, intermediate, '-')) 
-    { 
-        valores.push_back(intermediate); 
-    } 
+Fecha::Fecha(string Fecha)
+{
+    this->fullFecha = Fecha;
+    vector<string> valores;
+    stringstream check1(Fecha);
+    string intermediate;
 
-    this-> dia = stoi(valores[0]);
-    this-> mes = stoi(valores[1]);
-    this-> year = stoi(valores[2]);
-}
-template <class T>
-Fecha<T>::~Fecha(){
+    while (getline(check1, intermediate, '-'))
+    {
+        valores.push_back(intermediate);
+    }
+
+    this->dia = stoi(valores[0]);
+    this->mes = stoi(valores[1]);
+    this->year = stoi(valores[2]);
 }
 
+Fecha::~Fecha()
+{
+}

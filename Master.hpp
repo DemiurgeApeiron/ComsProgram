@@ -6,402 +6,548 @@ javier alejandro martinez noe
 #include <iostream>
 #include <vector>
 #include "ADT.hpp"
+#include "ConexionesComputadora.hpp"
 using namespace std;
 #pragma once
 
-template <class T>
-class Master{
+class Master
+{
 protected:
-    vector<ADT<T>> lista;
+    vector<ADT> lista;
     vector<string> allServices;
     vector<string> activePorts;
-    bool dayCond(ADT<T> &a, ADT<T> &b);
-    bool timeCondMin(ADT<T> &a, ADT<T> &b);
-    bool timeCondMax(ADT<T> &a, ADT<T> &b);
-    bool dayBusquedaCond(ADT<T> &a, T &num);
-    bool horaCond(ADT<T> &a, ADT<T> &b);
-    void quickSort(vector<ADT<T>> &list, int low, int high);
-    int partition(vector<ADT<T>> &list, int low, int high);
-    int busqueda(bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, bool PrintBool);
-    int busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int &contador, bool PrintBool);
-    bool puertoMinBusquedaCond(ADT<T> &a, T &num);
-    void printVector(ADT<T> list);
-    bool OrdenadorBusquedaCond(ADT<T> &a, T &name);
-    bool ServicioBusquedaCond(ADT<T> &a, T &name);
-    bool busquedaUsuarioCompletoCond(ADT<T> &a, T &name);
-    bool getAllServicesCond(ADT<T> &a, T &name);
-    bool getActivePortsDestinyCond(ADT<T> &a, T &name);
-    bool getActivePortsOriginCond(ADT<T> &a, T &name);
-    vector<ADT<T>> mergeSort(vector<ADT<T>> &listaToMege, int primer, int ultimo, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b));
-    vector<ADT<T>> merge(vector<ADT<T>> &l, vector<ADT<T>> &r, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b));
+    vector<ConexionesComputadora> listComputers;
+    int indice;
+    bool dayCond(ADT &a, ADT &b);
+    bool timeCondMin(ADT &a, ADT &b);
+    bool timeCondMax(ADT &a, ADT &b);
+    bool dayBusquedaCond(ADT &a, string &num);
+    bool horaCond(ADT &a, ADT &b);
+    void quickSort(vector<ADT> &list, int low, int high);
+    int partition(vector<ADT> &list, int low, int high);
+    int busqueda(bool (Master::*compare)(ADT &a, string &num), string var, bool PrintBool);
+    int busquedaArbol(int primer, int ultimo, bool (Master::*compare)(ADT &a, string &num), string var, int &contador, bool PrintBool);
+    bool puertoMinBusquedaCond(ADT &a, string &num);
+    void printVector(ADT list);
+    bool OrdenadorBusquedaCond(ADT &a, string &name);
+    bool ServicioBusquedaCond(ADT &a, string &name);
+    bool busquedaUsuarioCompletoCond(ADT &a, string &name);
+    bool getAllServicesCond(ADT &a, string &name);
+    bool getActivePortsDestinyCond(ADT &a, string &name);
+    bool getActivePortsOriginCond(ADT &a, string &name);
+    bool AddComputer(ADT &a, string &_ip);
+    bool IPSearch(ConexionesComputadora a, string _ip);
+    vector<ADT> mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
+    vector<ADT> merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
+    ConexionesComputadora busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
+    ConexionesComputadora busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
 
 public:
-    Master()=default;
+    Master() = default;
     ~Master();
-    void addRegister(std::vector<T> &_lista);
-    vector<ADT<T>> sortByTime();
-    int numeroDeRegistros(){return lista.size();}
+    void addRegister(vector<string> &_lista);
+    vector<ADT> sortByTime();
+    int numeroDeRegistros() { return lista.size(); }
     void Display(int resp);
-    int busquedaDia(T num, bool PrintBool);
-    int busquedaMinpuerto(T num, bool PrintBool);
+    int busquedaDia(string num, bool PrintBool);
+    int busquedaMinpuerto(string num, bool PrintBool);
     int diaRelativo(int _dia, bool sort);
-    int busquedaServicio(T nombre, bool PrintBool);
-    int busquedaOrdenador(T nombre, bool PrintBool);
-    int busquedaUsuarioCompleto(T nombre, bool PrintBool);
+    int busquedaServicio(string nombre, bool PrintBool);
+    int busquedaOrdenador(string nombre, bool PrintBool);
+    int busquedaUsuarioCompleto(string nombre, bool PrintBool);
     string conseguirIpLocal();
     vector<string> GetAllServices();
     vector<string> getActivePortsDestiny();
     vector<string> getActivePortsOrigin();
+    void computerAnalisis(/*int IPUsuario*/);
 };
 
-template <class T>
-Master<T>::~Master(){
+Master::~Master()
+{
 }
 //metodo para incluir los registros a la clase abstracta
-template <class T>
-void Master<T>::addRegister(vector<T> &_lista){
-    ADT<T> registro = ADT(_lista);
+
+void Master::addRegister(vector<string> &_lista)
+{
+    indice += 1;
+    ADT registro = ADT(_lista, indice);
     lista.push_back(registro);
-    
 }
 //metodo para ordenar los registros por fecha
-template <class T>
-vector<ADT<T>>  Master<T>:: sortByTime(){
-    lista = mergeSort(lista,0,lista.size()-1, &Master<T>::timeCondMin, &Master<T>::timeCondMax);
-    return(lista); 
+
+vector<ADT> Master::sortByTime()
+{
+    lista = mergeSort(lista, 0, lista.size() - 1, &Master::timeCondMin, &Master::timeCondMax);
+    return (lista);
 }
 //metodo de ordenamiento Quick Sort
-template <class T>
-vector<ADT<T>>  Master<T>::mergeSort(vector<ADT<T>> &listaToMege, int primer, int ultimo, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b)){
+
+vector<ADT> Master::mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b))
+{
     int n = listaToMege.size();
-    if(primer < ultimo){
+    if (primer < ultimo)
+    {
 
         int medio = primer + (ultimo - primer) / 2;
 
-        vector<ADT<T>> izquierda = mergeSort(listaToMege, primer, medio, (compareMin), (compareMax));
-        vector<ADT<T>> derecha = mergeSort(listaToMege, medio+1,ultimo, (compareMin), (compareMax));
+        vector<ADT> izquierda = mergeSort(listaToMege, primer, medio, (compareMin), (compareMax));
+        vector<ADT> derecha = mergeSort(listaToMege, medio + 1, ultimo, (compareMin), (compareMax));
 
-        return(merge(izquierda,derecha, (compareMin), (compareMax)));
+        return (merge(izquierda, derecha, (compareMin), (compareMax)));
     }
-    else{
-        vector<ADT<T>> resp;
-        if(primer-ultimo !=0){
-            resp = vector<ADT<T>>(listaToMege.begin() + primer, listaToMege.end()- (listaToMege.size()-ultimo)); 
+    else
+    {
+        vector<ADT> resp;
+        if (primer - ultimo != 0)
+        {
+            resp = vector<ADT>(listaToMege.begin() + primer, listaToMege.end() - (listaToMege.size() - ultimo));
         }
-        else if(primer == 0 && ultimo == 0){
-            resp = vector<ADT<T>>(listaToMege.begin(), listaToMege.end()- (listaToMege.size()-1)); 
+        else if (primer == 0 && ultimo == 0)
+        {
+            resp = vector<ADT>(listaToMege.begin(), listaToMege.end() - (listaToMege.size() - 1));
         }
-        else{
-            resp = vector<ADT<T>>(listaToMege.begin() + primer, listaToMege.end()- (listaToMege.size()-ultimo-1));
+        else
+        {
+            resp = vector<ADT>(listaToMege.begin() + primer, listaToMege.end() - (listaToMege.size() - ultimo - 1));
         }
-        return(resp);
+        return (resp);
     }
 }
 
-template <class T>
-vector<ADT<T>> Master<T>::merge(vector<ADT<T>> &l, vector<ADT<T>> &r, bool (Master<T>::*compareMin)(ADT<T> &a, ADT<T> &b), bool (Master<T>::*compareMax)(ADT<T> &a, ADT<T> &b)){
-    int n = l.size()+r.size();
+vector<ADT> Master::merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b))
+{
+    int n = l.size() + r.size();
 
-    int i =0, j = 0, x = 0, y = 0;
-    vector<ADT<T>> result;
+    int i = 0, j = 0, x = 0, y = 0;
+    vector<ADT> result;
     result.resize(n);
-    for(size_t p = 0; p < n;p++){
-        if(i == l.size()){
-            x = i-1;
+    for (size_t p = 0; p < n; p++)
+    {
+        if (i == l.size())
+        {
+            x = i - 1;
         }
-        else{
+        else
+        {
             x = i;
         }
-        if(j == r.size()){
-            y = j-1;
+        if (j == r.size())
+        {
+            y = j - 1;
         }
-        else{
+        else
+        {
             y = j;
         }
-       
-        if(i < l.size() && ((this->*compareMin)(l[x],r[y]) || (j >= r.size()))){
+
+        if (i < l.size() && ((this->*compareMin)(l[x], r[y]) || (j >= r.size())))
+        {
             result[p] = l[i];
             i++;
-
         }
-        else if((this->*compareMax)(l[x],r[y]) || i >= l.size()){
+        else if ((this->*compareMax)(l[x], r[y]) || i >= l.size())
+        {
             result[p] = r[j];
-            j++;    
+            j++;
         }
     }
- 
-    return(result); 
+
+    return (result);
 }
 //metodo para comparar fechas y hora
-template <class T>
-bool Master<T>::timeCondMin(ADT<T> &a, ADT<T> &b){
-    Fecha<T> tempFechaA = a.getFecha();
-    Fecha<T> tempFechaB = b.getFecha();
-    int tiempoFechaTotalA = tempFechaA.getYear()*365 + tempFechaA.getMes()*30 + tempFechaA.getDia();
-    int tiempoFechaTotalB = tempFechaB.getYear()*365 + tempFechaB.getMes()*30 + tempFechaB.getDia();
-    if(tiempoFechaTotalA < tiempoFechaTotalB){
-        return(true);
+
+bool Master::timeCondMin(ADT &a, ADT &b)
+{
+    Fecha tempFechaA = a.getFecha();
+    Fecha tempFechaB = b.getFecha();
+    int tiempoFechaTotalA = tempFechaA.getYear() * 365 + tempFechaA.getMes() * 30 + tempFechaA.getDia();
+    int tiempoFechaTotalB = tempFechaB.getYear() * 365 + tempFechaB.getMes() * 30 + tempFechaB.getDia();
+    if (tiempoFechaTotalA < tiempoFechaTotalB)
+    {
+        return (true);
     }
-    else{
-        Hora<T> tempHoraA = a.getHora();
-        Hora<T> tempHoraB = b.getHora();
-        int tiempoHoraTotalA = tempHoraA.getHora()*3600 + tempHoraA.getMin()*60 + tempHoraA.getSec();
-        int tiempoHoraTotalB = tempHoraB.getHora()*3600 + tempHoraB.getMin()*60 + tempHoraB.getSec();
-        if(tiempoHoraTotalA <= tiempoHoraTotalB){
-            return(true);
+    else
+    {
+        Hora tempHoraA = a.getHora();
+        Hora tempHoraB = b.getHora();
+        int tiempoHoraTotalA = tempHoraA.getHora() * 3600 + tempHoraA.getMin() * 60 + tempHoraA.getSec();
+        int tiempoHoraTotalB = tempHoraB.getHora() * 3600 + tempHoraB.getMin() * 60 + tempHoraB.getSec();
+        if (tiempoHoraTotalA <= tiempoHoraTotalB)
+        {
+            return (true);
         }
-        return(false);
+        return (false);
     }
 }
 //metodo para comparar fechas y hora
-template <class T>
-bool Master<T>::timeCondMax(ADT<T> &a, ADT<T> &b){
-    Fecha<T> tempFechaA = a.getFecha();
-    Fecha<T> tempFechaB = b.getFecha();
-    int tiempoFechaTotalA = tempFechaA.getYear()*365 + tempFechaA.getMes()*30 + tempFechaA.getDia();
-    int tiempoFechaTotalB = tempFechaB.getYear()*365 + tempFechaB.getMes()*30 + tempFechaB.getDia();
-    if(tiempoFechaTotalA > tiempoFechaTotalB){
-        return(true);
+
+bool Master::timeCondMax(ADT &a, ADT &b)
+{
+    Fecha tempFechaA = a.getFecha();
+    Fecha tempFechaB = b.getFecha();
+    int tiempoFechaTotalA = tempFechaA.getYear() * 365 + tempFechaA.getMes() * 30 + tempFechaA.getDia();
+    int tiempoFechaTotalB = tempFechaB.getYear() * 365 + tempFechaB.getMes() * 30 + tempFechaB.getDia();
+    if (tiempoFechaTotalA > tiempoFechaTotalB)
+    {
+        return (true);
     }
-    else{
-        Hora<T> tempHoraA = a.getHora();
-        Hora<T> tempHoraB = b.getHora();
-        int tiempoHoraTotalA = tempHoraA.getHora()*3600 + tempHoraA.getMin()*60 + tempHoraA.getSec();
-        int tiempoHoraTotalB = tempHoraB.getHora()*3600 + tempHoraB.getMin()*60 + tempHoraB.getSec();
-        if(tiempoHoraTotalA > tiempoHoraTotalB){
-            return(true);
+    else
+    {
+        Hora tempHoraA = a.getHora();
+        Hora tempHoraB = b.getHora();
+        int tiempoHoraTotalA = tempHoraA.getHora() * 3600 + tempHoraA.getMin() * 60 + tempHoraA.getSec();
+        int tiempoHoraTotalB = tempHoraB.getHora() * 3600 + tempHoraB.getMin() * 60 + tempHoraB.getSec();
+        if (tiempoHoraTotalA > tiempoHoraTotalB)
+        {
+            return (true);
         }
-        return(false);
+        return (false);
     }
 }
 //metodo para comparar fechas
-template <class T>
-bool Master<T>::dayCond(ADT<T> &a, ADT<T> &b){
-    Fecha<T> tempFechaA = a.getFecha();
-    Fecha<T> tempFechaB = b.getFecha();
-    if(tempFechaA.getYear() < tempFechaB.getYear()){
-        return(true);
+
+bool Master::dayCond(ADT &a, ADT &b)
+{
+    Fecha tempFechaA = a.getFecha();
+    Fecha tempFechaB = b.getFecha();
+    if (tempFechaA.getYear() < tempFechaB.getYear())
+    {
+        return (true);
     }
-    else if((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() < tempFechaB.getMes())){
-        return(true);
+    else if ((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() < tempFechaB.getMes()))
+    {
+        return (true);
     }
-    else if((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() == tempFechaB.getMes()) && (tempFechaA.getDia() < tempFechaB.getDia())){
-        return(true);
+    else if ((tempFechaA.getYear() == tempFechaB.getYear()) && (tempFechaA.getMes() == tempFechaB.getMes()) && (tempFechaA.getDia() < tempFechaB.getDia()))
+    {
+        return (true);
     }
     else
     {
-        return(false);
+        return (false);
     }
 }
 //metodo para comparar horas
-template <class T>
-bool Master<T>::horaCond(ADT<T> &a, ADT<T> &b){
-    Hora<T> tempHoraA = a.getHora();
-    Hora<T> tempHoraB = b.getHora();
-    if(tempHoraA.getHora() < tempHoraB.getHora()){
-        return(true);
+
+bool Master::horaCond(ADT &a, ADT &b)
+{
+    Hora tempHoraA = a.getHora();
+    Hora tempHoraB = b.getHora();
+    if (tempHoraA.getHora() < tempHoraB.getHora())
+    {
+        return (true);
     }
-    else if((tempHoraA.getHora() == tempHoraB.getHora()) && (tempHoraA.getMin() < tempHoraB.getMin())){
-        return(true);
+    else if ((tempHoraA.getHora() == tempHoraB.getHora()) && (tempHoraA.getMin() < tempHoraB.getMin()))
+    {
+        return (true);
     }
-    else if((tempHoraA.getHora() == tempHoraB.getHora()) && (tempHoraA.getMin() == tempHoraB.getMin()) && (tempHoraA.getSec() < tempHoraB.getSec())){
-        return(true);
+    else if ((tempHoraA.getHora() == tempHoraB.getHora()) && (tempHoraA.getMin() == tempHoraB.getMin()) && (tempHoraA.getSec() < tempHoraB.getSec()))
+    {
+        return (true);
     }
     else
     {
-        return(false);
+        return (false);
     }
 }
-// funcion para imprimir el registro el input es cuatas filas quieres imprimir. 0 es todas 
-template <class T>
-void Master<T>::Display(int resp){
+// funcion para imprimir el registro el input es cuatas filas quieres imprimir. 0 es todas
+
+void Master::Display(int resp)
+{
     size_t size;
-    if(resp==0){
+    if (resp == 0)
+    {
         size = lista.size();
     }
     else
     {
         size = resp;
     }
-    for(size_t i = 0; i < size; i++){ 
-        cout<< lista[i].getFechaDisplay() << ", " << lista[i].getHoraDisplay() << ", " << lista[i].getIPODisplay() << ", " << lista[i].getPuertoODisplay() << ", " << lista[i].getHostODisplay() << ", " << lista[i].getIPDDisplay() << ", " << lista[i].getPuertoDDisplay() << ", " << lista[i].getHostDDisplay() <<endl;   
+    for (size_t i = 0; i < size; i++)
+    {
+        cout << lista[i].getFechaDisplay() << ", " << lista[i].getHoraDisplay() << ", " << lista[i].getIPODisplay() << ", " << lista[i].getPuertoODisplay() << ", " << lista[i].getHostODisplay() << ", " << lista[i].getIPDDisplay() << ", " << lista[i].getPuertoDDisplay() << ", " << lista[i].getHostDDisplay() << endl;
     }
 }
 //funcion para imprimir un solo registro
-template <class T>
-void Master<T>::printVector(ADT<T> list){
-    cout<< list.getFechaDisplay() << ", " << list.getHoraDisplay() << ", " << list.getIPODisplay() << ", " << list.getPuertoODisplay() << ", " << list.getHostODisplay() << ", " << list.getIPDDisplay() << ", " << list.getPuertoDDisplay() << ", " << list.getHostDDisplay() <<endl;
+
+void Master::printVector(ADT list)
+{
+    cout << list.getFechaDisplay() << ", " << list.getHoraDisplay() << ", " << list.getIPODisplay() << ", " << list.getPuertoODisplay() << ", " << list.getHostODisplay() << ", " << list.getIPDDisplay() << ", " << list.getPuertoDDisplay() << ", " << list.getHostDDisplay() << endl;
 }
 //funcion para iniciar las busquedas
-template <class T>
-int Master<T>:: busqueda(bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, bool PrintBool){
+
+int Master::busqueda(bool (Master::*compare)(ADT &a, string &num), string var, bool PrintBool)
+{
     int contador = 0;
-    return(busquedaArbol(0,lista.size()-1, (compare), var, contador, PrintBool));
+    return (busquedaArbol(0, lista.size() - 1, (compare), var, contador, PrintBool));
 }
 //funcion para hacer una busqueda
-template <class T>
-int Master<T>:: busquedaArbol(int primer, int ultimo, bool (Master<T>::*compare)(ADT<T> &a, T &num), T var, int &contador, bool PrintBool){
-    if(ultimo < primer){
+
+int Master::busquedaArbol(int primer, int ultimo, bool (Master::*compare)(ADT &a, string &num), string var, int &contador, bool PrintBool)
+{
+    if (ultimo < primer)
+    {
         return contador;
     }
-    int medio = (primer + ultimo)/2;
 
-    if((this->*compare)(lista[medio], var)){
-        if(PrintBool){
+    int medio = (primer + ultimo) / 2;
+    if ((this->*compare)(lista[medio], var))
+    {
+        if (PrintBool)
+        {
             printVector(lista[medio]);
         }
         contador++;
     }
-    int izquierda = busquedaArbol(primer, medio-1, (compare), var, contador, PrintBool);
-    int derecha = busquedaArbol(medio+1, ultimo, (compare), var, contador, PrintBool);
-    return(contador);
-    
+    int izquierda = busquedaArbol(primer, medio - 1, (compare), var, contador, PrintBool);
+    int derecha = busquedaArbol(medio + 1, ultimo, (compare), var, contador, PrintBool);
+    return (contador);
 }
 //funcion para buscar una fecha espesifica
-template <class T>
-bool Master<T>:: dayBusquedaCond(ADT<T> &a, T &num){
-    Fecha<T> tempFecha = a.getFecha();
-    if(tempFecha.getDia() == stoi(num)){
-        return(true);
+
+bool Master::dayBusquedaCond(ADT &a, string &num)
+{
+    Fecha tempFecha = a.getFecha();
+    if (tempFecha.getDia() == stoi(num))
+    {
+        return (true);
     }
-    return(false);
+    return (false);
 }
 //funcion para buscar el puerto mas chico
-template <class T>
-bool Master<T>:: puertoMinBusquedaCond(ADT<T> &a, T &num){
-    Puerto<T> tempPuerto = a.getPuertoD();
-    if(tempPuerto.getPuerto() < stoi(num)){
-        return(true);
+
+bool Master::puertoMinBusquedaCond(ADT &a, string &num)
+{
+    Puerto tempPuerto = a.getPuertoD();
+    if (tempPuerto.getPuerto() < stoi(num))
+    {
+        return (true);
     }
-    return(false);
+    return (false);
 }
 //funcion para buscar un usuario
-template <class T>
-bool Master<T>:: OrdenadorBusquedaCond(ADT<T> &a, T &name){
-    HostName<T> tempHost = a.getHostO();
-    if(tempHost.getName() == name){
-        return(true);
+
+bool Master::OrdenadorBusquedaCond(ADT &a, string &name)
+{
+    HostName tempHost = a.getHostO();
+    if (tempHost.getName() == name)
+    {
+        return (true);
     }
-    return(false);
+    return (false);
 }
 //funcion para buscar un servicio en espesifico
-template <class T>
-bool Master<T>:: ServicioBusquedaCond(ADT<T> &a, T &name){
-    HostName<T> tempHost = a.getHostD();
-    if(tempHost.getName() == name){
-        return(true);
+
+bool Master::ServicioBusquedaCond(ADT &a, string &name)
+{
+    HostName tempHost = a.getHostD();
+    if (tempHost.getName() == name)
+    {
+        return (true);
     }
-    return(false);
+    return (false);
 }
 //busqueda de un usuario por nombre completo
-template <class T>
-bool Master<T>::busquedaUsuarioCompletoCond(ADT<T> &a, T &name){
-  HostName<T> tempCompleto = a.getHostO();
-  if (tempCompleto.display() == name){
-    return (true);
-  }
-  return (false);
+
+bool Master::busquedaUsuarioCompletoCond(ADT &a, string &name)
+{
+    HostName tempCompleto = a.getHostO();
+    if (tempCompleto.display() == name)
+    {
+        return (true);
+    }
+    return (false);
 }
 //metodo para encontrar todos los servicios
-template <class T>
-bool Master<T>::getAllServicesCond(ADT<T> &a, T &name){
-HostName<T> servicioTemp = a.getHostD();
-    if (find(allServices.begin(), allServices.end(), servicioTemp.getName()) != allServices.end()){
+
+bool Master::getAllServicesCond(ADT &a, string &name)
+{
+    HostName servicioTemp = a.getHostD();
+    if (find(allServices.begin(), allServices.end(), servicioTemp.getName()) != allServices.end())
+    {
         return (false);
     }
-    else{
+    else
+    {
         allServices.push_back(servicioTemp.getName());
         return (true);
     }
 }
 //metodo para encontrar todos los puertos de destino sin repeticion
-template <class T>
-bool Master<T>::getActivePortsDestinyCond(ADT<T> &a, T &name){
-Puerto<T> portDTemp = a.getPuertoD();
-    if (find(activePorts.begin(), activePorts.end(), portDTemp.display()) != activePorts.end()){
+
+bool Master::getActivePortsDestinyCond(ADT &a, string &name)
+{
+    Puerto portDTemp = a.getPuertoD();
+    if (find(activePorts.begin(), activePorts.end(), portDTemp.display()) != activePorts.end())
+    {
         return (false);
     }
-    else{
+    else
+    {
         activePorts.push_back(portDTemp.display());
         return (true);
     }
 }
 //metodo para encontrar todos los puertos de origen sin repeticion
-template <class T>
-bool Master<T>::getActivePortsOriginCond(ADT<T> &a, T &name){
-Puerto<T> portOTemp = a.getPuertoO();
-    if (find(activePorts.begin(), activePorts.end(), portOTemp.display()) != activePorts.end()){
+
+bool Master::getActivePortsOriginCond(ADT &a, string &name)
+{
+    Puerto portOTemp = a.getPuertoO();
+    if (find(activePorts.begin(), activePorts.end(), portOTemp.display()) != activePorts.end())
+    {
         return (false);
     }
-    else{
+    else
+    {
         activePorts.push_back(portOTemp.display());
         return (true);
     }
 }
 // metodo para iniciar la busqueda de un dia
-template <class T>
-int Master<T>:: busquedaDia(T num, bool PrintBool){
-    return(busqueda(&Master<T>::dayBusquedaCond, num, PrintBool));
+
+int Master::busquedaDia(string num, bool PrintBool)
+{
+    return (busqueda(&Master::dayBusquedaCond, num, PrintBool));
 }
 // metodo para iniciar la busqueda de un puerto minimo a un punto
-template <class T>
-int Master<T>:: busquedaMinpuerto(T num, bool PrintBool){
-    return(busqueda(&Master<T>::puertoMinBusquedaCond, num, PrintBool));
+
+int Master::busquedaMinpuerto(string num, bool PrintBool)
+{
+    return (busqueda(&Master::puertoMinBusquedaCond, num, PrintBool));
 }
 // metodo para iniciar la busqueda de un servicio
-template <class T>
-int Master<T>:: busquedaServicio(T nombre, bool PrintBool){
-    return(busqueda(&Master<T>::ServicioBusquedaCond, nombre, PrintBool));
+
+int Master::busquedaServicio(string nombre, bool PrintBool)
+{
+    return (busqueda(&Master::ServicioBusquedaCond, nombre, PrintBool));
 }
 // metodo para iniciar la busqueda de un usuario
-template <class T>
-int Master<T>:: busquedaOrdenador(T nombre, bool PrintBool){
-    return(busqueda(&Master<T>::OrdenadorBusquedaCond, nombre, PrintBool));
+
+int Master::busquedaOrdenador(string nombre, bool PrintBool)
+{
+    return (busqueda(&Master::OrdenadorBusquedaCond, nombre, PrintBool));
 }
 // metodo para iniciar la busqueda de un usuario por nombre completo
-template <class T>
-int Master<T>:: busquedaUsuarioCompleto(T nombre, bool PrintBool){
-    return(busqueda(&Master<T>::busquedaUsuarioCompletoCond, nombre, PrintBool));
+
+int Master::busquedaUsuarioCompleto(string nombre, bool PrintBool)
+{
+    return (busqueda(&Master::busquedaUsuarioCompletoCond, nombre, PrintBool));
 }
 // metodo para iniciar la busqueda de un dia relativo
-template <class T>
-int Master<T>:: diaRelativo(int _dia, bool sort){
-    if(sort){
+
+int Master::diaRelativo(int _dia, bool sort)
+{
+    if (sort)
+    {
         sortByTime();
     }
-    Fecha<T> fecha = lista[0].getFecha();
-    return(fecha.getDia()+ _dia -1);
+    Fecha fecha = lista[0].getFecha();
+    return (fecha.getDia() + _dia - 1);
 }
 // metodo para iniciar la busqueda de todos los servicios
-template<class T>
-vector<string> Master<T>:: GetAllServices(){
-    busqueda(&Master<T>::getAllServicesCond, "-", false);
-    return(allServices);
+
+vector<string> Master::GetAllServices()
+{
+    busqueda(&Master::getAllServicesCond, "-", false);
+    return (allServices);
 }
 // metodo para iniciar la busqueda de tosos los puertos activos de destino
-template<class T>
-vector<string> Master<T>:: getActivePortsDestiny(){
+
+vector<string> Master::getActivePortsDestiny()
+{
     activePorts.clear();
-    busqueda(&Master<T>::getActivePortsDestinyCond, "-", false);
-    return(activePorts);
+    busqueda(&Master::getActivePortsDestinyCond, "-", false);
+    return (activePorts);
 }
 // metodo para iniciar la busqueda de todos los puertos activos de origen
-template<class T>
-vector<string> Master<T>:: getActivePortsOrigin(){
+
+vector<string> Master::getActivePortsOrigin()
+{
     activePorts.clear();
-    busqueda(&Master<T>::getActivePortsOriginCond, "-", false);
-    return(activePorts);
+    busqueda(&Master::getActivePortsOriginCond, "-", false);
+    return (activePorts);
 }
 // metodo para consegir la ip local
-template<class T>
-string Master<T>::conseguirIpLocal(){
-  int indice = 0;
-  IP<T> tempUser = lista[indice].getIPO();
-  while (tempUser.getLocalIp() == "0"){
-    indice++;
-    tempUser = lista[indice].getIPO();
-  }
-  return(tempUser.getLocalIp() + ".0");
+
+string Master::conseguirIpLocal()
+{
+    int indice = 0;
+    IP tempUser = lista[indice].getIPO();
+    while (tempUser.getLocalIp() == "0")
+    {
+        indice++;
+        tempUser = lista[indice].getIPO();
+    }
+    return (tempUser.getLocalIp() + ".0");
 }
 
+void Master::computerAnalisis()
+{
+    busqueda(&Master::AddComputer, "all", false);
+}
 
+bool Master::AddComputer(ADT &a, string &_ip)
+{
+    ConexionesComputadora indexConexion = busquedaConexiones(&Master::IPSearch, a.getIPO().display(), true);
+    IP IPTempOrigen = a.getIPO();
+    IP IPTempDestino = a.getIPD();
+    //cout << indexConexion.getComputerIP() << " = " << IPTempOrigen.display() << " = " << IPTempDestino.display() << endl;
+    if (IPTempOrigen.display() == indexConexion.getComputerIP() || IPTempDestino.display() == indexConexion.getComputerIP())
+    {
+        if (IPTempOrigen.display() == indexConexion.getComputerIP())
+        {
+            listComputers.back().setName(a.getHostO().getName());
+        }
+        listComputers.back().conexion(IPTempOrigen.display(), a.getIndice());
+
+        return (false);
+    }
+    else
+    {
+        listComputers.push_back(ConexionesComputadora(a.getIPO()));
+        cout << a.getHostODisplay() << ": " << listComputers.back().getComputerIP() << endl;
+        return (false);
+    }
+}
+
+bool Master::IPSearch(ConexionesComputadora a, string _ip)
+{
+    return a.getComputerIP() == _ip ? true : false;
+}
+//funcion para iniciar las busquedas
+
+ConexionesComputadora Master::busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind)
+{
+    return (busquedaArbolConexiones(0, listComputers.size() - 1, (compare), var, firstFind));
+}
+//funcion para hacer una busqueda
+
+ConexionesComputadora Master::busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind)
+{
+    string zeroV = "0.0.0.0";
+    IP tempIP = IP(zeroV);
+    ConexionesComputadora zeroIP = ConexionesComputadora(tempIP);
+    if (ultimo < primer)
+    {
+        return zeroIP;
+    }
+
+    int medio = (primer + ultimo) / 2;
+    if ((this->*compare)(listComputers[medio], var))
+    {
+        zeroIP = listComputers[medio];
+        if (firstFind)
+        {
+            return (listComputers[medio]);
+        }
+    }
+    ConexionesComputadora izquierda = busquedaArbolConexiones(primer, medio - 1, (compare), var, firstFind);
+    zeroIP = izquierda;
+    if (izquierda.getComputerIP() != "0.0.0.0")
+    {
+        return (zeroIP);
+    }
+    ConexionesComputadora derecha = busquedaArbolConexiones(medio + 1, ultimo, (compare), var, firstFind);
+    zeroIP = derecha;
+    return (zeroIP);
+}

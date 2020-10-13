@@ -11,30 +11,32 @@ javier alejandro martinez noe
 using namespace std;
 #pragma once
 
-template <class T>
-class Puerto : public DataBase<T>{
+class Puerto : public DataBase
+{
 protected:
-    T port;
+    string port;
     int puerto;
-public:
-    Puerto()=default;
-    Puerto(T _puerto);
-    ~Puerto();
-    int getPuerto(){return puerto;}
-    T display(){return port;}
 
+public:
+    Puerto() = default;
+    Puerto(string _puerto);
+    ~Puerto();
+    int getPuerto() { return puerto; }
+    string display() { return port; }
 };
 //constructor para procesar el imput
-template <class T>
-Puerto<T>::Puerto(T _puerto){
-    if(_puerto == "-"){
+Puerto::Puerto(string _puerto)
+{
+    if (_puerto == "-")
+    {
         this->port = _puerto;
     }
-    else{
+    else
+    {
         this->puerto = stoi(_puerto);
         this->port = _puerto;
     }
 }
-template <class T>
-Puerto<T>::~Puerto(){
+Puerto::~Puerto()
+{
 }

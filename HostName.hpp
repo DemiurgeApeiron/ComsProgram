@@ -11,44 +11,48 @@ javier alejandro martinez noe
 using namespace std;
 #pragma once
 
-template <class T>
-class HostName: public DataBase<T>{
+class HostName : public DataBase
+{
 protected:
-    T fullName;
-    T name;
+    string fullName;
+    string name;
+
 public:
-    HostName()=default;
-    HostName(T &HostName);
+    HostName() = default;
+    HostName(string &HostName);
     ~HostName();
-    T display(){return fullName;}
-    T getName(){return name;}
+    string display() { return fullName; }
+    string getName() { return name; }
 };
 //constructor para procesar el imput
-template <class T>
-HostName<T>::HostName(T &_HostName){
-    this-> fullName = _HostName;
-    if(fullName == "-"){
+
+HostName::HostName(string &_HostName)
+{
+    this->fullName = _HostName;
+    if (fullName == "-")
+    {
         this->name = fullName;
     }
-    else{
-        vector <T> valores;
-        stringstream check1(_HostName); 
-        string intermediate; 
-        while(getline(check1, intermediate, '.')) 
-        { 
-            valores.push_back(intermediate); 
+    else
+    {
+        vector<string> valores;
+        stringstream check1(_HostName);
+        string intermediate;
+        while (getline(check1, intermediate, '.'))
+        {
+            valores.push_back(intermediate);
         }
-        if(valores.size() > 1){
-            this-> name = valores[0]; 
+        if (valores.size() > 1)
+        {
+            this->name = valores[0];
         }
-        else{
+        else
+        {
             this->name = "unknown";
             this->fullName = "unknown";
         }
-        
-          
     }
 }
-template <class T>
-HostName<T>::~HostName(){
+HostName::~HostName()
+{
 }
