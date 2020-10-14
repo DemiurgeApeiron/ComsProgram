@@ -37,10 +37,14 @@ protected:
     bool getActivePortsOriginCond(ADT &a, string &name);
     bool AddComputer(ADT &a, string &_ip);
     bool IPSearch(ConexionesComputadora a, string _ip);
+    bool busquedaPorIndiceCond(ADT &a, string &_ip);
+    bool computerConectionCond(ConexionesComputadora a, string _ip);
+    bool singleConectionSearch(ADT &a, string &_ip);
+    bool ComputerIntegration(ConexionesComputadora *indexConexion, ADT &a);
     vector<ADT> mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
     vector<ADT> merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
-    ConexionesComputadora busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
-    ConexionesComputadora busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
+    ConexionesComputadora *busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
+    ConexionesComputadora *busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
 
 public:
     Master() = default;
@@ -59,7 +63,15 @@ public:
     vector<string> GetAllServices();
     vector<string> getActivePortsDestiny();
     vector<string> getActivePortsOrigin();
-    void computerAnalisis(/*int IPUsuario*/);
+    void computerAnalisis();
+    string SearchByName(string _IP);
+    string getLasConection(string _IP);
+    string getIncomingConection(string _IP);
+    string outgoingConnection(string _IP);
+    void fullConectionStatus(string _IP);
+    int getAllIncomingConections(string _IP);
+    int getAllOutgoingConections(string _IP);
+    void singleConectionAssessment(string _IP);
 };
 
 Master::~Master()
@@ -483,71 +495,245 @@ string Master::conseguirIpLocal()
 
 void Master::computerAnalisis()
 {
+    cout << endl;
+    cout << "--Generating Computers--" << endl;
+    cout << endl;
     busqueda(&Master::AddComputer, "all", false);
+    /*for (size_t i = 0; i < listComputers.size(); i++)
+    {
+        cout << listComputers[i].getComputerIP() << endl;
+    }*/
 }
 
-bool Master::AddComputer(ADT &a, string &_ip)
+bool Master::ComputerIntegration(ConexionesComputadora *indexConexion, ADT &a)
 {
-    ConexionesComputadora indexConexion = busquedaConexiones(&Master::IPSearch, a.getIPO().display(), true);
-    IP IPTempOrigen = a.getIPO();
-    IP IPTempDestino = a.getIPD();
-    //cout << indexConexion.getComputerIP() << " = " << IPTempOrigen.display() << " = " << IPTempDestino.display() << endl;
-    if (IPTempOrigen.display() == indexConexion.getComputerIP() || IPTempDestino.display() == indexConexion.getComputerIP())
+    /*cout << a.getIndice() << endl;
+    if (a.getIPO().display() == "10.8.134.178" || a.getIPD().display() == "10.8.134.178")
     {
-        if (IPTempOrigen.display() == indexConexion.getComputerIP())
+        printVector(a);
+        bool cond = indexConexion == NULL;
+        cout << "------------" << a.getIPO().display() << " = " << a.getIPD().display() << "------------" << cond << endl;
+    }*/
+    if ((indexConexion != NULL) && (a.getIPO().display() == indexConexion->getComputerIP()))
+    {
+        if (indexConexion->getName() != "-" || indexConexion->getName() != "")
         {
-            listComputers.back().setName(a.getHostO().getName());
+            indexConexion->setName(a.getHostO().getName());
         }
-        listComputers.back().conexion(IPTempOrigen.display(), a.getIndice());
-
-        return (false);
+        indexConexion->conexion(a.getIPO(), a.getIndice());
+        return (true);
     }
     else
     {
         listComputers.push_back(ConexionesComputadora(a.getIPO()));
-        cout << a.getHostODisplay() << ": " << listComputers.back().getComputerIP() << endl;
-        return (false);
+        listComputers.back().setName(a.getHostODisplay());
+        listComputers.back().conexion(a.getIPO(), a.getIndice());
+        //cout << a.getHostODisplay() << ": " << listComputers.back().getComputerIP() << endl;
+    }
+
+    if ((indexConexion != NULL) && (a.getIPD().display() == indexConexion->getComputerIP()))
+    {
+        if (indexConexion->getName() != "-" || indexConexion->getName() != "")
+        {
+            indexConexion->setName(a.getHostD().getName());
+        }
+        indexConexion->conexion(a.getIPO(), a.getIndice());
+        return (true);
+    }
+    else
+    {
+        listComputers.push_back(ConexionesComputadora(a.getIPO()));
+        listComputers.back().setName(a.getHostODisplay());
+        listComputers.back().conexion(a.getIPD(), a.getIndice());
+        //cout << a.getHostODisplay() << ": " << listComputers.back().getComputerIP() << endl;
+    }
+    return (false);
+}
+bool Master::AddComputer(ADT &a, string &_ip)
+{
+
+    ConexionesComputadora *indexConexion = busquedaConexiones(&Master::IPSearch, a.getIPO().display(), true);
+    ComputerIntegration(indexConexion, a);
+    indexConexion = busquedaConexiones(&Master::IPSearch, a.getIPD().display(), true);
+    ComputerIntegration(indexConexion, a);
+    return true;
+}
+bool Master::singleConectionSearch(ADT &a, string &_ip)
+{
+    /*if (a.getIPO().display() == "10.8.134.178" || a.getIPD().display() == "10.8.134.178")
+    {
+        printVector(a);
+        cout << "------------" << a.getIPO().display() << " = " << a.getIPD().display() << "------------" << _ip << endl;
+    }*/
+    if (a.getIPO().display() == _ip)
+    {
+        ConexionesComputadora *indexConexion = busquedaConexiones(&Master::IPSearch, _ip, true);
+        ComputerIntegration(indexConexion, a);
+        return true;
+    }
+    else if (a.getIPD().display() == _ip)
+    {
+        ConexionesComputadora *indexConexion = busquedaConexiones(&Master::IPSearch, _ip, true);
+        ComputerIntegration(indexConexion, a);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
-
+void Master::singleConectionAssessment(string _IP)
+{
+    busqueda(&Master::singleConectionSearch, _IP, false);
+    fullConectionStatus(_IP);
+}
 bool Master::IPSearch(ConexionesComputadora a, string _ip)
 {
     return a.getComputerIP() == _ip ? true : false;
 }
 //funcion para iniciar las busquedas
-
-ConexionesComputadora Master::busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind)
+ConexionesComputadora *Master::busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind)
 {
     return (busquedaArbolConexiones(0, listComputers.size() - 1, (compare), var, firstFind));
 }
 //funcion para hacer una busqueda
 
-ConexionesComputadora Master::busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind)
+ConexionesComputadora *Master::busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind)
 {
-    string zeroV = "0.0.0.0";
-    IP tempIP = IP(zeroV);
-    ConexionesComputadora zeroIP = ConexionesComputadora(tempIP);
     if (ultimo < primer)
     {
-        return zeroIP;
+        //cout << "NULL   " << endl;
+        return NULL;
     }
 
     int medio = (primer + ultimo) / 2;
     if ((this->*compare)(listComputers[medio], var))
     {
-        zeroIP = listComputers[medio];
         if (firstFind)
         {
-            return (listComputers[medio]);
+            //cout << "work   " << listComputers[medio].getComputerIP() << endl;
+            return (&listComputers[medio]);
         }
     }
-    ConexionesComputadora izquierda = busquedaArbolConexiones(primer, medio - 1, (compare), var, firstFind);
-    zeroIP = izquierda;
-    if (izquierda.getComputerIP() != "0.0.0.0")
+    ConexionesComputadora *izquierda = busquedaArbolConexiones(primer, medio - 1, (compare), var, firstFind);
+    ConexionesComputadora *derecha = busquedaArbolConexiones(medio + 1, ultimo, (compare), var, firstFind);
+    if (izquierda != NULL)
     {
-        return (zeroIP);
+        //cout << "izquierda " << izquierda->getComputerIP() << " ptr " << izquierda << endl;
+        return (izquierda);
     }
-    ConexionesComputadora derecha = busquedaArbolConexiones(medio + 1, ultimo, (compare), var, firstFind);
-    zeroIP = derecha;
-    return (zeroIP);
+    else if (derecha != NULL)
+    {
+        //cout << "derecha " << derecha->getComputerIP() << " ptr " << derecha << endl;
+        return (derecha);
+    }
+    else
+    {
+        return (NULL);
+    }
+}
+
+bool Master::computerConectionCond(ConexionesComputadora a, string _ip)
+{
+    return a.getComputerIP() == _ip ? true : false;
+}
+
+string Master::SearchByName(string _IP)
+{
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    return tempConection->getComputerIP();
+}
+
+string Master::getLasConection(string _IP)
+{
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    return tempConection->getLastConection();
+}
+string Master::getIncomingConection(string _IP)
+{
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
+    return allIncomingConection.top().display();
+}
+int Master::getAllIncomingConections(string _IP)
+{
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
+    return allIncomingConection.size();
+}
+int Master::getAllOutgoingConections(string _IP)
+{
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
+    return allIncomingConection.size();
+}
+string Master::outgoingConnection(string _IP)
+{
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    return tempConection->getComputerIP();
+}
+bool Master::busquedaPorIndiceCond(ADT &a, string &_ip)
+{
+    return to_string(a.getIndice()) == _ip ? true : false;
+}
+void Master::fullConectionStatus(string _IP)
+{
+    cout << "--IP Analisis--" << endl;
+    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+
+    if (tempConection != NULL)
+    {
+
+        stack<IP> entrantes = tempConection->getConexionesEntrantes();
+
+        stack<int> entrantesIndice = tempConection->getConexionesEntrantesIndice();
+        vector<IP> salientes = tempConection->getConexionesSalientesV();
+        vector<int> salientesIndice = tempConection->getConexionesSalientesVIndice();
+
+        string LC = tempConection->getLastConection();
+        string name = tempConection->getName();
+        string CIP = tempConection->getComputerIP();
+        string entranteValor = "0";
+
+        if (!entrantes.empty())
+        {
+            entranteValor = entrantes.top().display();
+        }
+        string salienteValor = "0";
+        if (salientes.size() != 0)
+        {
+            salienteValor = salientes.front().display();
+        }
+        string entranteValorIndice = "NULL";
+        if (!entrantesIndice.empty())
+        {
+            entranteValorIndice = to_string(entrantesIndice.top());
+        }
+        string salienteValorIndice = "NULL";
+        if (salientesIndice.size() != 0)
+        {
+            cout << "salientesIndice.size()" << endl;
+            salienteValorIndice = to_string(salientesIndice.front());
+        }
+
+        cout << "computer name: " << name << endl;
+        cout << endl;
+        cout << "computer IP: " << CIP << endl;
+        cout << endl;
+        cout << "Number of Incoming conections: " << entrantes.size() << endl;
+        cout << endl;
+        cout << "Number of Outgoing conections: " << salientes.size() << endl;
+        cout << endl;
+        cout << "Incoming conection: " << entranteValor << endl;
+        busqueda(&Master::busquedaPorIndiceCond, entranteValorIndice, true);
+        cout << endl;
+        cout << "Outgoing connection: " << salienteValor << endl;
+        busqueda(&Master::busquedaPorIndiceCond, salienteValorIndice, true);
+        cout << endl;
+        cout << "Last conection: " << LC << endl;
+    }
+    else
+    {
+        cout << "NULL" << endl;
+    }
 }

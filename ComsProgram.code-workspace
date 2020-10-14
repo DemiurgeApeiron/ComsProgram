@@ -21,7 +21,11 @@
             "string": "cpp",
             "iosfwd": "cpp",
             "stack": "cpp",
-            "queue": "cpp"
+            "queue": "cpp",
+            "__split_buffer": "cpp",
+            "deque": "cpp",
+            "string_view": "cpp",
+            "new": "cpp"
         }
     }
 }

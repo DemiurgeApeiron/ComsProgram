@@ -20,14 +20,14 @@ protected:
 
 public:
     IP() = default;
-    IP(string &IP);
+    IP(string IP);
     ~IP();
     string getLocalIp() { return localIp; }
     string getUserIP() { return userIP; }
     string display() { return fullIP; }
 };
 //constructor para procesar el imput
-IP::IP(string &IP)
+IP::IP(string IP)
 {
     this->fullIP = IP;
     if (fullIP == "-")

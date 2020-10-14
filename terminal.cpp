@@ -135,7 +135,22 @@ int terminal()
     }
     cout << endl;
     cout << endl;
-    program.computerAnalisis();
+    int networkAnalisis;
+    cout << "Do you want to a full network analisis or single computer analisis. 1: full 0: single," << endl;
+    cin >> networkAnalisis;
+    cout << endl;
+    if (networkAnalisis == 1)
+    {
+        program.computerAnalisis();
+        cout << endl;
+        cout << endl;
+        program.fullConectionStatus("10.8.134.59");
+    }
+    else if (networkAnalisis == 0)
+    {
+        program.singleConectionAssessment("10.8.134.178");
+    }
+
     return (0);
 }
 

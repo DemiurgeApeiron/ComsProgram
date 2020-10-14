@@ -2,7 +2,7 @@
 #include "IP.hpp"
 #include <queue>
 #include <stack>
-
+#pragma once
 using namespace std;
 
 class ConexionesComputadora
@@ -20,8 +20,8 @@ protected:
 public:
     ConexionesComputadora(IP IPFuente);
     ~ConexionesComputadora();
-    void conexion(string _ip, int _indice);
-    string getLastIncomingConection() { return LastConection > 0 ? ConexionesEntrantes.top().display() : ConexionesSalientesV.front().display(); }
+    void conexion(IP _ip, int _indice);
+    string getLastConection();
     string getComputerIP() { return ip.display(); }
     string getComputerIPUser() { return ip.getUserIP(); }
     string getComputerIPLocal() { return ip.getLocalIp(); }
@@ -29,6 +29,7 @@ public:
     vector<IP> getConexionesSalientesV() { return ConexionesSalientesV; }
     stack<int> getConexionesEntrantesIndice() { return ConexionesEntrantesIndice; }
     vector<int> getConexionesSalientesVIndice() { return ConexionesSalientesVndice; }
+    string getName() { return nombre; }
     void setName(string name);
 };
 
@@ -41,18 +42,19 @@ ConexionesComputadora::~ConexionesComputadora()
 {
 }
 
-void ConexionesComputadora::conexion(string _ip, int _indice)
+void ConexionesComputadora::conexion(IP _ip, int _indice)
 {
-    if (ip.display() != _ip)
+    //cout << ip.display() << " = " << _ip.display() << endl;
+    if (ip.display() != _ip.display())
     {
         this->LastConection = 0;
-        ConexionesEntrantes.push(IP(_ip));
+        ConexionesEntrantes.push(_ip);
         ConexionesEntrantesIndice.push(_indice);
     }
     else
     {
         this->LastConection = 1;
-        ConexionesSalientesV.push_back(IP(_ip));
+        ConexionesSalientesV.push_back(_ip);
         ConexionesSalientesVndice.push_back(_indice);
     }
 }
@@ -60,4 +62,17 @@ void ConexionesComputadora::conexion(string _ip, int _indice)
 void ConexionesComputadora::setName(string name)
 {
     this->nombre = name;
+}
+
+string ConexionesComputadora::getLastConection()
+{
+    if (LastConection == 0)
+    {
+        return ConexionesEntrantes.top().display();
+    }
+    if (LastConection == 1)
+    {
+        return ConexionesSalientesV.front().display();
+    }
+    return "NULL";
 }
