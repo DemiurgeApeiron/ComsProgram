@@ -25,7 +25,8 @@
             "__split_buffer": "cpp",
             "deque": "cpp",
             "string_view": "cpp",
-            "new": "cpp"
+            "new": "cpp",
+            "filesystem": "cpp"
         }
     }
 }

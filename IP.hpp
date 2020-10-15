@@ -1,6 +1,6 @@
 /* 
 clase para procesar y ordenar las IP
-javier alejandro martinez noe
+javier alejandro martinez noe y Ricardo Uraga
 27/9/20
 */
 #include <iostream>

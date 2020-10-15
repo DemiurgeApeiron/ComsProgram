@@ -1,6 +1,6 @@
 /* 
 programa para probar la funcionalidad de ComsProgram
-javier alejandro martinez noe
+javier alejandro martinez noe y Ricardo Uraga
 27/9/20
 */
 #include <iostream>
@@ -136,7 +136,7 @@ int terminal()
     cout << endl;
     cout << endl;
     int networkAnalisis;
-    cout << "Do you want to a full network analisis or single computer analisis. 1: full 0: single," << endl;
+    cout << "Do you want to do a full network analisis or single computer analisis. 1: full 0: single," << endl;
     cin >> networkAnalisis;
     cout << endl;
     if (networkAnalisis == 1)
@@ -148,7 +148,7 @@ int terminal()
     }
     else if (networkAnalisis == 0)
     {
-        program.singleConectionAssessment("10.8.134.178");
+        program.singleConectionAssessment("10.8.134.59");
     }
 
     return (0);

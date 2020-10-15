@@ -1,6 +1,6 @@
 /* 
 clase para regitrar datos abstractos
-javier alejandro martinez noe
+javier alejandro martinez noe y Ricardo Uraga
 27/9/20
 */
 #include <iostream>
