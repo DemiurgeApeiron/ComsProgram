@@ -5,17 +5,17 @@ javier alejandro martinez noe y Ricardo Uraga
 */
 #include <iostream>
 #include <vector>
-#include "Puerto.hpp"
-#include "HostName.hpp"
-#include "IP.hpp"
+
 #include "Fecha.hpp"
 #include "Hora.hpp"
+#include "HostName.hpp"
+#include "IP.hpp"
+#include "Puerto.hpp"
 using namespace std;
 #pragma once
 
-class ADT
-{
-protected:
+class ADT {
+   protected:
     int indice;
     Fecha fecha;
     Hora hora;
@@ -26,7 +26,7 @@ protected:
     Puerto PuertoOrigen;
     Puerto PuertoDestino;
 
-public:
+   public:
     ADT() = default;
     ADT(vector<string> &_lista, int _indice);
     ~ADT();
@@ -50,8 +50,7 @@ public:
     string getPuertoDDisplay() { return PuertoDestino.display(); }
 };
 //constructor para procesar las diferentes entradas del vector
-ADT::ADT(vector<string> &_lista, int _indice)
-{
+ADT::ADT(vector<string> &_lista, int _indice) {
     this->indice = _indice;
     this->fecha = Fecha(_lista[0]);
     this->hora = Hora(_lista[1]);
@@ -63,6 +62,5 @@ ADT::ADT(vector<string> &_lista, int _indice)
     this->HostDestino = HostName(_lista[7]);
 }
 
-ADT::~ADT()
-{
+ADT::~ADT() {
 }

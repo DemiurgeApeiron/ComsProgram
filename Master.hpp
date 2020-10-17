@@ -1,4 +1,4 @@
-/* 
+/*
 clase para procesar y ordenar los datos
 javier alejandro martinez noe y Ricardo Uraga
 27/9/20
@@ -66,15 +66,15 @@ class Master {
     vector<string> getActivePortsDestiny();
     vector<string> getActivePortsOrigin();
     void computerAnalisis();
-    string SearchByIP(string _IP);
-    string getLasConection(string _IP);
-    string getIncomingConection(string _IP);
-    string getComputerName(string _IP);
-    void fullConectionStatus(string _IP);
-    int getAllIncomingConections(string _IP);
-    int getAllOutgoingConections(string _IP);
-    void singleConectionAssessment(string _IP);
-    vector<string> getNOutOutgoingConections(string _ip, int N);
+    string SearchByIP(int _IP);
+    string getLasConection(int _IP);
+    string getIncomingConection(int _IP);
+    string getComputerName(int _IP);
+    void fullConectionStatus(int _IP);
+    int getAllIncomingConections(int _IP);
+    int getAllOutgoingConections(int _IP);
+    void singleConectionAssessment(int _IP);
+    vector<string> getNOutOutgoingConections(int _ip, int N);
 };
 
 Master::~Master() {
@@ -489,9 +489,11 @@ bool Master::singleConectionSearch(ADT &a, string &_ip) {
 }
 
 // esta funcion llama singleConectionSearch y hace un fullConectionStatus
-void Master::singleConectionAssessment(string _IP) {
+void Master::singleConectionAssessment(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     loadComputers(&Master::singleConectionSearch, _IP);
-    fullConectionStatus(_IP);
+    fullConectionStatus(_IPI);
 }
 
 // esta es la condicional para hacer una busqueda de IPs
@@ -537,13 +539,17 @@ bool Master::computerConectionCond(ConexionesComputadora a, string _ip) {
 }
 
 // realiza una busqueda mediante una IP en la lista de computadoras
-string Master::SearchByIP(string _IP) {
+string Master::SearchByIP(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
     return tempConection->getComputerIP();
 }
 
 // regresa las conexiones entrantes mediante la busqueda de una IP espesifica
-string Master::getIncomingConection(string _IP) {
+string Master::getIncomingConection(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
     stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
     if (tempConection != NULL) {
@@ -554,21 +560,27 @@ string Master::getIncomingConection(string _IP) {
 }
 
 // regresa el tamaño de las conexones entrantes
-int Master::getAllIncomingConections(string _IP) {
+int Master::getAllIncomingConections(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
     stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
     return allIncomingConection.size();
 }
 
 // regresa el tamaño de las conexones salientes
-int Master::getAllOutgoingConections(string _IP) {
+int Master::getAllOutgoingConections(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
-    vector<IP> allIncomingConection = tempConection->getConexionesSalientesV();
+    queue<IP> allIncomingConection = tempConection->getConexionesSalientes();
     return allIncomingConection.size();
 }
 
 // regresa el nombre de las la computadora mediante una ip espesifica
-string Master::getComputerName(string _IP) {
+string Master::getComputerName(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
     return tempConection->getName();
 }
@@ -584,14 +596,18 @@ bool Master::busquedaPorIndiceCond(ADT &a, string &_ip) {
 }
 
 //gets the last N of outgoing conections
-vector<string> Master::getNOutOutgoingConections(string _ip, int N) {
+vector<string> Master::getNOutOutgoingConections(int _ipI, int N) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _ip = sbst + to_string(_ipI);
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _ip, true);
     vector<string> rVector;
-    if (tempConection != NULL && !tempConection->getConexionesSalientesV().empty()) {
-        vector<IP> salientes = tempConection->getConexionesSalientesV();
-        if (N < salientes.size()) {
+    if (tempConection != NULL && !tempConection->getConexionesSalientes().empty()) {
+        queue<int> salientesI = tempConection->getConexionesSalientesIndice();
+        if (N < salientesI.size()) {
             for (size_t i = 0; i < N; i++) {
-                rVector.push_back(salientes.front().display());
+                rVector.push_back(to_string(salientesI.front()));
+                busqueda(&Master::busquedaPorIndiceCond, to_string(salientesI.front()), true);
+                salientesI.pop();
             }
         } else {
             rVector.push_back("N is bigger than size");
@@ -602,15 +618,17 @@ vector<string> Master::getNOutOutgoingConections(string _ip, int N) {
     return rVector;
 }
 // imprime un resumen de una computadora espesifica mediante la busqueda de una ip
-void Master::fullConectionStatus(string _IP) {
+void Master::fullConectionStatus(int _IPI) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(_IPI);
     cout << "--IP Analisis--" << endl;
     ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
 
     if (tempConection != NULL) {
         stack<IP> entrantes = tempConection->getConexionesEntrantes();
         stack<int> entrantesIndice = tempConection->getConexionesEntrantesIndice();
-        vector<IP> salientes = tempConection->getConexionesSalientesV();
-        vector<int> salientesIndice = tempConection->getConexionesSalientesVIndice();
+        queue<IP> salientes = tempConection->getConexionesSalientes();
+        queue<int> salientesIndice = tempConection->getConexionesSalientesIndice();
         string name = tempConection->getName();
         string CIP = tempConection->getComputerIP();
         string entranteValor = "0";

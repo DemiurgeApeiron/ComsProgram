@@ -19,8 +19,8 @@ class ConexionesComputadora {
     int LastConection;
     stack<IP> ConexionesEntrantes;
     stack<int> ConexionesEntrantesIndice;
-    vector<IP> ConexionesSalientesV;
-    vector<int> ConexionesSalientesVndice;
+    queue<IP> ConexionesSalientes;
+    queue<int> ConexionesSalientesIndice;
 
    public:
     ConexionesComputadora(IP IPFuente);
@@ -30,13 +30,9 @@ class ConexionesComputadora {
     string getComputerIPUser() { return ip.getUserIP(); }
     string getComputerIPLocal() { return ip.getLocalIp(); }
     stack<IP> getConexionesEntrantes() { return ConexionesEntrantes; }
-    vector<IP> getConexionesSalientesV() { return ConexionesSalientesV; }
-    stack<int> getConexionesEntrantesIndice() {
-        return ConexionesEntrantesIndice;
-    }
-    vector<int> getConexionesSalientesVIndice() {
-        return ConexionesSalientesVndice;
-    }
+    queue<IP> getConexionesSalientes() { return ConexionesSalientes; }
+    queue<int> getConexionesSalientesIndice() { return ConexionesSalientesIndice; }
+    stack<int> getConexionesEntrantesIndice() { return ConexionesEntrantesIndice; }
     string getName() { return nombre; }
     void setName(string name);
 };
@@ -55,8 +51,8 @@ void ConexionesComputadora::conexion(IP _ip, int _indice) {
         ConexionesEntrantes.push(_ip);
         ConexionesEntrantesIndice.push(_indice);
     } else {
-        ConexionesSalientesV.push_back(_ip);
-        ConexionesSalientesVndice.push_back(_indice);
+        ConexionesSalientes.push(_ip);
+        ConexionesSalientesIndice.push(_indice);
     }
 }
 // este metodo establece el nombre

@@ -2,22 +2,22 @@
 /*
  * A class to read data from a csv file.
  */
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <iterator>
-#include <string>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <iterator>
 #include <sstream>
+#include <string>
+#include <vector>
 
-class CSVReader
-{
+using namespace std;
+
+class CSVReader {
     std::string fileName;
     std::string delimeter;
-public:
-    CSVReader(std::string filename, std::string delm = ",") :
-            fileName(filename), delimeter(delm)
-    { }
+
+   public:
+    CSVReader(std::string filename, std::string delm = ",") : fileName(filename), delimeter(delm) {}
     // Function to fetch data from a CSV File
     std::vector<std::vector<std::string> > getData();
 };
@@ -25,23 +25,20 @@ public:
 * Parses through csv file line by line and returns the data
 * in vector of vector of strings.
 */
-std::vector<std::vector<std::string> > CSVReader::getData()
-{
+std::vector<std::vector<std::string> > CSVReader::getData() {
     std::ifstream file(fileName);
     std::vector<std::vector<std::string> > dataList;
     std::string line = "";
     // Iterate through each line and split the content using delimeter
-    while (getline(file, line))
-    {
+    while (getline(file, line)) {
         std::vector<std::string> vec;
-        stringstream check1(line); 
-    
-        string intermediate; 
+        stringstream check1(line);
 
-        while(getline(check1, intermediate, ',')) 
-        { 
-            vec.push_back(intermediate); 
-        } 
+        std::string intermediate;
+
+        while (getline(check1, intermediate, ',')) {
+            vec.push_back(intermediate);
+        }
         dataList.push_back(vec);
     }
     // Close the File
