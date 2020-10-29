@@ -4,6 +4,8 @@ javier alejandro martinez noe y Ricardo Uraga
 27/9/20
 */
 #include <iostream>
+#include <map>
+#include <set>
 #include <vector>
 
 #include "ADT.hpp"
@@ -17,6 +19,8 @@ class Master {
     vector<string> allServices;
     vector<string> activePorts;
     vector<ConexionesComputadora> listComputers;
+    map<string, ConexionesComputadora> computerDictionary;
+    map<string, string> HostIP;
     int indice = 0;
     ADT computer;
     bool dayCond(ADT &a, ADT &b);
@@ -41,7 +45,7 @@ class Master {
     bool busquedaPorIndiceCond(ADT &a, string &_ip);
     bool computerConectionCond(ConexionesComputadora a, string _ip);
     bool singleConectionSearch(ADT &a, string &_ip);
-    bool ComputerIntegration(ConexionesComputadora *indexConexion, ADT &a);
+    bool ComputerIntegration(map<string, ConexionesComputadora>::iterator indexConexion, ADT &a);
     vector<ADT> mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
     vector<ADT> merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
     ConexionesComputadora *busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
@@ -75,6 +79,9 @@ class Master {
     int getAllOutgoingConections(int _IP);
     void singleConectionAssessment(int _IP);
     vector<string> getNOutOutgoingConections(int _ip, int N);
+    string getComputerIP(string name);
+    int getComputerWConections();
+    set<string> getComputerUniqueServices();
 };
 
 Master::~Master() {
@@ -417,53 +424,43 @@ void Master::computerAnalisis() {
 // este es un metodo para generar las computadoras apartir del resitro trabaja en conjunto con busqueda
 void Master::loadComputers(bool (Master::*compare)(ADT &a, string &num), string var) {
     for (size_t i = 0; i < lista.size(); i++) {
-        if (lista[i].getIPODisplay() == var || lista[i].getIPDDisplay() == var) {
-            //cout << lista[i].getIndice() << endl;
-        }
         (this->*compare)(lista[i], var);
     }
 }
 
 // es el metodo que te permite crear una nueva computadora o hacer una conexion dependiendo de si ya existe 1
-bool Master::ComputerIntegration(ConexionesComputadora *indexConexion, ADT &a) {
-    /*cout << a.getIndice() << endl;
-    if (a.getIPO().display() == "10.8.134.178" || a.getIPD().display() == "10.8.134.178")
-    {
-        printVector(a);
-        bool cond = indexConexion == NULL;
-        cout << "------------" << a.getIPO().display() << " = " << a.getIPD().display() << "------------" << cond << endl;
-    }*/
-
-    if ((indexConexion != NULL) && (a.getIPO().display() == indexConexion->getComputerIP())) {
-        if (indexConexion->getName() != "-" || indexConexion->getName() != "") {
-            indexConexion->setName(a.getHostO().getName());
+bool Master::ComputerIntegration(map<string, ConexionesComputadora>::iterator indexConexion, ADT &a) {
+    if ((indexConexion != computerDictionary.end()) && (a.getIPO().display() == indexConexion->first)) {
+        if (a.getHostO().getName() != "-" || a.getHostO().getName() != "") {
+            indexConexion->second.setName(a.getHostODisplay());
         }
-        indexConexion->conexion(a.getIPO(), a.getIndice());
+        indexConexion->second.conexion(a.getIPO(), a.getIndice());
         return (true);
-    } else if ((indexConexion != NULL) && (a.getIPD().display() == indexConexion->getComputerIP())) {
-        if (indexConexion->getName() != "-" || indexConexion->getName() != "") {
-            indexConexion->setName(a.getHostD().getName());
+    } else if ((indexConexion != computerDictionary.end()) && (a.getIPD().display() == indexConexion->first)) {
+        if (a.getHostD().getName() != "-" || a.getHostD().getName() != "") {
+            indexConexion->second.setName(a.getHostDDisplay());
         }
-        indexConexion->conexion(a.getIPO(), a.getIndice());
+        indexConexion->second.conexion(a.getIPO(), a.getIndice());
         return (true);
     } else {
-        listComputers.push_back(ConexionesComputadora(a.getIPO()));
-        listComputers.back().setName(a.getHostODisplay());
-        listComputers.back().conexion(a.getIPO(), a.getIndice());
+        computerDictionary[a.getIPO().display()] = ConexionesComputadora(a.getIPO());
+        computerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
+        computerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+        HostIP[a.getHostO().getName()] = a.getIPODisplay();
 
-        listComputers.push_back(ConexionesComputadora(a.getIPD()));
-        listComputers.back().setName(a.getHostDDisplay());
-        listComputers.back().conexion(a.getIPD(), a.getIndice());
-        //cout << a.getHostODisplay() << ": " << listComputers.back().getComputerIP() << endl;
+        computerDictionary[a.getIPD().display()] = ConexionesComputadora(a.getIPD());
+        computerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
+        computerDictionary[a.getIPD().display()].conexion(a.getIPD(), a.getIndice());
+        HostIP[a.getHostD().getName()] = a.getIPDDisplay();
     }
     return (false);
 }
 
 // este metodo se ocupa para agregar todas computadoras haciendo una busqueda para ver si hay una instancia previa
 bool Master::AddComputer(ADT &a, string &_ip) {
-    ConexionesComputadora *indexConexion = busquedaConexiones(&Master::IPSearch, a.getIPO().display(), true);
+    map<string, ConexionesComputadora>::iterator indexConexion = computerDictionary.find(a.getIPO().display());
     ComputerIntegration(indexConexion, a);
-    indexConexion = busquedaConexiones(&Master::IPSearch, a.getIPD().display(), true);
+    indexConexion = computerDictionary.find(a.getIPD().display());
     ComputerIntegration(indexConexion, a);
     return true;
 }
@@ -476,11 +473,11 @@ bool Master::singleConectionSearch(ADT &a, string &_ip) {
         cout << "------------" << a.getIPO().display() << " = " << a.getIPD().display() << "------------" << _ip << endl;
     }*/
     if (a.getIPO().display() == _ip) {
-        ConexionesComputadora *indexConexion = busquedaConexiones(&Master::IPSearch, _ip, true);
+        map<string, ConexionesComputadora>::iterator indexConexion = computerDictionary.find(_ip);
         ComputerIntegration(indexConexion, a);
         return true;
     } else if (a.getIPD().display() == _ip) {
-        ConexionesComputadora *indexConexion = busquedaConexiones(&Master::IPSearch, _ip, true);
+        map<string, ConexionesComputadora>::iterator indexConexion = computerDictionary.find(_ip);
         ComputerIntegration(indexConexion, a);
         return true;
     } else {
@@ -503,7 +500,7 @@ bool Master::IPSearch(ConexionesComputadora a, string _ip) {
 
 //funcion para iniciar las busquedas en la lista de computadoras
 ConexionesComputadora *Master::busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind) {
-    return (busquedaArbolConexiones(0, listComputers.size() - 1, (compare), var, firstFind));
+    return (busquedaArbolConexiones(0, computerDictionary.size() - 1, (compare), var, firstFind));
 }
 
 //funcion para hacer una busqueda en la lista de computadoras
@@ -542,17 +539,17 @@ bool Master::computerConectionCond(ConexionesComputadora a, string _ip) {
 string Master::SearchByIP(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
-    return tempConection->getComputerIP();
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
+    return tempConection->second.getComputerIP();
 }
 
 // regresa las conexiones entrantes mediante la busqueda de una IP espesifica
 string Master::getIncomingConection(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
-    stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
-    if (tempConection != NULL) {
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
+    stack<IP> allIncomingConection = tempConection->second.getConexionesEntrantes();
+    if (tempConection != computerDictionary.end()) {
         return allIncomingConection.top().display();
     } else {
         return "NULL";
@@ -563,26 +560,38 @@ string Master::getIncomingConection(int _IPI) {
 int Master::getAllIncomingConections(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
-    stack<IP> allIncomingConection = tempConection->getConexionesEntrantes();
-    return allIncomingConection.size();
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
+    if (tempConection != computerDictionary.end()) {
+        stack<IP> allIncomingConection = tempConection->second.getConexionesEntrantes();
+        return allIncomingConection.size();
+    } else {
+        return 0;
+    }
 }
 
 // regresa el tamaño de las conexones salientes
 int Master::getAllOutgoingConections(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
-    queue<IP> allIncomingConection = tempConection->getConexionesSalientes();
-    return allIncomingConection.size();
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
+    if (tempConection != computerDictionary.end()) {
+        queue<IP> allIncomingConection = tempConection->second.getConexionesSalientes();
+        return allIncomingConection.size();
+    } else {
+        return 0;
+    }
 }
 
 // regresa el nombre de las la computadora mediante una ip espesifica
 string Master::getComputerName(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
-    return tempConection->getName();
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
+    if (tempConection != computerDictionary.end()) {
+        return tempConection->second.getName();
+    } else {
+        return "NULL";
+    }
 }
 
 // condicion para la busqueda de una compu por indice se ocupa con la busqueda de registros
@@ -598,11 +607,11 @@ bool Master::busquedaPorIndiceCond(ADT &a, string &_ip) {
 //gets the last N of outgoing conections
 vector<string> Master::getNOutOutgoingConections(int _ipI, int N) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
-    string _ip = sbst + to_string(_ipI);
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _ip, true);
+    string _IP = sbst + to_string(_ipI);
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
     vector<string> rVector;
-    if (tempConection != NULL && !tempConection->getConexionesSalientes().empty()) {
-        queue<int> salientesI = tempConection->getConexionesSalientesIndice();
+    if (tempConection != computerDictionary.end() && !tempConection->second.getConexionesSalientes().empty()) {
+        queue<int> salientesI = tempConection->second.getConexionesSalientesIndice();
         if (N < salientesI.size()) {
             for (size_t i = 0; i < N; i++) {
                 rVector.push_back(to_string(salientesI.front()));
@@ -613,7 +622,7 @@ vector<string> Master::getNOutOutgoingConections(int _ipI, int N) {
             rVector.push_back("N is bigger than size");
         }
     } else {
-        rVector.push_back("NULL");
+        rVector.push_back("NULL/EMPTY");
     }
     return rVector;
 }
@@ -622,15 +631,15 @@ void Master::fullConectionStatus(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
     cout << "--IP Analisis--" << endl;
-    ConexionesComputadora *tempConection = busquedaConexiones(&Master::computerConectionCond, _IP, true);
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
 
-    if (tempConection != NULL) {
-        stack<IP> entrantes = tempConection->getConexionesEntrantes();
-        stack<int> entrantesIndice = tempConection->getConexionesEntrantesIndice();
-        queue<IP> salientes = tempConection->getConexionesSalientes();
-        queue<int> salientesIndice = tempConection->getConexionesSalientesIndice();
-        string name = tempConection->getName();
-        string CIP = tempConection->getComputerIP();
+    if (tempConection != computerDictionary.end()) {
+        stack<IP> entrantes = tempConection->second.getConexionesEntrantes();
+        stack<int> entrantesIndice = tempConection->second.getConexionesEntrantesIndice();
+        queue<IP> salientes = tempConection->second.getConexionesSalientes();
+        queue<int> salientesIndice = tempConection->second.getConexionesSalientesIndice();
+        string name = tempConection->second.getName();
+        string CIP = tempConection->second.getComputerIP();
         string entranteValor = "0";
 
         if (!entrantes.empty()) {
@@ -675,4 +684,70 @@ void Master::fullConectionStatus(int _IPI) {
     } else {
         cout << "NULL" << endl;
     }
+}
+
+string Master::getComputerIP(string name) {
+    map<string, string>::iterator tempHost = HostIP.find(name);
+    if (tempHost != HostIP.end()) {
+        return tempHost->second;
+    } else {
+        return "NULL";
+    }
+}
+
+int Master::getComputerWConections() {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    int ActiveComputers = 0;
+    for (size_t i = 0; i < HostIP.size(); i++) {
+        string _IP = sbst + to_string(i);
+        if (computerDictionary[_IP].getConexionesEntrantesSize() > 0) {
+            ActiveComputers++;
+        }
+    }
+    return (ActiveComputers);
+}
+
+/*set<string> Master::getComputerUniqueServices() {
+    set<string> tcp;
+    int DU = 0;
+    int OU = 0;
+    for (size_t i = 0; i <= lista.size(); i++) {
+        string tempIPOU = lista[i].getIPO().getUserIP();
+        string tempIPDU = lista[i].getIPD().getUserIP();
+        if (tempIPOU != "-" && tempIPOU != " ") {
+            OU = stoi(tempIPOU);
+        }
+        if (tempIPDU != "-" && tempIPDU != " ") {
+            DU = stoi(tempIPDU);
+        }
+        if (OU >= 5 && OU <= 150) {
+            stack<IP> tempStack = computerDictionary[lista[i].getIPODisplay()].getConexionesEntrantes();
+            for (size_t i = 0; i < tempStack.size(); i++) {
+                tcp.insert(tempStack.top().display());
+                tempStack.pop();
+            }
+        }
+        if (DU >= 5 && DU <= 150) {
+            stack<IP> tempStack = computerDictionary[lista[i].getIPDDisplay()].getConexionesEntrantes();
+            for (size_t i = 0; i < tempStack.size(); i++) {
+                tcp.insert(tempStack.top().display());
+                tempStack.pop();
+            }
+        }
+    }
+    return (tcp);
+}*/
+set<string> Master::getComputerUniqueServices() {
+    set<string> tcp;
+    for (auto &x : computerDictionary) {
+        string tempIPU = x.second.getComputerIPUser();
+        int iIPU = 0;
+        if (tempIPU != "-" && tempIPU != "") {
+            iIPU = stoi(tempIPU);
+        }
+        if (iIPU < 150 && iIPU > 5) {
+            tcp.insert(x.second.getComputerIP());
+        }
+    }
+    return (tcp);
 }

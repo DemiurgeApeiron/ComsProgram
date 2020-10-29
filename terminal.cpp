@@ -35,7 +35,7 @@ Master addRegistro(vector<vector<string>> &_registros, Master &_program) {
 
 int terminal() {
     Master program;
-    CSVReader reader("equipo5.csv");
+    CSVReader reader("nuevo5.csv");
     vector<vector<string>> regitros = reader.getData();
     program = addRegistro(regitros, program);
 
@@ -138,6 +138,18 @@ int terminal() {
     vector<string> lastThree = program.getNOutOutgoingConections(59, 3);
     for (size_t i = 0; i < lastThree.size(); i++) {
         cout << "RegisterIndex: " << lastThree[i] << ", ";
+    }
+    cout << endl;
+    cout << endl;
+    cout << "The computer IP is: " << program.getComputerIP("kenneth") << endl;
+    cout << endl;
+    cout << endl;
+    cout << "Number of computers with more than one conection: " << program.getComputerWConections() << endl;
+    cout << endl;
+    set<string> allUCIP = program.getComputerUniqueServices();
+    cout << "All unique incoming conections: ";
+    for (auto elem : allUCIP) {
+        cout << elem << " , ";
     }
     cout << endl;
     cout << endl;

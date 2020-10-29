@@ -23,6 +23,7 @@ class ConexionesComputadora {
     queue<int> ConexionesSalientesIndice;
 
    public:
+    ConexionesComputadora() = default;
     ConexionesComputadora(IP IPFuente);
     ~ConexionesComputadora();
     void conexion(IP _ip, int _indice);
@@ -33,6 +34,8 @@ class ConexionesComputadora {
     queue<IP> getConexionesSalientes() { return ConexionesSalientes; }
     queue<int> getConexionesSalientesIndice() { return ConexionesSalientesIndice; }
     stack<int> getConexionesEntrantesIndice() { return ConexionesEntrantesIndice; }
+    int getConexionesEntrantesSize() { return ConexionesEntrantes.size(); }
+    int getConexionesSalientesSize() { return ConexionesSalientes.size(); }
     string getName() { return nombre; }
     void setName(string name);
 };
