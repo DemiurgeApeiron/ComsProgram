@@ -49,8 +49,10 @@ ConexionesComputadora::~ConexionesComputadora() {}
 // este metodo guarda las conexiones
 void ConexionesComputadora::conexion(IP _ip, int _indice) {
     // cout << ip.display() << " = " << _ip.display() << endl;
-
-    if (ip.display() != _ip.display()) {
+    /*if (ip.display() == "10.8.134.178") {
+        cout << ip.display() << " = " << _ip.display() << " in " << _indice << "cE: " << ConexionesEntrantes.size() << endl;
+    }*/
+    if (ip.display() != _ip.display() && _ip.display() != "-" && _ip.display() != "") {
         ConexionesEntrantes.push(_ip);
         ConexionesEntrantesIndice.push(_indice);
     } else {

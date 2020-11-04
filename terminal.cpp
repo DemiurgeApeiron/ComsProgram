@@ -118,18 +118,18 @@ int terminal() {
     cout << endl;
     cout << endl;
     int networkAnalisis;
-    cout << "Do you want to do a full network analisis or single computer analisis. 1: full 0: single," << endl;
+    cout << "Do you want to do a full network analisis or single computer analisis. 0: full 1: single," << endl;
     cin >> networkAnalisis;
     cout << endl;
-    if (networkAnalisis == 1) {
+    if (networkAnalisis == 0) {
         program.computerAnalisis();
         cout << endl;
         cout << endl;
-        program.fullConectionStatus(59);
+        program.fullConectionStatus(178);
         cout << endl;
         cout << endl;
 
-    } else if (networkAnalisis == 0) {
+    } else if (networkAnalisis == 1) {
         program.singleConectionAssessment(59);
         cout << endl;
         cout << endl;
@@ -153,7 +153,15 @@ int terminal() {
     }
     cout << endl;
     cout << endl;
-
+    cout << "All conections to a site in 21-8-2020: ";
+    Fecha dia("21-8-2020");
+    map<string, int> sitesConexionsDay = program.conexionesPorDia(dia);
+    for (auto &x : sitesConexionsDay) {
+        cout << "sitio: " << x.first << " conexiones: " << x.second << ",  ";
+    }
+    cout << endl;
+    cout << endl;
+    program.top(5, "21-8-2020");
     return (0);
 }
 

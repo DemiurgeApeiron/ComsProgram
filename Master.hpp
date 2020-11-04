@@ -10,6 +10,7 @@ javier alejandro martinez noe y Ricardo Uraga
 
 #include "ADT.hpp"
 #include "ConexionesComputadora.hpp"
+#include "arbolBinarioMapNc.hpp"
 using namespace std;
 #pragma once
 
@@ -20,7 +21,10 @@ class Master {
     vector<string> activePorts;
     vector<ConexionesComputadora> listComputers;
     map<string, ConexionesComputadora> computerDictionary;
+    map<string, ConexionesComputadora> dayComputerDictionary;
     map<string, string> HostIP;
+    BinarySearchTree BST;
+
     int indice = 0;
     ADT computer;
     bool dayCond(ADT &a, ADT &b);
@@ -45,12 +49,14 @@ class Master {
     bool busquedaPorIndiceCond(ADT &a, string &_ip);
     bool computerConectionCond(ConexionesComputadora a, string _ip);
     bool singleConectionSearch(ADT &a, string &_ip);
-    bool ComputerIntegration(map<string, ConexionesComputadora>::iterator indexConexion, ADT &a);
+    bool ComputerIntegration(ADT &a, string &_ip);
     vector<ADT> mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
     vector<ADT> merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b));
     ConexionesComputadora *busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
     ConexionesComputadora *busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool PrintBool);
     void loadComputers(bool (Master::*compare)(ADT &a, string &num), string var);
+    bool addComputerByDay(ADT &a, string &dia);
+    bool dayIntegration(ADT &a, string &dia);
 
    public:
     Master() = default;
@@ -82,6 +88,8 @@ class Master {
     string getComputerIP(string name);
     int getComputerWConections();
     set<string> getComputerUniqueServices();
+    map<string, int> conexionesPorDia(Fecha _fecha);
+    void top(int n, string _fecha);
 };
 
 Master::~Master() {
@@ -414,7 +422,7 @@ void Master::computerAnalisis() {
     cout << endl;
     cout << "--Generating Computers--" << endl;
     cout << endl;
-    loadComputers(&Master::AddComputer, "all");
+    loadComputers(&Master::ComputerIntegration, "all");
     /*for (size_t i = 0; i < listComputers.size(); i++)
     {
         cout << listComputers[i].getComputerIP() << endl;
@@ -429,25 +437,28 @@ void Master::loadComputers(bool (Master::*compare)(ADT &a, string &num), string 
 }
 
 // es el metodo que te permite crear una nueva computadora o hacer una conexion dependiendo de si ya existe 1
-bool Master::ComputerIntegration(map<string, ConexionesComputadora>::iterator indexConexion, ADT &a) {
-    if ((indexConexion != computerDictionary.end()) && (a.getIPO().display() == indexConexion->first)) {
-        if (a.getHostO().getName() != "-" || a.getHostO().getName() != "") {
-            indexConexion->second.setName(a.getHostODisplay());
+bool Master::ComputerIntegration(ADT &a, string &_ip) {
+    map<string, ConexionesComputadora>::iterator searchIPO = computerDictionary.find(a.getIPO().display());
+    map<string, ConexionesComputadora>::iterator searchIPD = computerDictionary.find(a.getIPD().display());
+    if ((searchIPO != computerDictionary.end()) && (a.getIPO().display() == searchIPO->first)) {
+        if (a.getHostO().getName() != "-" && a.getHostO().getName() != "") {
+            computerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
         }
-        indexConexion->second.conexion(a.getIPO(), a.getIndice());
-        return (true);
-    } else if ((indexConexion != computerDictionary.end()) && (a.getIPD().display() == indexConexion->first)) {
-        if (a.getHostD().getName() != "-" || a.getHostD().getName() != "") {
-            indexConexion->second.setName(a.getHostDDisplay());
+        computerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+    }
+    if ((searchIPD != computerDictionary.end()) && (a.getIPD().display() == searchIPD->first)) {
+        if (a.getHostD().getName() != "-" && a.getHostD().getName() != "") {
+            computerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
         }
-        indexConexion->second.conexion(a.getIPO(), a.getIndice());
-        return (true);
-    } else {
+        computerDictionary[a.getIPD().display()].conexion(a.getIPO(), a.getIndice());
+    }
+    if (searchIPO == computerDictionary.end()) {
         computerDictionary[a.getIPO().display()] = ConexionesComputadora(a.getIPO());
         computerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
         computerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
         HostIP[a.getHostO().getName()] = a.getIPODisplay();
-
+    }
+    if (searchIPD == computerDictionary.end()) {
         computerDictionary[a.getIPD().display()] = ConexionesComputadora(a.getIPD());
         computerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
         computerDictionary[a.getIPD().display()].conexion(a.getIPD(), a.getIndice());
@@ -456,40 +467,11 @@ bool Master::ComputerIntegration(map<string, ConexionesComputadora>::iterator in
     return (false);
 }
 
-// este metodo se ocupa para agregar todas computadoras haciendo una busqueda para ver si hay una instancia previa
-bool Master::AddComputer(ADT &a, string &_ip) {
-    map<string, ConexionesComputadora>::iterator indexConexion = computerDictionary.find(a.getIPO().display());
-    ComputerIntegration(indexConexion, a);
-    indexConexion = computerDictionary.find(a.getIPD().display());
-    ComputerIntegration(indexConexion, a);
-    return true;
-}
-
-// este metodo te permite generar una espesifica computadora y sus conexiones
-bool Master::singleConectionSearch(ADT &a, string &_ip) {
-    /*if (a.getIPO().display() == "10.8.134.178" || a.getIPD().display() == "10.8.134.178")
-    {
-        printVector(a);
-        cout << "------------" << a.getIPO().display() << " = " << a.getIPD().display() << "------------" << _ip << endl;
-    }*/
-    if (a.getIPO().display() == _ip) {
-        map<string, ConexionesComputadora>::iterator indexConexion = computerDictionary.find(_ip);
-        ComputerIntegration(indexConexion, a);
-        return true;
-    } else if (a.getIPD().display() == _ip) {
-        map<string, ConexionesComputadora>::iterator indexConexion = computerDictionary.find(_ip);
-        ComputerIntegration(indexConexion, a);
-        return true;
-    } else {
-        return false;
-    }
-}
-
 // esta funcion llama singleConectionSearch y hace un fullConectionStatus
 void Master::singleConectionAssessment(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(_IPI);
-    loadComputers(&Master::singleConectionSearch, _IP);
+    loadComputers(&Master::ComputerIntegration, _IP);
     fullConectionStatus(_IPI);
 }
 
@@ -698,7 +680,7 @@ string Master::getComputerIP(string name) {
 int Master::getComputerWConections() {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     int ActiveComputers = 0;
-    for (size_t i = 0; i < HostIP.size(); i++) {
+    for (size_t i = 1; i < 255; i++) {
         string _IP = sbst + to_string(i);
         if (computerDictionary[_IP].getConexionesEntrantesSize() > 0) {
             ActiveComputers++;
@@ -707,36 +689,6 @@ int Master::getComputerWConections() {
     return (ActiveComputers);
 }
 
-/*set<string> Master::getComputerUniqueServices() {
-    set<string> tcp;
-    int DU = 0;
-    int OU = 0;
-    for (size_t i = 0; i <= lista.size(); i++) {
-        string tempIPOU = lista[i].getIPO().getUserIP();
-        string tempIPDU = lista[i].getIPD().getUserIP();
-        if (tempIPOU != "-" && tempIPOU != " ") {
-            OU = stoi(tempIPOU);
-        }
-        if (tempIPDU != "-" && tempIPDU != " ") {
-            DU = stoi(tempIPDU);
-        }
-        if (OU >= 5 && OU <= 150) {
-            stack<IP> tempStack = computerDictionary[lista[i].getIPODisplay()].getConexionesEntrantes();
-            for (size_t i = 0; i < tempStack.size(); i++) {
-                tcp.insert(tempStack.top().display());
-                tempStack.pop();
-            }
-        }
-        if (DU >= 5 && DU <= 150) {
-            stack<IP> tempStack = computerDictionary[lista[i].getIPDDisplay()].getConexionesEntrantes();
-            for (size_t i = 0; i < tempStack.size(); i++) {
-                tcp.insert(tempStack.top().display());
-                tempStack.pop();
-            }
-        }
-    }
-    return (tcp);
-}*/
 set<string> Master::getComputerUniqueServices() {
     set<string> tcp;
     for (auto &x : computerDictionary) {
@@ -746,8 +698,68 @@ set<string> Master::getComputerUniqueServices() {
             iIPU = stoi(tempIPU);
         }
         if (iIPU < 150 && iIPU > 5) {
-            tcp.insert(x.second.getComputerIP());
+            stack conexionesEntrantes = x.second.getConexionesEntrantes();
+            for (size_t i = 0; i < conexionesEntrantes.size(); i++) {
+                tcp.insert(conexionesEntrantes.top().display());
+                conexionesEntrantes.pop();
+            }
         }
     }
     return (tcp);
+}
+
+bool Master::dayIntegration(ADT &a, string &dia) {
+    map<string, ConexionesComputadora>::iterator searchIPO = dayComputerDictionary.find(a.getIPO().display());
+    map<string, ConexionesComputadora>::iterator searchIPD = dayComputerDictionary.find(a.getIPD().display());
+    if ((searchIPO != dayComputerDictionary.end()) && (a.getIPO().display() == searchIPO->first)) {
+        if (a.getHostO().getName() != "-" && a.getHostO().getName() != "") {
+            dayComputerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
+        }
+        dayComputerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+    }
+    if ((searchIPD != dayComputerDictionary.end()) && (a.getIPD().display() == searchIPD->first)) {
+        if (a.getHostD().getName() != "-" && a.getHostD().getName() != "") {
+            dayComputerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
+        }
+        dayComputerDictionary[a.getIPD().display()].conexion(a.getIPO(), a.getIndice());
+    }
+    if (searchIPO == dayComputerDictionary.end()) {
+        dayComputerDictionary[a.getIPO().display()] = ConexionesComputadora(a.getIPO());
+        dayComputerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
+        dayComputerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+    }
+    if (searchIPD == dayComputerDictionary.end()) {
+        dayComputerDictionary[a.getIPD().display()] = ConexionesComputadora(a.getIPD());
+        dayComputerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
+        dayComputerDictionary[a.getIPD().display()].conexion(a.getIPD(), a.getIndice());
+    }
+    return (false);
+}
+
+map<string, int> Master::conexionesPorDia(Fecha _fecha) {
+    map<string, int> tCDictionary;
+    loadComputers(&Master::dayIntegration, to_string(_fecha.getDia()));
+    for (auto &x : dayComputerDictionary) {
+        string tempIPN = x.second.getName();
+        string tempIPL = x.second.getComputerIPLocal();
+        if (tempIPN != "-" && tempIPN != "" && tempIPL != "10.8.134") {
+            tCDictionary[tempIPN] = x.second.getConexionesEntrantesSize();
+        }
+    }
+    return (tCDictionary);
+}
+
+void Master::top(int n, string _fecha) {
+    Fecha date(_fecha);
+    map<string, int> TCD = conexionesPorDia(date);
+    for (auto &x : TCD) {
+        BST.insertNodeRecursive({{x.first, x.second}});
+    }
+    vector<string> values;
+    values.reserve(n);
+    BST.getTopNvalues(n, values);
+    for (size_t i = 0; i < values.size(); i++) {
+        cout << i + 1 << ": " << values[i] << ", ";
+    }
+    cout << endl;
 }
