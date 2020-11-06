@@ -437,14 +437,14 @@ class BinarySearchTree {
         }
         if (ret == true) {
             if (vect.size() < num) {
-                if (vect.back() != ptr->get_val().begin()->first) {
+                if (std::find(vect.begin(), vect.end(), ptr->get_val().begin()->first) == vect.end()) {
                     vect.push_back(ptr->get_val().begin()->first);
                 }
                 if (ptr != NULL && ptr->get_left() != NULL) {
                     ptr = ptr->get_left();
                     ret = false;
                     rTopNvalues(num, ptr, vect, ret);
-                    if (std::find(vect.begin(), vect.end(), ptr->get_val().begin()->first) == vect.end()) {
+                    if (std::find(vect.begin(), vect.end(), ptr->get_val().begin()->first) == vect.end() && vect.size() < num) {
                         vect.push_back(ptr->get_val().begin()->first);
                     }
                 }

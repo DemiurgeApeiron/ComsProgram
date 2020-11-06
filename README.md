@@ -166,7 +166,104 @@ the last 3 outgoing conections were:
 11-8-2020, 9:21:33, 10.8.134.59, 19234, kenneth.reto.com, 169.68.222.20, 443, glassdoor.com
 RegisterIndex: 3407, RegisterIndex: 3408, RegisterIndex: 3409,
 
-División de trabajo:
+# Avance 3
+
+Hay algún nombre de dominio que sea anómalo (Esto puede ser con inspección visual).
+si: k9oggvetufjky45ogief.ru y mkevjvtfe6dxajlsdfhb.com
+
+De los nombres de dominio encontrados en el paso anterior, ¿cuál es su ip? ¿Cómo determinarías esta información de la manera más eficiente en complejidad temporal?
+
+k9oggvetufjky45ogief.ru: 210.245.116.19
+mkevjvtfe6dxajlsdfhb.com: 63.5.179.78
+
+De las computadoras pertenecientes al dominio reto.com determina la cantidad de ips que tienen al menos una conexión entrante. (Recuerda que ya tienes la dirección de la red y el último octeto puede tener computadoras del .1 al .254). Imprime la cantidad de computadoras.
+
+Number of computers with at least one conection: 33
+
+Toma algunas computadoras que no sean server.reto.com o el servidor dhcp. Pueden ser entre 5 y 150. Obtén las ip únicas de las conexiones entrantes.
+
+All unique incoming conections: 10.8.134.106 , 10.8.134.107 , 10.8.134.109 , 10.8.134.113 , 10.8.134.116 , 10.8.134.118 , 10.8.134.122 , 10.8.134.126 , 10.8.134.129 , 10.8.134.139 , 10.8.134.142 , 10.8.134.15 , 10.8.134.16 , 10.8.134.17 , 10.8.134.20 , 10.8.134.21 , 10.8.134.22 , 10.8.134.24 , 10.8.134.25 , 10.8.134.44 , 10.8.134.47 , 10.8.134.51 , 10.8.134.53 , 10.8.134.59 , 10.8.134.61 , 10.8.134.68 , 10.8.134.69 , 10.8.134.72 , 10.8.134.79 , 10.8.134.88 , 10.8.134.94 , 10.8.134.98 ,
+
+for the computer dennis.reto.com the unique conections are:
+10.8.134.59,
+for the computer linda.reto.com the unique conections are:
+10.8.134.59,
+for the computer laura.reto.com the unique conections are:
+10.8.134.59,
+for the computer shirley.reto.com the unique conections are:
+10.8.134.59,
+for the computer jennifer.reto.com the unique conections are:
+10.8.134.59,
+for the computer angela.reto.com the unique conections are:
+10.8.134.59,
+for the computer janet.reto.com the unique conections are:
+10.8.134.59,
+for the computer emily.reto.com the unique conections are:
+10.8.134.59,
+for the computer scott.reto.com the unique conections are:
+10.8.134.59,
+for the computer jessica.reto.com the unique conections are:
+10.8.134.59,
+for the computer nancy.reto.com the unique conections are:
+10.8.134.59,
+for the computer michael.reto.com the unique conections are:
+10.8.134.59,
+for the computer daniel.reto.com the unique conections are:
+10.8.134.59,
+for the computer jacob.reto.com the unique conections are:
+10.8.134.59,
+for the computer brenda.reto.com the unique conections are:
+10.8.134.59,
+for the computer dorothy.reto.com the unique conections are:
+10.8.134.59,
+for the computer ruth.reto.com the unique conections are:
+10.8.134.59,
+for the computer kenneth.reto.com the unique conections are:
+10.8.134.106, 10.8.134.107, 10.8.134.109, 10.8.134.113, 10.8.134.116, 10.8.134.118, 10.8.134.122, 10.8.134.126, 10.8.134.129, 10.8.134.139, 10.8.134.142, 10.8.134.15, 10.8.134.16, 10.8.134.17, 10.8.134.20, 10.8.134.21, 10.8.134.22, 10.8.134.24, 10.8.134.25, 10.8.134.44, 10.8.134.47, 10.8.134.51, 10.8.134.53, 10.8.134.61, 10.8.134.68, 10.8.134.69, 10.8.134.72, 10.8.134.79, 10.8.134.88, 10.8.134.94, 10.8.134.98,
+for the computer helen.reto.com the unique conections are:
+10.8.134.59,
+for the computer frank.reto.com the unique conections are:
+10.8.134.59,
+for the computer alexander.reto.com the unique conections are:
+10.8.134.59,
+for the computer karen.reto.com the unique conections are:
+10.8.134.59,
+for the computer anthony.reto.com the unique conections are:
+10.8.134.59,
+for the computer john.reto.com the unique conections are:
+10.8.134.59,
+for the computer jack.reto.com the unique conections are:
+10.8.134.59,
+
+Considerando el resultado de las preguntas 3 y 4, ¿Qué crees que esté ocurriendo en esta red? (Pregunta sin código)
+
+Al observar las redes kenneth.reto.com ha hecho multiples conexiones a todas las computadoras y ha recibido multiples conexiones
+de estas computadoras: 10.8.134.106, 10.8.134.107, 10.8.134.109, 10.8.134.113, 10.8.134.116, 10.8.134.118, 10.8.134.122, 10.8.134.126, 10.8.134.129, 10.8.134.139, 10.8.134.142, 10.8.134.15, 10.8.134.16, 10.8.134.17, 10.8.134.20, 10.8.134.21, 10.8.134.22, 10.8.134.24, 10.8.134.25, 10.8.134.44, 10.8.134.47, 10.8.134.51, 10.8.134.53, 10.8.134.61, 10.8.134.68, 10.8.134.69, 10.8.134.72, 10.8.134.79, 10.8.134.88, 10.8.134.94, 10.8.134.98.
+
+por lo cual es muy probable que la computadora de kenneth este infectada mas aun debido a que el hizo coneccion a los sitios anomalos: k9oggvetufjky45ogief.ru: 210.245.116.19, mkevjvtfe6dxajlsdfhb.com: 63.5.179.78
+
+Para las ips encontradas en el paso anterior, determina si se han comunicado con los datos encontrados en la pregunta 1.
+
+(Extra): En caso de que hayas encontrado que las computadoras del paso 1 y 4 se comunican, determina en qué fecha ocurre la primera comunicación entre estas 2 y qué protocolo se usó
+
+# Avance 4
+
+¿Existe algún sitio que se mantenga en el top 5 en todos los días?
+El elemento k9oggvetufjky45ogief.ru ha estado en el top apartir del 10
+El elemento npr.org ha estado en el top apartir del 10
+El elemento outlook.com ha estado en el top apartir del 10
+
+¿Existe algún sitio que entre al top 5 a partir de un día y de ahí aparezca en todos los días subsecuentes?
+
+El elemento nytimes.com ha estado en el top apartir del 12
+El elemento steamcommunity.com ha estado en el top apartir del 12
+
+¿Existe algún sitio que aparezca en el top 5 con una cantidad más alta de tráfico que lo normal?
+
+outlook ha tiene un alto numero de connexiones 1330, muy sesagado de los otros sitios, sin embargo como es un sitio confiable y es my usado en ambientes de trabajo es muy poco probable que sea una amenaza. Por otro lado k9oggvetufjky45ogief.ru tiene un numero de conexiones 232 ridiculas y su numbre parece ser autogenerado por lo cual sugiero banear de la coneccion.
+
+# División de trabajo:
+
 Javier Alejandro Martínez Noe:
 IP
 Hora
@@ -195,6 +292,8 @@ GetAllServices
 getActivePortsDestiny
 getActivePortsOrigin
 diaRelativo
+actividad 3: punto 2, prguntas 2,3,4
+actividad 4: punto 1,2,3
 
 Ricardo Uraga de la Fuente:
 Puerto
@@ -211,3 +310,5 @@ busquedaOrdenador
 busquedaUsuarioCompleto
 conseguirIpLocal
 busquedaMinpuerto
+Actividad 3 : punto 1 , preguntas: 1, 5, 6
+actividad 4 : prguntas

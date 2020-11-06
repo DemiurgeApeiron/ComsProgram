@@ -26,7 +26,7 @@ class ConexionesComputadora {
     ConexionesComputadora() = default;
     ConexionesComputadora(IP IPFuente);
     ~ConexionesComputadora();
-    void conexion(IP _ip, int _indice);
+    void conexion(bool entrante, IP _ip, int _indice);
     string getComputerIP() { return ip.display(); }
     string getComputerIPUser() { return ip.getUserIP(); }
     string getComputerIPLocal() { return ip.getLocalIp(); }
@@ -47,12 +47,12 @@ ConexionesComputadora::ConexionesComputadora(IP IPFuente) {
 ConexionesComputadora::~ConexionesComputadora() {}
 
 // este metodo guarda las conexiones
-void ConexionesComputadora::conexion(IP _ip, int _indice) {
+void ConexionesComputadora::conexion(bool entrante, IP _ip, int _indice) {
     // cout << ip.display() << " = " << _ip.display() << endl;
     /*if (ip.display() == "10.8.134.178") {
         cout << ip.display() << " = " << _ip.display() << " in " << _indice << "cE: " << ConexionesEntrantes.size() << endl;
     }*/
-    if (ip.display() != _ip.display() && _ip.display() != "-" && _ip.display() != "") {
+    if (entrante && _ip.display() != "-" && _ip.display() != "") {
         ConexionesEntrantes.push(_ip);
         ConexionesEntrantesIndice.push(_indice);
     } else {

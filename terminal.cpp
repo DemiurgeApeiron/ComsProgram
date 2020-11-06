@@ -125,7 +125,7 @@ int terminal() {
         program.computerAnalisis();
         cout << endl;
         cout << endl;
-        program.fullConectionStatus(178);
+        program.fullConectionStatus(59);
         cout << endl;
         cout << endl;
 
@@ -141,16 +141,42 @@ int terminal() {
     }
     cout << endl;
     cout << endl;
-    cout << "The computer IP is: " << program.getComputerIP("kenneth") << endl;
+    cout << "All unique connected services" << endl;
+    program.getStrangeHost();
     cout << endl;
     cout << endl;
-    cout << "Number of computers with more than one conection: " << program.getComputerWConections() << endl;
+    cout << "The computer IP is: " << program.getComputerIP("k9oggvetufjky45ogief") << endl;
+    cout << endl;
+    cout << endl;
+
+    cout << "Number of computers with at least one conection: " << program.getComputerWConections() << endl;
     cout << endl;
     set<string> allUCIP = program.getComputerUniqueServices();
     cout << "All unique incoming conections: ";
     for (auto elem : allUCIP) {
         cout << elem << " , ";
     }
+    cout << endl;
+    cout << endl;
+    int uniqueIncomingConnection;
+    cout << "Do you want to print the unique incoming conections of every conputer: 0: no 1: yes" << endl;
+    cin >> uniqueIncomingConnection;
+    cout << endl;
+    if (uniqueIncomingConnection == 1) {
+        program.getComputerUniqueServicesIndividual();
+        cout << endl;
+        cout << endl;
+    }
+
+    bool fts = program.checkIfConnection("10.8.134.59", "210.245.116.19");
+    bool sec = program.checkIfConnection("10.8.134.59", "63.5.179.78");
+    if (fts) {
+        cout << "A connection was made between 10.8.134.59 and 210.245.116.19" << endl;
+    }
+    if (sec) {
+        cout << "A connection was made between 10.8.134.59 and 63.5.179.78" << endl;
+    }
+
     cout << endl;
     cout << endl;
     cout << "All conections to a site in 21-8-2020: ";
@@ -161,7 +187,45 @@ int terminal() {
     }
     cout << endl;
     cout << endl;
-    program.top(5, "21-8-2020");
+    vector<string> values = program.top(5, "21-8-2020");
+    for (size_t i = 0; i < values.size(); i++) {
+        cout << i + 1 << ": " << values[i] << ", ";
+    }
+    cout << endl;
+    cout << endl;
+    vector<vector<string>> cronologia = program.ChronologyOfMostConections(5);
+
+    vector<set<string>> setValues;
+    for (size_t i = 0; i < cronologia.size(); i++) {
+        set<string> vals;
+        for (size_t j = 0; j < cronologia[i].size(); j++) {
+            vals.insert(cronologia[i][j]);
+        }
+        setValues.push_back(vals);
+    }
+    map<string, int> record;
+    for (size_t w = 0; w < cronologia.size(); w++) {
+        for (size_t i = 0; i < cronologia[w].size(); i++) {
+            for (size_t j = w + 1; j < cronologia[w].size(); j++) {
+                set<string>::iterator search = setValues[j].find(cronologia[w][i]);
+                map<string, int>::iterator searchDic = record.find(cronologia[w][i]);
+                if (search != setValues[j].end() && searchDic == record.end()) {
+                    record[cronologia[w][i]] = w;
+                } else if (search == setValues[j].end() && searchDic != record.end()) {
+                    record[cronologia[w][i]] = -1;
+                }
+            }
+        }
+    }
+    for (auto &x : record) {
+        if (x.second != -1) {
+            cout << "El elemento " << x.first << " ha estado en el top apartir del " << program.diaRelativo(x.second, false) << endl;
+        }
+    }
+
+    cout << endl;
+    cout << endl;
+
     return (0);
 }
 

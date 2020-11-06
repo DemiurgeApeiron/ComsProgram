@@ -23,6 +23,7 @@ class Master {
     map<string, ConexionesComputadora> computerDictionary;
     map<string, ConexionesComputadora> dayComputerDictionary;
     map<string, string> HostIP;
+    set<string> domainNames;
     BinarySearchTree BST;
 
     int indice = 0;
@@ -57,6 +58,7 @@ class Master {
     void loadComputers(bool (Master::*compare)(ADT &a, string &num), string var);
     bool addComputerByDay(ADT &a, string &dia);
     bool dayIntegration(ADT &a, string &dia);
+    bool addServicesNames(ADT &a, string &name);
 
    public:
     Master() = default;
@@ -88,8 +90,12 @@ class Master {
     string getComputerIP(string name);
     int getComputerWConections();
     set<string> getComputerUniqueServices();
+    set<string> getComputerUniqueServicesIndividual();
     map<string, int> conexionesPorDia(Fecha _fecha);
-    void top(int n, string _fecha);
+    vector<string> top(int n, string _fecha);
+    vector<vector<string>> ChronologyOfMostConections(int num);
+    void getStrangeHost();
+    bool checkIfConnection(string IP1, string IP2);
 };
 
 Master::~Master() {
@@ -382,7 +388,7 @@ int Master::diaRelativo(int _dia, bool sort) {
         sortByTime();
     }
     Fecha fecha = lista[0].getFecha();
-    return (fecha.getDia() + _dia - 1);
+    return (fecha.getDia() + _dia);
 }
 // metodo para iniciar la busqueda de todos los servicios
 
@@ -441,27 +447,27 @@ bool Master::ComputerIntegration(ADT &a, string &_ip) {
     map<string, ConexionesComputadora>::iterator searchIPO = computerDictionary.find(a.getIPO().display());
     map<string, ConexionesComputadora>::iterator searchIPD = computerDictionary.find(a.getIPD().display());
     if ((searchIPO != computerDictionary.end()) && (a.getIPO().display() == searchIPO->first)) {
-        if (a.getHostO().getName() != "-" && a.getHostO().getName() != "") {
+        if (a.getHostODisplay() != "-" && a.getHostODisplay() != "") {
             computerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
         }
-        computerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+        computerDictionary[a.getIPO().display()].conexion(false, a.getIPD(), a.getIndice());
     }
     if ((searchIPD != computerDictionary.end()) && (a.getIPD().display() == searchIPD->first)) {
-        if (a.getHostD().getName() != "-" && a.getHostD().getName() != "") {
+        if (a.getHostDDisplay() != "-" && a.getHostDDisplay() != "") {
             computerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
         }
-        computerDictionary[a.getIPD().display()].conexion(a.getIPO(), a.getIndice());
+        computerDictionary[a.getIPD().display()].conexion(true, a.getIPO(), a.getIndice());
     }
     if (searchIPO == computerDictionary.end()) {
         computerDictionary[a.getIPO().display()] = ConexionesComputadora(a.getIPO());
         computerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
-        computerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+        computerDictionary[a.getIPO().display()].conexion(false, a.getIPD(), a.getIndice());
         HostIP[a.getHostO().getName()] = a.getIPODisplay();
     }
     if (searchIPD == computerDictionary.end()) {
         computerDictionary[a.getIPD().display()] = ConexionesComputadora(a.getIPD());
         computerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
-        computerDictionary[a.getIPD().display()].conexion(a.getIPD(), a.getIndice());
+        computerDictionary[a.getIPD().display()].conexion(true, a.getIPO(), a.getIndice());
         HostIP[a.getHostD().getName()] = a.getIPDDisplay();
     }
     return (false);
@@ -692,46 +698,109 @@ int Master::getComputerWConections() {
 set<string> Master::getComputerUniqueServices() {
     set<string> tcp;
     for (auto &x : computerDictionary) {
-        string tempIPU = x.second.getComputerIPUser();
-        int iIPU = 0;
-        if (tempIPU != "-" && tempIPU != "") {
-            iIPU = stoi(tempIPU);
+        stack indexE = x.second.getConexionesEntrantesIndice();
+        while (!indexE.empty() && lista[indexE.top()].getHostDDisplay() != "-") {
+            indexE.pop();
         }
-        if (iIPU < 150 && iIPU > 5) {
-            stack conexionesEntrantes = x.second.getConexionesEntrantes();
-            for (size_t i = 0; i < conexionesEntrantes.size(); i++) {
-                tcp.insert(conexionesEntrantes.top().display());
-                conexionesEntrantes.pop();
+
+        queue indexS = x.second.getConexionesSalientesIndice();
+        while (!indexS.empty() && lista[indexS.front()].getHostODisplay() != "-") {
+            indexS.pop();
+        }
+
+        if (!indexS.empty() && lista[indexS.front()].getHostODisplay() != "68" || !indexE.empty() && lista[indexE.top()].getHostDDisplay() != "67")
+            if (x.second.getComputerIPLocal() == "10.8.134" && x.second.getName() != "server.reto.com") {
+                stack conexionesEntrantes = x.second.getConexionesEntrantes();
+                for (size_t i = 0; i < conexionesEntrantes.size(); i++) {
+                    tcp.insert(conexionesEntrantes.top().display());
+                    conexionesEntrantes.pop();
+                }
             }
-        }
     }
     return (tcp);
+}
+
+set<string> Master::getComputerUniqueServicesIndividual() {
+    set<string> tcp;
+    for (auto &x : computerDictionary) {
+        set<string> tcp;
+        stack indexE = x.second.getConexionesEntrantesIndice();
+        while (!indexE.empty() && lista[indexE.top()].getHostDDisplay() != "-") {
+            indexE.pop();
+        }
+
+        queue indexS = x.second.getConexionesSalientesIndice();
+        while (!indexS.empty() && lista[indexS.front()].getHostODisplay() != "-") {
+            indexS.pop();
+        }
+
+        if (!indexS.empty() && lista[indexS.front()].getHostODisplay() != "68" || !indexE.empty() && lista[indexE.top()].getHostDDisplay() != "67")
+            if (x.second.getComputerIPLocal() == "10.8.134" && x.second.getName() != "server.reto.com" && x.second.getName() != "-") {
+                stack conexionesEntrantes = x.second.getConexionesEntrantes();
+                for (size_t i = 0; i < conexionesEntrantes.size(); i++) {
+                    tcp.insert(conexionesEntrantes.top().display());
+                    conexionesEntrantes.pop();
+                }
+                cout << "for the computer " << x.second.getName() << " the unique conections are: " << endl;
+                for (auto elem : tcp) {
+                    cout << elem << ", ";
+                }
+
+                cout << endl;
+            }
+    }
+    return (tcp);
+}
+
+bool Master::checkIfConnection(string IP1, string IP2) {
+    map<string, ConexionesComputadora>::iterator searchIP = computerDictionary.find(IP1);
+    stack IPsSearchE = searchIP->second.getConexionesEntrantes();
+    if (searchIP != computerDictionary.end() || !IPsSearchE.empty()) {
+        for (size_t i = 0; i < IPsSearchE.size(); i++) {
+            //cout << "cons1 " << IPsSearchE.top().display() << " == " << IP2 << endl;
+            if (IPsSearchE.top().display() == IP2) {
+                return (true);
+            }
+            IPsSearchE.pop();
+        }
+    }
+    queue IPsSearchS = searchIP->second.getConexionesSalientes();
+    if (searchIP != computerDictionary.end() || !IPsSearchS.empty()) {
+        for (size_t i = 0; i < IPsSearchS.size(); i++) {
+            //cout << "cons2 " << IPsSearchS.front().display() << " == " << IP2 << endl;
+            if (IPsSearchS.front().display() == IP2) {
+                return (true);
+            }
+            IPsSearchS.pop();
+        }
+    }
+    return (false);
 }
 
 bool Master::dayIntegration(ADT &a, string &dia) {
     map<string, ConexionesComputadora>::iterator searchIPO = dayComputerDictionary.find(a.getIPO().display());
     map<string, ConexionesComputadora>::iterator searchIPD = dayComputerDictionary.find(a.getIPD().display());
     if ((searchIPO != dayComputerDictionary.end()) && (a.getIPO().display() == searchIPO->first)) {
-        if (a.getHostO().getName() != "-" && a.getHostO().getName() != "") {
+        if (a.getHostODisplay() != "-" && a.getHostODisplay() != "") {
             dayComputerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
         }
-        dayComputerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+        dayComputerDictionary[a.getIPO().display()].conexion(false, a.getIPD(), a.getIndice());
     }
     if ((searchIPD != dayComputerDictionary.end()) && (a.getIPD().display() == searchIPD->first)) {
-        if (a.getHostD().getName() != "-" && a.getHostD().getName() != "") {
+        if (a.getHostDDisplay() != "-" && a.getHostDDisplay() != "") {
             dayComputerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
         }
-        dayComputerDictionary[a.getIPD().display()].conexion(a.getIPO(), a.getIndice());
+        dayComputerDictionary[a.getIPD().display()].conexion(true, a.getIPO(), a.getIndice());
     }
-    if (searchIPO == dayComputerDictionary.end()) {
+    if (searchIPO == dayComputerDictionary.end() && to_string(a.getFecha().getDia()) == dia) {
         dayComputerDictionary[a.getIPO().display()] = ConexionesComputadora(a.getIPO());
         dayComputerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
-        dayComputerDictionary[a.getIPO().display()].conexion(a.getIPO(), a.getIndice());
+        dayComputerDictionary[a.getIPO().display()].conexion(false, a.getIPD(), a.getIndice());
     }
-    if (searchIPD == dayComputerDictionary.end()) {
+    if (searchIPD == dayComputerDictionary.end() && to_string(a.getFecha().getDia()) == dia) {
         dayComputerDictionary[a.getIPD().display()] = ConexionesComputadora(a.getIPD());
         dayComputerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
-        dayComputerDictionary[a.getIPD().display()].conexion(a.getIPD(), a.getIndice());
+        dayComputerDictionary[a.getIPD().display()].conexion(true, a.getIPO(), a.getIndice());
     }
     return (false);
 }
@@ -749,17 +818,46 @@ map<string, int> Master::conexionesPorDia(Fecha _fecha) {
     return (tCDictionary);
 }
 
-void Master::top(int n, string _fecha) {
+vector<string> Master::top(int n, string _fecha) {
     Fecha date(_fecha);
     map<string, int> TCD = conexionesPorDia(date);
     for (auto &x : TCD) {
+        //cout << "pre ins" << endl;
         BST.insertNodeRecursive({{x.first, x.second}});
+        //cout << "post ins" << endl;
     }
+    //BST.printV1();
     vector<string> values;
     values.reserve(n);
+    //cout << "pre topn" << endl;
     BST.getTopNvalues(n, values);
-    for (size_t i = 0; i < values.size(); i++) {
-        cout << i + 1 << ": " << values[i] << ", ";
+    //cout << "post topn" << endl;
+    return (values);
+}
+
+vector<vector<string>> Master::ChronologyOfMostConections(int num) {
+    vector<vector<string>> storage;
+    sortByTime();
+    string fechaTemp = lista[0].getFechaDisplay();
+    string withoutDay = to_string(lista[0].getFecha().getDia());
+    string fechaMovible = fechaTemp.substr(withoutDay.size(), fechaTemp.size());
+    for (size_t i = lista[0].getFecha().getDia(); i <= lista[lista.size() - 1].getFecha().getDia(); i++) {
+        string tempFecha = to_string(i) + fechaMovible;
+        storage.push_back(top(num, tempFecha));
+    }
+    return (storage);
+}
+bool Master::addServicesNames(ADT &a, string &name) {
+    if (a.getIPD().getLocalIp() != "10.8.134" && a.getHostDDisplay() != "-") {
+        domainNames.insert(a.getHostDDisplay());
+    }
+    return (true);
+}
+
+void Master::getStrangeHost() {
+    loadComputers(&Master::addServicesNames, "all");
+    for (auto x : domainNames) {
+        cout << x << " , ";
     }
     cout << endl;
 }
