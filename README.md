@@ -168,6 +168,8 @@ RegisterIndex: 3407, RegisterIndex: 3408, RegisterIndex: 3409,
 
 # Avance 3
 
+Antes de comenzar con la descripción del avance 3, se nos indica que hagamos un conjunto de la variable string, lo que nos lleva a la siguiente pregunta ¿Qué es mas eficiente un vector o un conjunto? La verdad es que para lo que nos estan pidiendo en esta actividad std::set es la mejor opción ya que automáticamente elimina los duplicados a comparación de hacerlo con un vector con el cual tendriamos que hacerlo nosotros. Tiene una complejidad temporal de O(n^2) a comparación del vector que tiene O(n).
+
 Hay algún nombre de dominio que sea anómalo (Esto puede ser con inspección visual).
 si: k9oggvetufjky45ogief.ru y mkevjvtfe6dxajlsdfhb.com
 

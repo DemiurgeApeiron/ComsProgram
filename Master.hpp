@@ -673,7 +673,7 @@ void Master::fullConectionStatus(int _IPI) {
         cout << "NULL" << endl;
     }
 }
-
+// Este metodo busca a traves de la estructura de datos map<host,ip> permitiendo encontrar la ip de una computadora por su nombre
 string Master::getComputerIP(string name) {
     map<string, string>::iterator tempHost = HostIP.find(name);
     if (tempHost != HostIP.end()) {
@@ -682,7 +682,7 @@ string Master::getComputerIP(string name) {
         return "NULL";
     }
 }
-
+//Este metodo busca todas las computadoras que almenos tiene una conexion
 int Master::getComputerWConections() {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     int ActiveComputers = 0;
@@ -694,7 +694,7 @@ int Master::getComputerWConections() {
     }
     return (ActiveComputers);
 }
-
+// Este metodo obtiene las conexiones entrantes unicas de todas las computadoras regresandolas en un conjunto
 set<string> Master::getComputerUniqueServices() {
     set<string> tcp;
     for (auto &x : computerDictionary) {
@@ -719,7 +719,7 @@ set<string> Master::getComputerUniqueServices() {
     }
     return (tcp);
 }
-
+// Este metodo obtiene las conexiones entrantes unicas de cada computadora
 set<string> Master::getComputerUniqueServicesIndividual() {
     set<string> tcp;
     for (auto &x : computerDictionary) {
@@ -751,7 +751,7 @@ set<string> Master::getComputerUniqueServicesIndividual() {
     }
     return (tcp);
 }
-
+//Este metodo va atraves de las conexiones entrantes y salientes de la computadora espesificada
 bool Master::checkIfConnection(string IP1, string IP2) {
     map<string, ConexionesComputadora>::iterator searchIP = computerDictionary.find(IP1);
     stack IPsSearchE = searchIP->second.getConexionesEntrantes();
@@ -776,7 +776,7 @@ bool Master::checkIfConnection(string IP1, string IP2) {
     }
     return (false);
 }
-
+// es el metodo que te permite crear una nueva computadora o hacer una conexion dependiendo de si ya existe 1 sobre un solo dia
 bool Master::dayIntegration(ADT &a, string &dia) {
     map<string, ConexionesComputadora>::iterator searchIPO = dayComputerDictionary.find(a.getIPO().display());
     map<string, ConexionesComputadora>::iterator searchIPD = dayComputerDictionary.find(a.getIPD().display());
@@ -804,7 +804,7 @@ bool Master::dayIntegration(ADT &a, string &dia) {
     }
     return (false);
 }
-
+//este metodo crea una estructura de datos tipo diccionario en la que asigna a cada servicio el numero de conecciones.
 map<string, int> Master::conexionesPorDia(Fecha _fecha) {
     map<string, int> tCDictionary;
     loadComputers(&Master::dayIntegration, to_string(_fecha.getDia()));
@@ -817,7 +817,7 @@ map<string, int> Master::conexionesPorDia(Fecha _fecha) {
     }
     return (tCDictionary);
 }
-
+//Este metodo obtiene le numero indicado de de mayores sitios con con conecciones en una espesifica fecha
 vector<string> Master::top(int n, string _fecha) {
     Fecha date(_fecha);
     map<string, int> TCD = conexionesPorDia(date);
@@ -834,7 +834,7 @@ vector<string> Master::top(int n, string _fecha) {
     //cout << "post topn" << endl;
     return (values);
 }
-
+// este metodod utiliza la funcion top para realizar el top de connecciones de todos los dias
 vector<vector<string>> Master::ChronologyOfMostConections(int num) {
     vector<vector<string>> storage;
     sortByTime();
@@ -847,13 +847,14 @@ vector<vector<string>> Master::ChronologyOfMostConections(int num) {
     }
     return (storage);
 }
+// este metodo obtienene los nombres de todos los servicios y los mete en un diccionario
 bool Master::addServicesNames(ADT &a, string &name) {
     if (a.getIPD().getLocalIp() != "10.8.134" && a.getHostDDisplay() != "-") {
         domainNames.insert(a.getHostDDisplay());
     }
     return (true);
 }
-
+// este meteodo obtiene todos los nombres de los servicios almacenados en domainNames
 void Master::getStrangeHost() {
     loadComputers(&Master::addServicesNames, "all");
     for (auto x : domainNames) {
