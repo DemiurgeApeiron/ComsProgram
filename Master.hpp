@@ -10,6 +10,7 @@ javier alejandro martinez noe y Ricardo Uraga
 
 #include "ADT.hpp"
 #include "ConexionesComputadora.hpp"
+#include "Graph.hpp"
 #include "arbolBinarioMapNc.hpp"
 using namespace std;
 #pragma once
@@ -25,6 +26,7 @@ class Master {
     map<string, string> HostIP;
     set<string> domainNames;
     BinarySearchTree BST;
+    map<string, Graph<string>> IPNetwork;
 
     int indice = 0;
     ADT computer;
@@ -59,6 +61,7 @@ class Master {
     bool addComputerByDay(ADT &a, string &dia);
     bool dayIntegration(ADT &a, string &dia);
     bool addServicesNames(ADT &a, string &name);
+    Graph<string> makeGraphOfDay(Fecha _fecha);
 
    public:
     Master() = default;
@@ -96,6 +99,10 @@ class Master {
     vector<vector<string>> ChronologyOfMostConections(int num);
     void getStrangeHost();
     bool checkIfConnection(string IP1, string IP2);
+    void generateGraphConnections();
+    vector<string> getGraphIncomingConnectionsInternal(string _fecha, int IP);
+    vector<string> getGraphOutgoingConnectionsInternal(string _fecha, int IP);
+    map<string, Graph<string>> tempGetIPNetwork() { return IPNetwork; }
 };
 
 Master::~Master() {
@@ -861,4 +868,68 @@ void Master::getStrangeHost() {
         cout << x << " , ";
     }
     cout << endl;
+}
+// este meteodo genera un grafo de las conexiones entre ips por dia
+Graph<string> Master::makeGraphOfDay(Fecha date) {
+    loadComputers(&Master::dayIntegration, to_string(date.getDia()));
+    Graph<string> tGraph(true);
+    map<string, int> indexOfIP;
+    int ind = 0;
+    string LIP = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 2);
+    for (auto &x : dayComputerDictionary) {
+        if (indexOfIP.find(x.first) == indexOfIP.end() && x.second.getComputerIPLocal() == LIP) {
+            tGraph.add_node(x.first);
+            indexOfIP[x.first] = ind;
+        }
+        stack<IP> Icnx = x.second.getConexionesEntrantes();
+        if (!Icnx.empty()) {
+            for (size_t i = 0; i < Icnx.size(); i++) {
+                if (indexOfIP.find(Icnx.top().display()) == indexOfIP.end() && Icnx.top().getLocalIp() == LIP) {
+                    tGraph.add_node(Icnx.top().display());
+                    indexOfIP[Icnx.top().display()] = ind++;
+                }
+                tGraph.add_edge(indexOfIP[Icnx.top().display()], indexOfIP[x.first]);
+                Icnx.pop();
+            }
+        }
+        queue<IP> Scnx = x.second.getConexionesSalientes();
+        if (!Scnx.empty()) {
+            for (size_t i = 0; i < Scnx.size(); i++) {
+                if (indexOfIP.find(Scnx.front().display()) == indexOfIP.end() && Scnx.front().getLocalIp() == LIP) {
+                    //cout << "eGameS" << Scnx.front().display() << endl;
+                    tGraph.add_node(Scnx.front().display());
+                    indexOfIP[Scnx.front().display()] = ind++;
+                }
+                tGraph.add_edge(indexOfIP[x.first], indexOfIP[Scnx.front().display()]);
+                Scnx.pop();
+            }
+        }
+    }
+    return (tGraph);
+}
+// este meteodo genera un diccionario de grafos de las conexiones entre ips por dia
+void Master::generateGraphConnections() {
+    sortByTime();
+    string fechaTemp = lista[0].getFechaDisplay();
+    string withoutDay = to_string(lista[0].getFecha().getDia());
+    string fechaMovible = fechaTemp.substr(withoutDay.size(), fechaTemp.size());
+    for (size_t i = lista[0].getFecha().getDia(); i <= lista[lista.size() - 1].getFecha().getDia(); i++) {
+        string tempFecha = to_string(i) + fechaMovible;
+        Fecha date(tempFecha);
+        IPNetwork[tempFecha] = makeGraphOfDay(date);
+        cout << "Graph of " << date.display() << " Generated" << endl;
+    }
+    cout << "Genaration Finished" << endl;
+}
+// este meteodo busca las conexiones recibidas a una ip espesifica en un dia
+vector<string> Master::getGraphIncomingConnectionsInternal(string _fecha, int IP) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(IP);
+    Fecha date(_fecha);
+}
+// este meteodo busca las conexiones salientes de una ip espesifica en un dia
+vector<string> Master::getGraphOutgoingConnectionsInternal(string _fecha, int IP) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(IP);
+    Fecha date(_fecha);
 }

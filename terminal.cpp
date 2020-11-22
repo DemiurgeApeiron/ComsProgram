@@ -225,7 +225,14 @@ int terminal() {
 
     cout << endl;
     cout << endl;
-
+    cout << "pp1" << endl;
+    program.generateGraphConnections();
+    cout << "pp2" << endl;
+    map<string, Graph<string>> tempMpa = program.tempGetIPNetwork();
+    cout << "pp3" << endl;
+    for (auto &x : tempMpa) {
+        cout << x.first << " :: " << x.second.getNofNodes() << endl;
+    }
     return (0);
 }
 
