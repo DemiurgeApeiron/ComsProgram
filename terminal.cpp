@@ -61,7 +61,7 @@ int terminal() {
         cout << endl;
     }
     cout << endl;
-    string diaRelativo = to_string(program.diaRelativo(2, sort));
+    string diaRelativo = to_string(program.diaRelativo(1, sort));
     cout << "El segundo dia es: " << diaRelativo << endl;
     int numRegistros = program.busquedaDia(diaRelativo, false);
     cout << "El segundo dia hay: " << numRegistros << " registros" << endl;

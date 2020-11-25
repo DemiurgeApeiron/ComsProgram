@@ -1,1 +1,1 @@
-conexionesPorDia
+ring> puertosActivos = program.getActivePortsDestiny();

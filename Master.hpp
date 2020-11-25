@@ -117,20 +117,17 @@ class Master {
 Master::~Master() {
 }
 //metodo para incluir los registros a la clase abstracta
-
 void Master::addRegister(vector<string> &_lista) {
     ADT registro = ADT(_lista, indice);
     indice += 1;
     lista.push_back(registro);
 }
 //metodo para ordenar los registros por fecha
-
 vector<ADT> Master::sortByTime() {
     lista = mergeSort(lista, 0, lista.size() - 1, &Master::timeCondMin, &Master::timeCondMax);
     return (lista);
 }
 //metodo de ordenamiento Quick Sort
-
 vector<ADT> Master::mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b)) {
     int n = listaToMege.size();
     if (primer < ultimo) {
@@ -152,7 +149,7 @@ vector<ADT> Master::mergeSort(vector<ADT> &listaToMege, int primer, int ultimo, 
         return (resp);
     }
 }
-
+// este metodo permite hacer el ordenamiento cuando va de regereso el algoritmo
 vector<ADT> Master::merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compareMin)(ADT &a, ADT &b), bool (Master::*compareMax)(ADT &a, ADT &b)) {
     int n = l.size() + r.size();
 
@@ -183,7 +180,6 @@ vector<ADT> Master::merge(vector<ADT> &l, vector<ADT> &r, bool (Master::*compare
     return (result);
 }
 //metodo para comparar fechas y hora
-
 bool Master::timeCondMin(ADT &a, ADT &b) {
     Fecha tempFechaA = a.getFecha();
     Fecha tempFechaB = b.getFecha();
@@ -203,7 +199,6 @@ bool Master::timeCondMin(ADT &a, ADT &b) {
     }
 }
 //metodo para comparar fechas y hora
-
 bool Master::timeCondMax(ADT &a, ADT &b) {
     Fecha tempFechaA = a.getFecha();
     Fecha tempFechaB = b.getFecha();
@@ -223,7 +218,6 @@ bool Master::timeCondMax(ADT &a, ADT &b) {
     }
 }
 //metodo para comparar fechas
-
 bool Master::dayCond(ADT &a, ADT &b) {
     Fecha tempFechaA = a.getFecha();
     Fecha tempFechaB = b.getFecha();
@@ -238,7 +232,6 @@ bool Master::dayCond(ADT &a, ADT &b) {
     }
 }
 //metodo para comparar horas
-
 bool Master::horaCond(ADT &a, ADT &b) {
     Hora tempHoraA = a.getHora();
     Hora tempHoraB = b.getHora();
@@ -253,7 +246,6 @@ bool Master::horaCond(ADT &a, ADT &b) {
     }
 }
 // funcion para imprimir el registro el input es cuatas filas quieres imprimir. 0 es todas
-
 void Master::Display(int resp) {
     size_t size;
     if (resp == 0) {
@@ -266,18 +258,15 @@ void Master::Display(int resp) {
     }
 }
 //funcion para imprimir un solo registro
-
 void Master::printVector(ADT list) {
     cout << list.getFechaDisplay() << ", " << list.getHoraDisplay() << ", " << list.getIPODisplay() << ", " << list.getPuertoODisplay() << ", " << list.getHostODisplay() << ", " << list.getIPDDisplay() << ", " << list.getPuertoDDisplay() << ", " << list.getHostDDisplay() << " ID: " << list.getIndice() << endl;
 }
 //funcion para iniciar las busquedas
-
 int Master::busqueda(bool (Master::*compare)(ADT &a, string &num), string var, bool PrintBool) {
     int contador = 0;
     return (busquedaArbol(0, lista.size() - 1, (compare), var, contador, PrintBool));
 }
 //funcion para hacer una busqueda
-
 int Master::busquedaArbol(int primer, int ultimo, bool (Master::*compare)(ADT &a, string &num), string var, int &contador, bool PrintBool) {
     if (ultimo < primer) {
         return contador;
@@ -295,7 +284,6 @@ int Master::busquedaArbol(int primer, int ultimo, bool (Master::*compare)(ADT &a
     return (contador);
 }
 //funcion para buscar una fecha espesifica
-
 bool Master::dayBusquedaCond(ADT &a, string &num) {
     Fecha tempFecha = a.getFecha();
     if (tempFecha.getDia() == stoi(num)) {
@@ -304,7 +292,6 @@ bool Master::dayBusquedaCond(ADT &a, string &num) {
     return (false);
 }
 //funcion para buscar el puerto mas chico
-
 bool Master::puertoMinBusquedaCond(ADT &a, string &num) {
     Puerto tempPuerto = a.getPuertoD();
     if (tempPuerto.getPuerto() < stoi(num)) {
@@ -313,7 +300,6 @@ bool Master::puertoMinBusquedaCond(ADT &a, string &num) {
     return (false);
 }
 //funcion para buscar un usuario
-
 bool Master::OrdenadorBusquedaCond(ADT &a, string &name) {
     HostName tempHost = a.getHostO();
     if (tempHost.getName() == name) {
@@ -322,7 +308,6 @@ bool Master::OrdenadorBusquedaCond(ADT &a, string &name) {
     return (false);
 }
 //funcion para buscar un servicio en espesifico
-
 bool Master::ServicioBusquedaCond(ADT &a, string &name) {
     HostName tempHost = a.getHostD();
     if (tempHost.getName() == name) {
@@ -331,7 +316,6 @@ bool Master::ServicioBusquedaCond(ADT &a, string &name) {
     return (false);
 }
 //busqueda de un usuario por nombre completo
-
 bool Master::busquedaUsuarioCompletoCond(ADT &a, string &name) {
     HostName tempCompleto = a.getHostO();
     if (tempCompleto.display() == name) {
@@ -340,18 +324,18 @@ bool Master::busquedaUsuarioCompletoCond(ADT &a, string &name) {
     return (false);
 }
 //metodo para encontrar todos los servicios
-
 bool Master::getAllServicesCond(ADT &a, string &name) {
     HostName servicioTemp = a.getHostD();
+    string LIP = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 2);
     if (find(allServices.begin(), allServices.end(), servicioTemp.getName()) != allServices.end()) {
         return (false);
-    } else {
+    } else if (a.getIPD().getLocalIp() != LIP) {
         allServices.push_back(servicioTemp.getName());
         return (true);
     }
+    return (false);
 }
 //metodo para encontrar todos los puertos de destino sin repeticion
-
 bool Master::getActivePortsDestinyCond(ADT &a, string &name) {
     Puerto portDTemp = a.getPuertoD();
     if (find(activePorts.begin(), activePorts.end(), portDTemp.display()) != activePorts.end()) {
@@ -362,7 +346,6 @@ bool Master::getActivePortsDestinyCond(ADT &a, string &name) {
     }
 }
 //metodo para encontrar todos los puertos de origen sin repeticion
-
 bool Master::getActivePortsOriginCond(ADT &a, string &name) {
     Puerto portOTemp = a.getPuertoO();
     if (find(activePorts.begin(), activePorts.end(), portOTemp.display()) != activePorts.end()) {
@@ -373,32 +356,26 @@ bool Master::getActivePortsOriginCond(ADT &a, string &name) {
     }
 }
 // metodo para iniciar la busqueda de un dia
-
 int Master::busquedaDia(string num, bool PrintBool) {
     return (busqueda(&Master::dayBusquedaCond, num, PrintBool));
 }
 // metodo para iniciar la busqueda de un puerto minimo a un punto
-
 int Master::busquedaMinpuerto(string num, bool PrintBool) {
     return (busqueda(&Master::puertoMinBusquedaCond, num, PrintBool));
 }
 // metodo para iniciar la busqueda de un servicio
-
 int Master::busquedaServicio(string nombre, bool PrintBool) {
     return (busqueda(&Master::ServicioBusquedaCond, nombre, PrintBool));
 }
 // metodo para iniciar la busqueda de un usuario
-
 int Master::busquedaOrdenador(string nombre, bool PrintBool) {
     return (busqueda(&Master::OrdenadorBusquedaCond, nombre, PrintBool));
 }
 // metodo para iniciar la busqueda de un usuario por nombre completo
-
 int Master::busquedaUsuarioCompleto(string nombre, bool PrintBool) {
     return (busqueda(&Master::busquedaUsuarioCompletoCond, nombre, PrintBool));
 }
 // metodo para iniciar la busqueda de un dia relativo
-
 int Master::diaRelativo(int _dia, bool sort) {
     if (sort) {
         sortByTime();
@@ -406,9 +383,7 @@ int Master::diaRelativo(int _dia, bool sort) {
     Fecha fecha = lista[0].getFecha();
     return (fecha.getDia() + _dia);
 }
-
 // metodo para iniciar la busqueda de un dia relativo
-
 string Master::primeraFecha(bool sort) {
     if (sort) {
         sortByTime();
@@ -417,26 +392,22 @@ string Master::primeraFecha(bool sort) {
     return (fecha.display());
 }
 // metodo para iniciar la busqueda de todos los servicios
-
 vector<string> Master::GetAllServices() {
     busqueda(&Master::getAllServicesCond, "-", false);
     return (allServices);
 }
 // metodo para iniciar la busqueda de tosos los puertos activos de destino
-
 vector<string> Master::getActivePortsDestiny() {
     activePorts.clear();
     busqueda(&Master::getActivePortsDestinyCond, "-", false);
     return (activePorts);
 }
 // metodo para iniciar la busqueda de todos los puertos activos de origen
-
 vector<string> Master::getActivePortsOrigin() {
     activePorts.clear();
     busqueda(&Master::getActivePortsOriginCond, "-", false);
     return (activePorts);
 }
-
 // metodo para consegir la ip local
 string Master::conseguirIpLocal() {
     int indice = 0;
@@ -447,9 +418,7 @@ string Master::conseguirIpLocal() {
     }
     return (tempUser.getLocalIp() + ".0");
 }
-
-// metodo para iniciar un anailisis completo en este se agregan todas las computadoras con las que se realizo una conexion en
-//la red
+// metodo para iniciar un anailisis completo en este se agregan todas las computadoras con las que se realizo una conexion en la red
 void Master::computerAnalisis() {
     cout << endl;
     cout << "--Generating Computers--" << endl;
@@ -460,14 +429,12 @@ void Master::computerAnalisis() {
         cout << listComputers[i].getComputerIP() << endl;
     }*/
 }
-
 // este es un metodo para generar las computadoras apartir del resitro trabaja en conjunto con busqueda
 void Master::loadComputers(bool (Master::*compare)(ADT &a, string &num), string var) {
     for (size_t i = 0; i < lista.size(); i++) {
         (this->*compare)(lista[i], var);
     }
 }
-
 // es el metodo que te permite crear una nueva computadora o hacer una conexion dependiendo de si ya existe 1
 bool Master::ComputerIntegration(ADT &a, string &_ip) {
     map<string, ConexionesComputadora>::iterator searchIPO = computerDictionary.find(a.getIPO().display());
@@ -498,7 +465,6 @@ bool Master::ComputerIntegration(ADT &a, string &_ip) {
     }
     return (false);
 }
-
 // esta funcion llama singleConectionSearch y hace un fullConectionStatus
 void Master::singleConectionAssessment(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -506,17 +472,14 @@ void Master::singleConectionAssessment(int _IPI) {
     loadComputers(&Master::ComputerIntegration, _IP);
     fullConectionStatus(_IPI);
 }
-
 // esta es la condicional para hacer una busqueda de IPs
 bool Master::IPSearch(ConexionesComputadora a, string _ip) {
     return a.getComputerIP() == _ip ? true : false;
 }
-
 //funcion para iniciar las busquedas en la lista de computadoras
 ConexionesComputadora *Master::busquedaConexiones(bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind) {
     return (busquedaArbolConexiones(0, computerDictionary.size() - 1, (compare), var, firstFind));
 }
-
 //funcion para hacer una busqueda en la lista de computadoras
 ConexionesComputadora *Master::busquedaArbolConexiones(int primer, int ultimo, bool (Master::*compare)(ConexionesComputadora a, string _ip), string var, bool firstFind) {
     if (ultimo < primer) {
@@ -543,12 +506,10 @@ ConexionesComputadora *Master::busquedaArbolConexiones(int primer, int ultimo, b
         return (NULL);
     }
 }
-
 // la condicional para encontrar una computadora espesifica
 bool Master::computerConectionCond(ConexionesComputadora a, string _ip) {
     return a.getComputerIP() == _ip ? true : false;
 }
-
 // realiza una busqueda mediante una IP en la lista de computadoras
 string Master::SearchByIP(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -556,7 +517,6 @@ string Master::SearchByIP(int _IPI) {
     map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
     return tempConection->second.getComputerIP();
 }
-
 // regresa las conexiones entrantes mediante la busqueda de una IP espesifica
 string Master::getIncomingConection(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -569,7 +529,6 @@ string Master::getIncomingConection(int _IPI) {
         return "NULL";
     }
 }
-
 // regresa el tamaño de las conexones entrantes
 int Master::getAllIncomingConections(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -582,7 +541,6 @@ int Master::getAllIncomingConections(int _IPI) {
         return 0;
     }
 }
-
 // regresa el tamaño de las conexones salientes
 int Master::getAllOutgoingConections(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -595,7 +553,6 @@ int Master::getAllOutgoingConections(int _IPI) {
         return 0;
     }
 }
-
 // regresa el nombre de las la computadora mediante una ip espesifica
 string Master::getComputerName(int _IPI) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -607,7 +564,6 @@ string Master::getComputerName(int _IPI) {
         return "NULL";
     }
 }
-
 // condicion para la busqueda de una compu por indice se ocupa con la busqueda de registros
 bool Master::busquedaPorIndiceCond(ADT &a, string &_ip) {
     if (to_string(a.getIndice()) == _ip) {
@@ -617,7 +573,6 @@ bool Master::busquedaPorIndiceCond(ADT &a, string &_ip) {
         return false;
     }
 }
-
 //gets the last N of outgoing conections
 vector<string> Master::getNOutOutgoingConections(int _ipI, int N) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
@@ -626,10 +581,13 @@ vector<string> Master::getNOutOutgoingConections(int _ipI, int N) {
     vector<string> rVector;
     if (tempConection != computerDictionary.end() && !tempConection->second.getConexionesSalientes().empty()) {
         queue<int> salientesI = tempConection->second.getConexionesSalientesIndice();
+        int tamaño = salientesI.size();
         if (N < salientesI.size()) {
-            for (size_t i = 0; i < N; i++) {
-                rVector.push_back(to_string(salientesI.front()));
-                busqueda(&Master::busquedaPorIndiceCond, to_string(salientesI.front()), true);
+            for (size_t i = 0; i < tamaño; i++) {
+                if (tamaño - i <= N) {
+                    rVector.push_back(to_string(salientesI.front()));
+                    busqueda(&Master::busquedaPorIndiceCond, to_string(salientesI.front()), true);
+                }
                 salientesI.pop();
             }
         } else {
@@ -992,7 +950,6 @@ string Master::getGraphTopIPWithConnections(string _fecha) {
     }
     return (max.first);
 }
-
 //este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia,
 vector<string> Master::getGraphIncomingConnectionsInternal(string _fecha, int IP) {
     Graph gnet = IPNetwork[_fecha];
@@ -1001,7 +958,6 @@ vector<string> Master::getGraphIncomingConnectionsInternal(string _fecha, int IP
     int indice = gnet.find(_IP);
     return (gnet.getConnectionsToVertex(indice));
 }
-
 //este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia pero con la lista de conexiones unica
 vector<string> Master::getGraphIncomingConnectionsInternalUnique(string _fecha, int IP) {
     Graph gnet = IPNetwork[_fecha];
@@ -1071,7 +1027,6 @@ void Master::generateGraphConnectionsWebSites() {
     }
     cout << "Generation Finished" << endl;
 }
-
 //este meotodo consige las conexiones que recibio un sitioWeb en un dia,
 vector<pair<string, string>> Master::getConnectionsToWebSite(string _fecha, string WebSite) {
     Graph gnet = computersToWebSitesNetwork[_fecha];
@@ -1083,7 +1038,6 @@ vector<pair<string, string>> Master::getConnectionsToWebSite(string _fecha, stri
         return (error);
     }
 }
-
 //este meotodo consige las conexiones que recibio un sitioWeb en un dia pero con la lista de conexiones unica
 vector<pair<string, string>> Master::getConnectionsToWebSiteUnique(string _fecha, string WebSite) {
     Graph gnet = computersToWebSitesNetwork[_fecha];

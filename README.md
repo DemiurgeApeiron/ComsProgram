@@ -4,12 +4,18 @@
 
 El archivo que se corre es terminal.cpp dentro de este archivo ya se encuentran las pruebas para contestar las preguntas, sin embargo se van hacer algunas preguntas a ciertas funciones para que pueda ser leíble la información
 
+---
+
 display(int numero_columnas)
+
 numero_columnas es un número el cual va a indicar cuántas filas se quieren imprimir, 0 para imprimir todas.
 
 busquedaDia(string palabraABuscar, bool impresion)
+
 busquedaMinpuerto(string palabraABuscar, bool impresion)
+
 busquedaServicio(string palabraABuscar, bool impresion)
+
 busquedaOrdenador(string palabraABuscar, bool impresion)
 
 Para estas 4 funciones se ocupan los mismos parámetros con el mismo tipo:
@@ -24,33 +30,47 @@ Para el método de ordenamiento sortByTime() se ocupó el algoritmo Quick sort e
 
 Para el método de búsqueda se ocupo un algoritmo diseñado para formar parte de la familia dividir y conquistar, En el cual se produce una bifurcación dividiendo al arreglo a la mitad, tanto por el lado izquierdo como por el derecho. Debido a esto este algoritmo diseñado tiene una complejidad temporal de O(log(n)). Esta búsqueda funciona como un algoritmo universal, para lograr esto se le pasa una función por parametro que determine la condicional por la cual se va a realizar la búsqueda.
 
-¿Cuántos registros tiene tu archivo?
-38105 registros
+---
 
-¿Cuántos récords hay del segundo día registrado? ¿Qué día es este?
+# Avance 1
+
+1. ¿Cuántos registros tiene tu archivo?
+
+En total hay: 38051 Registros
+
+2. ¿Cuántos récords hay del segundo día registrado? ¿Qué día es este?
+
 El segundo dia es: 11
-El segundo dia hay: 3314 registros
 
-¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?
+El segundo dia hay: 3293 registros
+
+3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?
+
 En el registro scott si tiene una compu
 
-¿Cuál es la dirección de la red interna de la compañía?
-la Ip local de la red es: 10.8.134
+4. ¿Cuál es la dirección de la red interna de la compañía?
 
-¿Alguna computadora se llama server.reto.com?
+la Ip local de la red es: 10.8.134.0
+
+5. ¿Alguna computadora se llama server.reto.com?
+
 No hay un usuario llamado server.reto.com en el registo
 
-¿Qué servicio de mail utilizan (algunas ideas: Gmail, Hotmail, Outlook, Protonmail)?
+6. ¿Qué servicio de mail utilizan (algunas ideas: Gmail, Hotmail, Outlook, Protonmail)?
+
 En el registro se ocupa el servicio: outlook
 
-Considerando solamente los puertos destino ¿Qué puertos abajo del 1000 se están usando? Lista los puertos e investiga que aplicación/servicio lo utiliza generalmente.
+7. Considerando solamente los puertos destino ¿Qué puertos abajo del 1000 se están usando? Lista los puertos e investiga que aplicación/servicio lo utiliza generalmente.
+
 Si hay un puerto de destino menor a 1000
 
+Hay 36878 en el regitro con un puerto de destino menor a 1000
+
 Se estan Ocupando los servicios:
-aol, outlook, -, finance, investopedia, go, msn, tripadvisor, steampowered, zillow, gamepedia, allrecipes, npr, rottentomatoes, healthline, ca, macys, steamcommunity, paypal, live, lowes, cnet, usatoday, mail, cbssports, genius, usnews, ebay, facebook, homedepot, weather, quizlet, amazon, twitter, wiktionary, youtube, microsoft, linkedin, pinterest, britannica, apple, cnn, bbb, xfinity, glassdoor, etsy, books, mapquest, imdb, wellsfargo, office, ign, washingtonpost, google, accuweather, retailmenot, hulu, yelp, theguardian, yahoo, netflix, webmd, roblox, techradar, foxnews, apartments, instagram, dictionary, espn, wikihow, quora, craigslist, en, bankofamerica, wayfair, fb, medicalnewstoday, nytimes, usps, spotify, bestbuy, play, merriam-webster, chase, fandom, nih, indeed, huffpost, groupon, target, yellowpages, irs, mayoclinic, expedia, businessinsider, forbes, bleacherreport, reddit, urbandictionary, foodnetwork, walmart, mkevjvtfe6dxajlsdfhb, k9oggvetufjky45ogief,
+accuweather, outlook, -, google, gamepedia, investopedia, go, msn, tripadvisor, steampowered, zillow, allrecipes, npr, rottentomatoes, healthline, ca, macys, steamcommunity, paypal, live, lowes, cnet, usatoday, mail, cbssports, genius, usnews, ebay, facebook, homedepot, weather, quizlet, amazon, twitter, wiktionary, youtube, microsoft, linkedin, pinterest, britannica, apple, cnn, bbb, xfinity, glassdoor, etsy, books, mapquest, imdb, wellsfargo, office, ign, washingtonpost, aol, retailmenot, hulu, yelp, finance, theguardian, yahoo, netflix, webmd, roblox, techradar, foxnews, apartments, instagram, dictionary, espn, wikihow, quora, craigslist, en, wayfair, bankofamerica, fb, nytimes, medicalnewstoday, bestbuy, usps, spotify, play, merriam-webster, chase, fandom, nih, huffpost, indeed, groupon, target, yellowpages, irs, mayoclinic, expedia, businessinsider, forbes, bleacherreport, reddit, urbandictionary, foodnetwork, walmart, k9oggvetufjky45ogief, mkevjvtfe6dxajlsdfhb,
 
 Puertos de destino activos:
-443, 993, 53, 67, 465, 80, -, 135, 965,
+443, 465, 53, 993, 67, 80, -, 135, 965,
 
 # Avance 2
 
@@ -146,121 +166,137 @@ Trinidad Pablo. (2018). Estructuras de Datos[2] - Complejidad computacional. 16/
 
 Living Sun. (2018). La complejidad del tiempo para las operaciones en la implementación de la pila y la cola - matrices, lista, pila, cola. 10/10/2020, de Living Sun.com Sitio web: https://living-sun.com/es/arrays/69036-time-complexity-for-operations-in-implementation-of-stack-and-queue-arrays-list-stack-queue.html
 
-¿Qué dirección ip estas usando?
+1. ¿Qué dirección ip estas usando?
+
 computer IP: 10.8.134.59
 
-¿Cuál fue la ip de la última conexión que recibió esta computadora? ¿Es interna o externa?
-Last conection: IP: Interna-> 21-8-2020, 17:59:58, 10.8.134.6, 56214, jack.reto.com, 10.8.134.59, 965, -
+2. ¿Cuál fue la ip de la última conexión que recibió esta computadora? ¿Es interna o externa?
 
-¿Cuántas conexiones entrantes tiene esta computadora?
-Number of Incoming conections: 3245
+Last conection: IP: Interna-> 21-8-2020, 17:59:58, 10.8.134.98, 56214, jack.reto.com, 10.8.134.59, 965, kenneth.reto.com ID: 37988
 
-¿Cuántas conexiones salientes tiene esta computadora?
-Number of Outgoing conections: 882
+3. ¿Cuántas conexiones entrantes tiene esta computadora?
+   Number of Incoming conections: 3288
 
-Extra: ¿Tiene esta computadora 3 conexiones seguidas a un mismo sitio web?
+4. ¿Cuántas conexiones salientes tiene esta computadora?
+   Number of Outgoing conections: 2898
+
+5. Extra: ¿Tiene esta computadora 3 conexiones seguidas a un mismo sitio web?
+
 the last 3 outgoing conections were:
-11-8-2020, 9:21:18, 10.8.134.59, 25956, kenneth.reto.com, 8.8.8.8, 53, -
-11-8-2020, 9:21:27, 10.8.134.59, -, kenneth.reto.com, 169.68.222.20, -, glassdoor.com
-11-8-2020, 9:21:33, 10.8.134.59, 19234, kenneth.reto.com, 169.68.222.20, 443, glassdoor.com
-RegisterIndex: 3407, RegisterIndex: 3408, RegisterIndex: 3409,
+
+21-8-2020, 17:58:58, 10.8.134.59, 44357, kenneth.reto.com, 210.245.116.19, 965, k9oggvetufjky45ogief.ru ID: 37979
+
+21-8-2020, 17:59:15, 10.8.134.59, 61574, kenneth.reto.com, 210.245.116.19, 965, k9oggvetufjky45ogief.ru ID: 37982
+
+21-8-2020, 18:3:54, 10.8.134.59, 68, kenneth.reto.com, 10.8.134.178, 67, - ID: 38015
+
+RegisterIndex: 37979, RegisterIndex: 37982, RegisterIndex: 38015,
 
 # Avance 3
 
 Antes de comenzar con la descripción del avance 3, se nos indica que hagamos un conjunto de la variable string, lo que nos lleva a la siguiente pregunta ¿Qué es mas eficiente un vector o un conjunto? La verdad es que para lo que nos estan pidiendo en esta actividad std::set es la mejor opción ya que automáticamente elimina los duplicados a comparación de hacerlo con un vector con el cual tendriamos que hacerlo nosotros. Tiene una complejidad temporal de O(n^2) a comparación del vector que tiene O(n).
 
-Hay algún nombre de dominio que sea anómalo (Esto puede ser con inspección visual).
+---
+
+1. Hay algún nombre de dominio que sea anómalo (Esto puede ser con inspección visual).
+
 si: k9oggvetufjky45ogief.ru y mkevjvtfe6dxajlsdfhb.com
 
-De los nombres de dominio encontrados en el paso anterior, ¿cuál es su ip? ¿Cómo determinarías esta información de la manera más eficiente en complejidad temporal?
+2. De los nombres de dominio encontrados en el paso anterior, ¿cuál es su ip? ¿Cómo determinarías esta información de la manera más eficiente en complejidad temporal?
 
 k9oggvetufjky45ogief.ru: 210.245.116.19
 mkevjvtfe6dxajlsdfhb.com: 63.5.179.78
 
-De las computadoras pertenecientes al dominio reto.com determina la cantidad de ips que tienen al menos una conexión entrante. (Recuerda que ya tienes la dirección de la red y el último octeto puede tener computadoras del .1 al .254). Imprime la cantidad de computadoras.
+3. De las computadoras pertenecientes al dominio reto.com determina la cantidad de ips que tienen al menos una conexión entrante. (Recuerda que ya tienes la dirección de la red y el último octeto puede tener computadoras del .1 al .254). Imprime la cantidad de computadoras.
 
 Number of computers with at least one conection: 33
 
-Toma algunas computadoras que no sean server.reto.com o el servidor dhcp. Pueden ser entre 5 y 150. Obtén las ip únicas de las conexiones entrantes.
+4. Toma algunas computadoras que no sean server.reto.com o el servidor dhcp. Pueden ser entre 5 y 150. Obtén las ip únicas de las conexiones entrantes.
 
 All unique incoming conections: 10.8.134.106 , 10.8.134.107 , 10.8.134.109 , 10.8.134.113 , 10.8.134.116 , 10.8.134.118 , 10.8.134.122 , 10.8.134.126 , 10.8.134.129 , 10.8.134.139 , 10.8.134.142 , 10.8.134.15 , 10.8.134.16 , 10.8.134.17 , 10.8.134.20 , 10.8.134.21 , 10.8.134.22 , 10.8.134.24 , 10.8.134.25 , 10.8.134.44 , 10.8.134.47 , 10.8.134.51 , 10.8.134.53 , 10.8.134.59 , 10.8.134.61 , 10.8.134.68 , 10.8.134.69 , 10.8.134.72 , 10.8.134.79 , 10.8.134.88 , 10.8.134.94 , 10.8.134.98 ,
 
-for the computer dennis.reto.com the unique conections are:
-10.8.134.59,
-for the computer linda.reto.com the unique conections are:
-10.8.134.59,
-for the computer laura.reto.com the unique conections are:
-10.8.134.59,
-for the computer shirley.reto.com the unique conections are:
-10.8.134.59,
-for the computer jennifer.reto.com the unique conections are:
-10.8.134.59,
-for the computer angela.reto.com the unique conections are:
-10.8.134.59,
-for the computer janet.reto.com the unique conections are:
-10.8.134.59,
-for the computer emily.reto.com the unique conections are:
-10.8.134.59,
-for the computer scott.reto.com the unique conections are:
-10.8.134.59,
-for the computer jessica.reto.com the unique conections are:
-10.8.134.59,
-for the computer nancy.reto.com the unique conections are:
-10.8.134.59,
-for the computer michael.reto.com the unique conections are:
-10.8.134.59,
-for the computer daniel.reto.com the unique conections are:
-10.8.134.59,
-for the computer jacob.reto.com the unique conections are:
-10.8.134.59,
-for the computer brenda.reto.com the unique conections are:
-10.8.134.59,
-for the computer dorothy.reto.com the unique conections are:
-10.8.134.59,
-for the computer ruth.reto.com the unique conections are:
-10.8.134.59,
-for the computer kenneth.reto.com the unique conections are:
-10.8.134.106, 10.8.134.107, 10.8.134.109, 10.8.134.113, 10.8.134.116, 10.8.134.118, 10.8.134.122, 10.8.134.126, 10.8.134.129, 10.8.134.139, 10.8.134.142, 10.8.134.15, 10.8.134.16, 10.8.134.17, 10.8.134.20, 10.8.134.21, 10.8.134.22, 10.8.134.24, 10.8.134.25, 10.8.134.44, 10.8.134.47, 10.8.134.51, 10.8.134.53, 10.8.134.61, 10.8.134.68, 10.8.134.69, 10.8.134.72, 10.8.134.79, 10.8.134.88, 10.8.134.94, 10.8.134.98,
-for the computer helen.reto.com the unique conections are:
-10.8.134.59,
-for the computer frank.reto.com the unique conections are:
-10.8.134.59,
-for the computer alexander.reto.com the unique conections are:
-10.8.134.59,
-for the computer karen.reto.com the unique conections are:
-10.8.134.59,
-for the computer anthony.reto.com the unique conections are:
-10.8.134.59,
-for the computer john.reto.com the unique conections are:
-10.8.134.59,
-for the computer jack.reto.com the unique conections are:
-10.8.134.59,
+    for the computer dennis.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer linda.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer laura.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer shirley.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer jennifer.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer angela.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer janet.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer emily.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer scott.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer jessica.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer nancy.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer michael.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer daniel.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer jacob.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer brenda.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer dorothy.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer ruth.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer kenneth.reto.com the unique conections are:
+    10.8.134.106, 10.8.134.107, 10.8.134.109, 10.8.134.113, 10.8.134.116, 10.8.134.118, 10.8.134.122, 10.8.134.126, 10.8.134.129, 10.8.134.139, 10.8.134.142, 10.8.134.15, 10.8.134.16, 10.8.134.17, 10.8.134.20, 10.8.134.21, 10.8.134.22, 10.8.134.24, 10.8.134.25, 10.8.134.44, 10.8.134.47, 10.8.134.51, 10.8.134.53, 10.8.134.61, 10.8.134.68, 10.8.134.69, 10.8.134.72, 10.8.134.79, 10.8.134.88, 10.8.134.94, 10.8.134.98,
+    for the computer helen.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer frank.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer alexander.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer karen.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer anthony.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer john.reto.com the unique conections are:
+    10.8.134.59,
+    for the computer jack.reto.com the unique conections are:
+    10.8.134.59,
 
-Considerando el resultado de las preguntas 3 y 4, ¿Qué crees que esté ocurriendo en esta red? (Pregunta sin código)
+5. Considerando el resultado de las preguntas 3 y 4, ¿Qué crees que esté ocurriendo en esta red? (Pregunta sin código)
 
 Al observar las redes kenneth.reto.com ha hecho multiples conexiones a todas las computadoras y ha recibido multiples conexiones
 de estas computadoras: 10.8.134.106, 10.8.134.107, 10.8.134.109, 10.8.134.113, 10.8.134.116, 10.8.134.118, 10.8.134.122, 10.8.134.126, 10.8.134.129, 10.8.134.139, 10.8.134.142, 10.8.134.15, 10.8.134.16, 10.8.134.17, 10.8.134.20, 10.8.134.21, 10.8.134.22, 10.8.134.24, 10.8.134.25, 10.8.134.44, 10.8.134.47, 10.8.134.51, 10.8.134.53, 10.8.134.61, 10.8.134.68, 10.8.134.69, 10.8.134.72, 10.8.134.79, 10.8.134.88, 10.8.134.94, 10.8.134.98.
 
 por lo cual es muy probable que la computadora de kenneth este infectada mas aun debido a que el hizo coneccion a los sitios anomalos: k9oggvetufjky45ogief.ru: 210.245.116.19, mkevjvtfe6dxajlsdfhb.com: 63.5.179.78
 
-Para las ips encontradas en el paso anterior, determina si se han comunicado con los datos encontrados en la pregunta 1.
+6. Para las ips encontradas en el paso anterior, determina si se han comunicado con los datos encontrados en la pregunta 1.
+
+A connection was made between 10.8.134.59 and 210.245.116.19
+A connection was made between 10.8.134.59 and 63.5.179.78
 
 (Extra): En caso de que hayas encontrado que las computadoras del paso 1 y 4 se comunican, determina en qué fecha ocurre la primera comunicación entre estas 2 y qué protocolo se usó
 
 # Avance 4
 
-¿Existe algún sitio que se mantenga en el top 5 en todos los días?
+1. ¿Existe algún sitio que se mantenga en el top 5 en todos los días?
 
 El elemento k9oggvetufjky45ogief.ru ha estado en el top apartir del 10
+
 El elemento npr.org ha estado en el top apartir del 10
+
 El elemento outlook.com ha estado en el top apartir del 10
 
-¿Existe algún sitio que entre al top 5 a partir de un día y de ahí aparezca en todos los días subsecuentes?
+2. ¿Existe algún sitio que entre al top 5 a partir de un día y de ahí aparezca en todos los días subsecuentes?
 
 El elemento nytimes.com ha estado en el top apartir del 12
+
 El elemento steamcommunity.com ha estado en el top apartir del 12
 
-¿Existe algún sitio que aparezca en el top 5 con una cantidad más alta de tráfico que lo normal?
+3. ¿Existe algún sitio que aparezca en el top 5 con una cantidad más alta de tráfico que lo normal?
 
 outlook ha tiene un alto numero de connexiones 1330, muy sesagado de los otros sitios, sin embargo como es un sitio confiable y es my usado en ambientes de trabajo es muy poco probable que sea una amenaza. Por otro lado k9oggvetufjky45ogief.ru tiene un numero de conexiones 232 ridiculas y su numbre parece ser autogenerado por lo cual sugiero banear de la coneccion.
 
