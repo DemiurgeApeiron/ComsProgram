@@ -2,6 +2,12 @@
 
 # Compiled with g++ c++17
 
+---
+
+$ cd $dir && g++ -std=c++17 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt
+
+---
+
 El archivo que se corre es terminal.cpp dentro de este archivo ya se encuentran las pruebas para contestar las preguntas, sin embargo se van hacer algunas preguntas a ciertas funciones para que pueda ser leíble la información
 
 ---
