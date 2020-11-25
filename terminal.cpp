@@ -243,21 +243,6 @@ int terminal() {
         vector<string> Icnx = program.getGraphIncomingConnectionsInternal(date.display(), 59);
         cout << "Number of connections to IP 10.8.134.59: " << Icnx.size() << endl;
 
-        /*int tempOpt;
-        cout << endl;
-        cout << endl;
-        cout << "Do you want to print the incoming cnnections to IP 10.8.134.59: 0: no 1: yes" << endl;
-        cin >> tempOpt;
-        cout << endl;
-        if (tempOpt == 1) {
-            vector<string> Ucnx = program.getGraphIncomingConnectionsInternalUnique("21-8-2020", 59);
-            for (size_t i = 0; i < Ucnx.size(); i++) {
-                cout << Ucnx[i] << ", ";
-            }
-        }
-        cout << endl;
-        cout << endl;*/
-
         string topVcnx = program.getGraphTopIPWithConnections(date.display());
         cout << "top vértice que más conexiones salientes hacia la red interna tiene: " << topVcnx << endl;
 
@@ -265,18 +250,6 @@ int terminal() {
         cout << "# of outgoing connections to 10.8.134.59: " << constoV.size() << endl;
         cout << endl;
         cout << endl;
-        /*int tempOpt1;
-        cout << "Do you want to print the outgoing connections to 10.8.134.59: 0: no 1: yes" << endl;
-        cin >> tempOpt1;
-        cout << endl;
-        if (date.getDia() == 10) {
-            vector<string> Ucnx1 = program.getGraphOutgoingConnectionsToComputer("21-8-2020", 59);
-            for (size_t i = 0; i < Ucnx1.size(); i++) {
-                cout << Ucnx1[i] << ", ";
-            }
-        }
-        cout << endl;
-        cout << endl;*/
     }
 
     program.generateGraphConnectionsWebSites();

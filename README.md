@@ -264,6 +264,190 @@ El elemento steamcommunity.com ha estado en el top apartir del 12
 
 outlook ha tiene un alto numero de connexiones 1330, muy sesagado de los otros sitios, sin embargo como es un sitio confiable y es my usado en ambientes de trabajo es muy poco probable que sea una amenaza. Por otro lado k9oggvetufjky45ogief.ru tiene un numero de conexiones 232 ridiculas y su numbre parece ser autogenerado por lo cual sugiero banear de la coneccion.
 
+# Avance 5
+
+1. Una ip interna, que llamaremos A, la cual se comunica con algunas otras computadoras internas.
+2. Algún sitio con nombre raro, al cual denominaremos B.
+3. Un sitio web normal que tiene un volumen de tráfico anómalo en un día, el cual denominaremos C.
+
+4. Utilizando un grafo con las conexiones entre las ip de la red interna, determina la cantidad de computadoras con las que se ha conectado A por día. ¿Es A el vértice que más conexiones salientes hacia la red interna tiene?
+
+In 10-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.106
+#-of outgoing connections to 10.8.134.59: 1
+
+In 11-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.106
+#-of outgoing connections to 10.8.134.59: 1
+
+In 12-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.106
+#-of outgoing connections to 10.8.134.59: 1
+
+In 13-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.59
+#-of outgoing connections to 10.8.134.59: 287
+
+In 14-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.88
+#-of outgoing connections to 10.8.134.59: 1
+
+In 15-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 0.0.0.0
+#-of outgoing connections to 10.8.134.59: 0
+
+In 16-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 0.0.0.0
+#-of outgoing connections to 10.8.134.59: 0
+
+In 17-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.59
+#-of outgoing connections to 10.8.134.59: 32
+
+In 18-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.118
+#-of outgoing connections to 10.8.134.59: 1
+
+In 19-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.17
+#-of outgoing connections to 10.8.134.59: 1
+
+In 20-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.88
+#-of outgoing connections to 10.8.134.59: 1
+
+In 21-8-2020
+top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.24
+#-of outgoing connections to 10.8.134.59: 1
+
+2. Utilizando el grafo del punto anterior, ubica la cantidad de computadoras que se han conectado hacia A por día. ¿Existen conexiones de las demás computadoras hacia A?
+
+In 10-8-2020
+Number of connections to IP 10.8.134.59: 0
+
+In 11-8-2020
+Number of connections to IP 10.8.134.59: 0
+
+In 12-8-2020
+Number of connections to IP 10.8.134.59: 0
+
+In 13-8-2020
+Number of connections to IP 10.8.134.59: 181
+
+In 14-8-2020
+Number of connections to IP 10.8.134.59: 504
+
+In 15-8-2020
+Number of connections to IP 10.8.134.59: 0
+
+In 16-8-2020
+Number of connections to IP 10.8.134.59: 0
+
+In 17-8-2020
+Number of connections to IP 10.8.134.59: 515
+
+In 18-8-2020
+Number of connections to IP 10.8.134.59: 549
+
+In 19-8-2020
+Number of connections to IP 10.8.134.59: 516
+
+In 20-8-2020
+Number of connections to IP 10.8.134.59: 532
+
+In 21-8-2020
+Number of connections to IP 10.8.134.59: 491
+
+3. Utilizando un grafo de conexiones a sitios web, determina cuántas computadoras se han conectado a B por día.
+
+In 10-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 11-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 12-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 13-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 1
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 1
+
+In 14-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 15-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 16-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 17-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 18-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 19-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 20-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+In 21-8-2020
+Number of connections through port 443 to k9oggvetufjky45ogief: 0
+Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+
+4. Utilizando el mismo grafo del punto anterior, indica cuántas computadoras se han conectado a C por día.
+
+In 10-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 11-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 12-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 13-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 14-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 15-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 16-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 17-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 18-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 19-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 20-8-2020
+Number of connections through port 443 to outlook: 0
+
+In 21-8-2020
+Number of connections through port 443 to outlook: 0
+
+5. (Pregunta sin código): Investiga que es un ping sweep, un DDoS, un servidor de comando y control y un botmaster. ¿Ves estos elementos en tus datos?
+
 # División de trabajo:
 
 Javier Alejandro Martínez Noe:

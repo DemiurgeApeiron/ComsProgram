@@ -1056,7 +1056,7 @@ Graph<pair<string, string>> Master::makeGraphOfDayWebSites(Fecha date) {
     }
     return (tGraph);
 }
-// este meteodo genera un diccionario de grafos de las conexiones entre ips por dia
+// este meteodo genera un diccionario de grafos de las conexiones entre ips internos y los sitiosWeb por dia
 void Master::generateGraphConnectionsWebSites() {
     cout << "Generating Network of Websites" << endl;
     sortByTime();
@@ -1072,19 +1072,19 @@ void Master::generateGraphConnectionsWebSites() {
     cout << "Generation Finished" << endl;
 }
 
-//este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia,
+//este meotodo consige las conexiones que recibio un sitioWeb en un dia,
 vector<pair<string, string>> Master::getConnectionsToWebSite(string _fecha, string WebSite) {
     Graph gnet = computersToWebSitesNetwork[_fecha];
     int indice = gnet.findPM(make_pair(HostIP[WebSite], "site"));
     if (indice != -1) {
         return (gnet.getConnectionsToVertex(indice));
     } else {
-        vector<pair<string, string>> error{make_pair("error", "error")};
+        vector<pair<string, string>> error;
         return (error);
     }
 }
 
-//este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia pero con la lista de conexiones unica
+//este meotodo consige las conexiones que recibio un sitioWeb en un dia pero con la lista de conexiones unica
 vector<pair<string, string>> Master::getConnectionsToWebSiteUnique(string _fecha, string WebSite) {
     Graph gnet = computersToWebSitesNetwork[_fecha];
     int indice = gnet.findPM(make_pair(HostIP[WebSite], "site"));

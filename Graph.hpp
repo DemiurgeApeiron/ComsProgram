@@ -19,11 +19,13 @@ class GraphVertex {
     ~GraphVertex(){};
     GraphVertex(){};
     GraphVertex(T _val) { val = _val; };
-
+    // este metodo te permite consegir el valor del nodo
     T get_val() { return val; };
+    // este metodo permite establecer el valor de un nodo
     void set_val(T _val) { val = _val; };
-
+    // este emtodo regresa los vecinos del nodo
     std::vector<int> get_adj() { return adj; };
+    // este metodo permite añadir una arista entre los vectores
     void add_to_adj(int idx) { adj.push_back(idx); };
 };
 
@@ -36,11 +38,11 @@ class Graph {
    public:
     ~Graph(){};
     Graph(bool _is_directed = false) { is_directed = _is_directed; };
-
+    // este metodo consige el numero de verices que tiene el grafo
     int getNofNodes() {
         return nodes.size();
     }
-
+    // esta funcion permite encontrar el indice de el vertice del grafo
     int find(T val) {
         if (!nodes.empty()) {
             for (size_t i = 0; i < nodes.size(); i++) {
@@ -51,6 +53,7 @@ class Graph {
         }
         return (-1);
     }
+    // esta funcion permite encontrar el indice de el vertice del grafo en el que el nodo tiene una estructura de tipo pair o map
     int findPM(T val) {
         if (!nodes.empty()) {
             for (size_t i = 0; i < nodes.size(); i++) {
@@ -61,6 +64,7 @@ class Graph {
         }
         return (-1);
     }
+    // este metodo te permite recuperar el valor del vertice
     T getVertex(int index) { return nodes[index].get_val(); }
 
     vector<T> getConnectionsToVertex(int indexVertex) {
@@ -75,6 +79,7 @@ class Graph {
         }
         return (connections);
     }
+    // este metodo te permite imprimir todas los vertices que tienen una arista apuntando a un vertice espesifico
     vector<T> getConnectionsToVertexPM(int indexVertex) {
         vector<T> connections;
         for (size_t i = 0; i < nodes.size(); i++) {
@@ -87,7 +92,7 @@ class Graph {
         }
         return (connections);
     }
-
+    // este metodo te permite consegir todos los vecinos de un vertice
     vector<T> getNeighbours(int index) {
         vector<T> neighboursVals;
         vector<int> neighbours = nodes[index].get_adj();
@@ -96,19 +101,19 @@ class Graph {
         }
         return (neighboursVals);
     }
-
+    // este metodo te permite agregar un vertice
     void add_node(T val) {
         GraphVertex<T> node(val);
         nodes.push_back(node);
     };
-
+    // este metodo te permite agregar una arista entre dos vertices
     void add_edge(int src, int dst) {
         nodes[src].add_to_adj(dst);
         if (!is_directed) {
             nodes[dst].add_to_adj(src);
         }
     };
-
+    // este metodo te permite imprimir el grafo a lo horizontal
     vector<int> BFSr(int start_vertex, vector<int> &visited, queue<int> &order) {
         cout << "actual node: " << nodes[start_vertex].get_val() << endl;
         if (!order.empty()) {
@@ -136,7 +141,7 @@ class Graph {
         }
         return (visited);
     }
-
+    // este metodo te permite imprimir el grafo a lo profundo
     vector<int> DFSr(int start_vertex, vector<int> &visited, stack<int> &order) {
         cout << "actual node: " << nodes[start_vertex].get_val() << endl;
         if (!order.empty()) {
@@ -172,7 +177,7 @@ class Graph {
 
         return (visited);
     }
-
+    // este metodo llama a la imprecion horizontal
     void BFS(int start_vertex) {
         vector<int> visited;
         queue<int> order;
@@ -181,7 +186,7 @@ class Graph {
             cout << nodes[visited[i]].get_val() << ", ";
         }
     };
-
+    // este metodo llama a la imprecion profunda
     void DFS(int start_vertex) {
         vector<int> visited;
         stack<int> order;
