@@ -38,10 +38,63 @@ class Graph {
     Graph(bool _is_directed = false) { is_directed = _is_directed; };
 
     int getNofNodes() {
-        for (size_t i = 0; i < nodes.size(); i++) {
-            cout << nodes[i].get_val() << endl;
-        }
         return nodes.size();
+    }
+
+    int find(T val) {
+        if (!nodes.empty()) {
+            for (size_t i = 0; i < nodes.size(); i++) {
+                if (nodes[i].get_val() == val) {
+                    return (i);
+                }
+            }
+        }
+        return (-1);
+    }
+    int findPM(T val) {
+        if (!nodes.empty()) {
+            for (size_t i = 0; i < nodes.size(); i++) {
+                if (nodes[i].get_val().first == val.first) {
+                    return (i);
+                }
+            }
+        }
+        return (-1);
+    }
+    T getVertex(int index) { return nodes[index].get_val(); }
+
+    vector<T> getConnectionsToVertex(int indexVertex) {
+        vector<T> connections;
+        for (size_t i = 0; i < nodes.size(); i++) {
+            vector<int> neighbours = nodes[i].get_adj();
+            for (size_t j = 0; j < neighbours.size(); j++) {
+                if (nodes[indexVertex].get_val() == nodes[neighbours[j]].get_val()) {
+                    connections.push_back(nodes[i].get_val());
+                }
+            }
+        }
+        return (connections);
+    }
+    vector<T> getConnectionsToVertexPM(int indexVertex) {
+        vector<T> connections;
+        for (size_t i = 0; i < nodes.size(); i++) {
+            vector<int> neighbours = nodes[i].get_adj();
+            for (size_t j = 0; j < neighbours.size(); j++) {
+                if (nodes[indexVertex].get_val().first == nodes[neighbours[j]].get_val().first) {
+                    connections.push_back(nodes[i].get_val());
+                }
+            }
+        }
+        return (connections);
+    }
+
+    vector<T> getNeighbours(int index) {
+        vector<T> neighboursVals;
+        vector<int> neighbours = nodes[index].get_adj();
+        for (size_t i = 0; i < neighbours.size(); i++) {
+            neighboursVals.push_back(nodes[neighbours[i]].get_val());
+        }
+        return (neighboursVals);
     }
 
     void add_node(T val) {
@@ -51,8 +104,9 @@ class Graph {
 
     void add_edge(int src, int dst) {
         nodes[src].add_to_adj(dst);
-        if (!is_directed)
+        if (!is_directed) {
             nodes[dst].add_to_adj(src);
+        }
     };
 
     vector<int> BFSr(int start_vertex, vector<int> &visited, queue<int> &order) {
@@ -60,14 +114,14 @@ class Graph {
         if (!order.empty()) {
             order.pop();
         }
-        if (find(visited.begin(), visited.end(), start_vertex) == visited.end()) {
+        if (std::find(visited.begin(), visited.end(), start_vertex) == visited.end()) {
             visited.push_back(start_vertex);
 
             vector<int> temporalAdj = nodes[start_vertex].get_adj();
             cout << "pre loop " << endl;
             for (size_t i = 0; i < temporalAdj.size(); i++) {
                 cout << "pre if" << endl;
-                if (find(visited.begin(), visited.end(), temporalAdj[i]) == visited.end()) {
+                if (std::find(visited.begin(), visited.end(), temporalAdj[i]) == visited.end()) {
                     cout << "Value: " << temporalAdj[i] << endl;
                     order.push(temporalAdj[i]);
                 }
@@ -76,7 +130,7 @@ class Graph {
             cout << "pos loop" << endl;
             BFSr(order.front(), visited, order);
         } else {
-            if (!order.empty() && find(visited.begin(), visited.end(), order.front()) == visited.end()) {
+            if (!order.empty() && std::find(visited.begin(), visited.end(), order.front()) == visited.end()) {
                 BFSr(order.front(), visited, order);
             }
         }
@@ -88,14 +142,14 @@ class Graph {
         if (!order.empty()) {
             order.pop();
         }
-        if (find(visited.begin(), visited.end(), start_vertex) == visited.end()) {
+        if (std::find(visited.begin(), visited.end(), start_vertex) == visited.end()) {
             visited.push_back(start_vertex);
 
             vector<int> temporalAdj = nodes[start_vertex].get_adj();
             cout << "pre loop " << endl;
             for (size_t i = 0; i < temporalAdj.size(); i++) {
                 cout << "pre if" << endl;
-                if (find(visited.begin(), visited.end(), temporalAdj[i]) == visited.end()) {
+                if (std::find(visited.begin(), visited.end(), temporalAdj[i]) == visited.end()) {
                     cout << "ValueAdded: " << nodes[temporalAdj[i]].get_val() << endl;
                     order.push(temporalAdj[i]);
                 }
@@ -112,7 +166,7 @@ class Graph {
             cout << "empty " << endl;
         }
 
-        if (!order.empty() && find(visited.begin(), visited.end(), order.top()) == visited.end()) {
+        if (!order.empty() && std::find(visited.begin(), visited.end(), order.top()) == visited.end()) {
             DFSr(order.top(), visited, order);
         }
 

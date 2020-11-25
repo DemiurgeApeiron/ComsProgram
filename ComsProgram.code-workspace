@@ -77,7 +77,8 @@
             "unordered_map": "cpp",
             "map": "cpp",
             "__tree": "cpp",
-            "set": "cpp"
+            "set": "cpp",
+            "list": "cpp"
         }
     }
 }

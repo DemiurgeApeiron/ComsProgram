@@ -27,6 +27,7 @@ class Master {
     set<string> domainNames;
     BinarySearchTree BST;
     map<string, Graph<string>> IPNetwork;
+    map<string, Graph<pair<string, string>>> computersToWebSitesNetwork;
 
     int indice = 0;
     ADT computer;
@@ -62,6 +63,7 @@ class Master {
     bool dayIntegration(ADT &a, string &dia);
     bool addServicesNames(ADT &a, string &name);
     Graph<string> makeGraphOfDay(Fecha _fecha);
+    Graph<pair<string, string>> makeGraphOfDayWebSites(Fecha _fecha);
 
    public:
     Master() = default;
@@ -73,6 +75,7 @@ class Master {
     int busquedaDia(string num, bool PrintBool);
     int busquedaMinpuerto(string num, bool PrintBool);
     int diaRelativo(int _dia, bool sort);
+    string primeraFecha(bool sort);
     int busquedaServicio(string nombre, bool PrintBool);
     int busquedaOrdenador(string nombre, bool PrintBool);
     int busquedaUsuarioCompleto(string nombre, bool PrintBool);
@@ -100,9 +103,15 @@ class Master {
     void getStrangeHost();
     bool checkIfConnection(string IP1, string IP2);
     void generateGraphConnections();
-    vector<string> getGraphIncomingConnectionsInternal(string _fecha, int IP);
-    vector<string> getGraphOutgoingConnectionsInternal(string _fecha, int IP);
+    void generateGraphConnectionsWebSites();
+    int getGraphIncomingConnectionsInternal(string _fecha, int IP);
+    vector<string> getGraphIncomingConnectionsInternalUnique(string _fecha, int IP);
     map<string, Graph<string>> tempGetIPNetwork() { return IPNetwork; }
+    string getGraphTopIPWithConnections(string _fecha);
+    int getGraphOutgoingConnectionsToComputer(string _fecha, int IP);
+    vector<string> getGraphOutgoingConnectionsToComputerUnique(string _fecha, int IP);
+    vector<pair<string, string>> getConnectionsToWebSite(string _fecha, string IP);
+    vector<pair<string, string>> getConnectionsToWebSiteUnique(string _fecha, string IP);
 };
 
 Master::~Master() {
@@ -110,8 +119,8 @@ Master::~Master() {
 //metodo para incluir los registros a la clase abstracta
 
 void Master::addRegister(vector<string> &_lista) {
-    indice += 1;
     ADT registro = ADT(_lista, indice);
+    indice += 1;
     lista.push_back(registro);
 }
 //metodo para ordenar los registros por fecha
@@ -259,7 +268,7 @@ void Master::Display(int resp) {
 //funcion para imprimir un solo registro
 
 void Master::printVector(ADT list) {
-    cout << list.getFechaDisplay() << ", " << list.getHoraDisplay() << ", " << list.getIPODisplay() << ", " << list.getPuertoODisplay() << ", " << list.getHostODisplay() << ", " << list.getIPDDisplay() << ", " << list.getPuertoDDisplay() << ", " << list.getHostDDisplay() << endl;
+    cout << list.getFechaDisplay() << ", " << list.getHoraDisplay() << ", " << list.getIPODisplay() << ", " << list.getPuertoODisplay() << ", " << list.getHostODisplay() << ", " << list.getIPDDisplay() << ", " << list.getPuertoDDisplay() << ", " << list.getHostDDisplay() << " ID: " << list.getIndice() << endl;
 }
 //funcion para iniciar las busquedas
 
@@ -396,6 +405,16 @@ int Master::diaRelativo(int _dia, bool sort) {
     }
     Fecha fecha = lista[0].getFecha();
     return (fecha.getDia() + _dia);
+}
+
+// metodo para iniciar la busqueda de un dia relativo
+
+string Master::primeraFecha(bool sort) {
+    if (sort) {
+        sortByTime();
+    }
+    Fecha fecha = lista[0].getFecha();
+    return (fecha.display());
 }
 // metodo para iniciar la busqueda de todos los servicios
 
@@ -718,7 +737,8 @@ set<string> Master::getComputerUniqueServices() {
         if (!indexS.empty() && lista[indexS.front()].getHostODisplay() != "68" || !indexE.empty() && lista[indexE.top()].getHostDDisplay() != "67")
             if (x.second.getComputerIPLocal() == "10.8.134" && x.second.getName() != "server.reto.com") {
                 stack conexionesEntrantes = x.second.getConexionesEntrantes();
-                for (size_t i = 0; i < conexionesEntrantes.size(); i++) {
+                int tamaño = conexionesEntrantes.size();
+                for (size_t i = 0; i < tamaño; i++) {
                     tcp.insert(conexionesEntrantes.top().display());
                     conexionesEntrantes.pop();
                 }
@@ -744,7 +764,8 @@ set<string> Master::getComputerUniqueServicesIndividual() {
         if (!indexS.empty() && lista[indexS.front()].getHostODisplay() != "68" || !indexE.empty() && lista[indexE.top()].getHostDDisplay() != "67")
             if (x.second.getComputerIPLocal() == "10.8.134" && x.second.getName() != "server.reto.com" && x.second.getName() != "-") {
                 stack conexionesEntrantes = x.second.getConexionesEntrantes();
-                for (size_t i = 0; i < conexionesEntrantes.size(); i++) {
+                int tamaño = conexionesEntrantes.size();
+                for (size_t i = 0; i < tamaño; i++) {
                     tcp.insert(conexionesEntrantes.top().display());
                     conexionesEntrantes.pop();
                 }
@@ -763,7 +784,8 @@ bool Master::checkIfConnection(string IP1, string IP2) {
     map<string, ConexionesComputadora>::iterator searchIP = computerDictionary.find(IP1);
     stack IPsSearchE = searchIP->second.getConexionesEntrantes();
     if (searchIP != computerDictionary.end() || !IPsSearchE.empty()) {
-        for (size_t i = 0; i < IPsSearchE.size(); i++) {
+        int tamaño = IPsSearchE.size();
+        for (size_t i = 0; i < tamaño; i++) {
             //cout << "cons1 " << IPsSearchE.top().display() << " == " << IP2 << endl;
             if (IPsSearchE.top().display() == IP2) {
                 return (true);
@@ -773,7 +795,8 @@ bool Master::checkIfConnection(string IP1, string IP2) {
     }
     queue IPsSearchS = searchIP->second.getConexionesSalientes();
     if (searchIP != computerDictionary.end() || !IPsSearchS.empty()) {
-        for (size_t i = 0; i < IPsSearchS.size(); i++) {
+        int IPSS = IPsSearchS.size();
+        for (size_t i = 0; i < IPSS; i++) {
             //cout << "cons2 " << IPsSearchS.front().display() << " == " << IP2 << endl;
             if (IPsSearchS.front().display() == IP2) {
                 return (true);
@@ -787,24 +810,24 @@ bool Master::checkIfConnection(string IP1, string IP2) {
 bool Master::dayIntegration(ADT &a, string &dia) {
     map<string, ConexionesComputadora>::iterator searchIPO = dayComputerDictionary.find(a.getIPO().display());
     map<string, ConexionesComputadora>::iterator searchIPD = dayComputerDictionary.find(a.getIPD().display());
-    if ((searchIPO != dayComputerDictionary.end()) && (a.getIPO().display() == searchIPO->first)) {
+    if ((searchIPO != dayComputerDictionary.end()) && (a.getIPO().display() == searchIPO->first) && to_string(a.getFecha().getDia()) == dia) {
         if (a.getHostODisplay() != "-" && a.getHostODisplay() != "") {
             dayComputerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
         }
         dayComputerDictionary[a.getIPO().display()].conexion(false, a.getIPD(), a.getIndice());
     }
-    if ((searchIPD != dayComputerDictionary.end()) && (a.getIPD().display() == searchIPD->first)) {
+    if ((searchIPD != dayComputerDictionary.end()) && (a.getIPD().display() == searchIPD->first) && to_string(a.getFecha().getDia()) == dia) {
         if (a.getHostDDisplay() != "-" && a.getHostDDisplay() != "") {
             dayComputerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
         }
         dayComputerDictionary[a.getIPD().display()].conexion(true, a.getIPO(), a.getIndice());
     }
-    if (searchIPO == dayComputerDictionary.end() && to_string(a.getFecha().getDia()) == dia) {
+    if (searchIPO == dayComputerDictionary.end() && to_string(a.getFecha().getDia()) == dia && a.getIPO().display() != "-" && a.getIPO().display() != "") {
         dayComputerDictionary[a.getIPO().display()] = ConexionesComputadora(a.getIPO());
         dayComputerDictionary[a.getIPO().display()].setName(a.getHostODisplay());
         dayComputerDictionary[a.getIPO().display()].conexion(false, a.getIPD(), a.getIndice());
     }
-    if (searchIPD == dayComputerDictionary.end() && to_string(a.getFecha().getDia()) == dia) {
+    if (searchIPD == dayComputerDictionary.end() && to_string(a.getFecha().getDia()) == dia && a.getIPD().display() != "-" && a.getIPD().display() != "") {
         dayComputerDictionary[a.getIPD().display()] = ConexionesComputadora(a.getIPD());
         dayComputerDictionary[a.getIPD().display()].setName(a.getHostDDisplay());
         dayComputerDictionary[a.getIPD().display()].conexion(true, a.getIPO(), a.getIndice());
@@ -814,6 +837,7 @@ bool Master::dayIntegration(ADT &a, string &dia) {
 //este metodo crea una estructura de datos tipo diccionario en la que asigna a cada servicio el numero de conecciones.
 map<string, int> Master::conexionesPorDia(Fecha _fecha) {
     map<string, int> tCDictionary;
+    dayComputerDictionary.clear();
     loadComputers(&Master::dayIntegration, to_string(_fecha.getDia()));
     for (auto &x : dayComputerDictionary) {
         string tempIPN = x.second.getName();
@@ -871,6 +895,7 @@ void Master::getStrangeHost() {
 }
 // este meteodo genera un grafo de las conexiones entre ips por dia
 Graph<string> Master::makeGraphOfDay(Fecha date) {
+    dayComputerDictionary.clear();
     loadComputers(&Master::dayIntegration, to_string(date.getDia()));
     Graph<string> tGraph(true);
     map<string, int> indexOfIP;
@@ -880,27 +905,35 @@ Graph<string> Master::makeGraphOfDay(Fecha date) {
         if (indexOfIP.find(x.first) == indexOfIP.end() && x.second.getComputerIPLocal() == LIP) {
             tGraph.add_node(x.first);
             indexOfIP[x.first] = ind;
+            ind++;
         }
         stack<IP> Icnx = x.second.getConexionesEntrantes();
         if (!Icnx.empty()) {
-            for (size_t i = 0; i < Icnx.size(); i++) {
+            int L = Icnx.size();
+            for (size_t i = 0; i < L; i++) {
                 if (indexOfIP.find(Icnx.top().display()) == indexOfIP.end() && Icnx.top().getLocalIp() == LIP) {
                     tGraph.add_node(Icnx.top().display());
-                    indexOfIP[Icnx.top().display()] = ind++;
+                    indexOfIP[Icnx.top().display()] = ind;
+                    ind++;
                 }
-                tGraph.add_edge(indexOfIP[Icnx.top().display()], indexOfIP[x.first]);
+                if (Icnx.top().getLocalIp() == LIP && x.second.getComputerIPLocal() == LIP) {
+                    tGraph.add_edge(indexOfIP[Icnx.top().display()], indexOfIP[x.first]);
+                }
                 Icnx.pop();
             }
         }
         queue<IP> Scnx = x.second.getConexionesSalientes();
         if (!Scnx.empty()) {
-            for (size_t i = 0; i < Scnx.size(); i++) {
+            int ScnxS = Scnx.size();
+            for (size_t i = 0; i < ScnxS; i++) {
                 if (indexOfIP.find(Scnx.front().display()) == indexOfIP.end() && Scnx.front().getLocalIp() == LIP) {
-                    //cout << "eGameS" << Scnx.front().display() << endl;
                     tGraph.add_node(Scnx.front().display());
-                    indexOfIP[Scnx.front().display()] = ind++;
+                    indexOfIP[Scnx.front().display()] = ind;
+                    ind++;
                 }
-                tGraph.add_edge(indexOfIP[x.first], indexOfIP[Scnx.front().display()]);
+                if (Scnx.front().getLocalIp() == LIP && x.second.getComputerIPLocal() == LIP) {
+                    tGraph.add_edge(indexOfIP[x.first], indexOfIP[Scnx.front().display()]);
+                }
                 Scnx.pop();
             }
         }
@@ -909,6 +942,7 @@ Graph<string> Master::makeGraphOfDay(Fecha date) {
 }
 // este meteodo genera un diccionario de grafos de las conexiones entre ips por dia
 void Master::generateGraphConnections() {
+    cout << "Generating Network" << endl;
     sortByTime();
     string fechaTemp = lista[0].getFechaDisplay();
     string withoutDay = to_string(lista[0].getFecha().getDia());
@@ -919,17 +953,161 @@ void Master::generateGraphConnections() {
         IPNetwork[tempFecha] = makeGraphOfDay(date);
         cout << "Graph of " << date.display() << " Generated" << endl;
     }
-    cout << "Genaration Finished" << endl;
+    cout << "Generation Finished" << endl;
 }
 // este meteodo busca las conexiones recibidas a una ip espesifica en un dia
-vector<string> Master::getGraphIncomingConnectionsInternal(string _fecha, int IP) {
+int Master::getGraphOutgoingConnectionsToComputer(string _fecha, int IP) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(IP);
     Fecha date(_fecha);
+    Graph<string> dayGraph = IPNetwork[date.display()];
+    int indiceIP = dayGraph.find(_IP);
+    vector<string> indiceIPNeighbours;
+    if (indiceIP != -1) {
+        indiceIPNeighbours = dayGraph.getNeighbours(indiceIP);
+    }
+    return (indiceIPNeighbours.size() > 0 ? indiceIPNeighbours.size() / 2 : 0);
 }
-// este meteodo busca las conexiones salientes de una ip espesifica en un dia
-vector<string> Master::getGraphOutgoingConnectionsInternal(string _fecha, int IP) {
+// este meteodo busca las conexiones recibidas a una ip espesifica en un dia pero con la lista de conexiones unica
+vector<string> Master::getGraphOutgoingConnectionsToComputerUnique(string _fecha, int IP) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(IP);
     Fecha date(_fecha);
+    Graph<string> dayGraph = IPNetwork[date.display()];
+    int indiceIP = dayGraph.find(_IP);
+    vector<string> indiceIPNeighbours;
+    if (indiceIP != -1) {
+        indiceIPNeighbours = dayGraph.getNeighbours(indiceIP);
+    }
+    set<string> UNeighbours;
+    for (size_t i = 0; i < indiceIPNeighbours.size(); i++) {
+        UNeighbours.insert(indiceIPNeighbours[i]);
+    }
+    indiceIPNeighbours.clear();
+    for (auto &x : UNeighbours) {
+        indiceIPNeighbours.push_back(x);
+    }
+
+    return (indiceIPNeighbours);
+}
+// este meteodo busca las conexiones recibidas a una ip espesifica en un dia
+string Master::getGraphTopIPWithConnections(string _fecha) {
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    Fecha date(_fecha);
+    Graph<string> dayGraph = IPNetwork[date.display()];
+    map<string, int> indiceIPNeighbours;
+    for (size_t i = 0; i < dayGraph.getNofNodes(); i++) {
+        indiceIPNeighbours[dayGraph.getVertex(i)] = dayGraph.getNeighbours(i).size();
+    }
+    pair<string, int> max = make_pair("0.0.0.0", 0);
+    for (auto &x : indiceIPNeighbours) {
+        if (x.second > max.second) {
+            max = make_pair(x.first, x.second);
+        }
+    }
+    return (max.first);
+}
+
+//este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia,
+int Master::getGraphIncomingConnectionsInternal(string _fecha, int IP) {
+    Graph gnet = IPNetwork[_fecha];
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(IP);
+    int indice = gnet.find(_IP);
+    return (gnet.getConnectionsToVertex(indice).size() > 0 ? gnet.getConnectionsToVertex(indice).size() / 2 : 0);
+}
+
+//este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia pero con la lista de conexiones unica
+vector<string> Master::getGraphIncomingConnectionsInternalUnique(string _fecha, int IP) {
+    Graph gnet = IPNetwork[_fecha];
+    string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
+    string _IP = sbst + to_string(IP);
+    int indice = gnet.find(_IP);
+    vector<string> cnx = gnet.getConnectionsToVertex(indice);
+    set<string> UNeighbours;
+    for (size_t i = 0; i < cnx.size(); i++) {
+        UNeighbours.insert(cnx[i]);
+    }
+    cnx.clear();
+    for (auto &x : UNeighbours) {
+        cnx.push_back(x);
+    }
+
+    return (cnx);
+}
+// este meteodo genera un grafo de las conexiones entre ips por dia
+Graph<pair<string, string>> Master::makeGraphOfDayWebSites(Fecha date) {
+    dayComputerDictionary.clear();
+    loadComputers(&Master::dayIntegration, to_string(date.getDia()));
+    Graph<pair<string, string>> tGraph(true);
+    map<string, int> indexOfIP;
+    int ind = 0;
+    string LIP = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 2);
+    for (auto &x : dayComputerDictionary) {
+        if (x.second.getComputerIPLocal() != LIP) {
+            stack<IP> Icnx = x.second.getConexionesEntrantes();
+            stack<int> IcnxIndex = x.second.getConexionesEntrantesIndice();
+            string IPNode = x.second.getComputerIP();
+            if (indexOfIP.find(IPNode) == indexOfIP.end()) {
+                tGraph.add_node(make_pair(IPNode, lista[IcnxIndex.top()].getHostDDisplay()));
+                indexOfIP[IPNode] = ind;
+                ind++;
+            }
+            if (!Icnx.empty()) {
+                for (size_t i = 0; i < x.second.getConexionesEntrantesSize(); i++) {
+                    if (lista[IcnxIndex.top()].getPuertoDDisplay() == "443") {
+                        if (indexOfIP.find(Icnx.top().display()) == indexOfIP.end()) {
+                            tGraph.add_node(make_pair(Icnx.top().display(), lista[IcnxIndex.top()].getHostODisplay()));
+                            indexOfIP[Icnx.top().display()] = ind;
+                            ind++;
+                        }
+                        tGraph.add_edge(indexOfIP[Icnx.top().display()], indexOfIP[IPNode]);
+                    }
+                    Icnx.pop();
+                    IcnxIndex.pop();
+                }
+            }
+        }
+    }
+    return (tGraph);
+}
+// este meteodo genera un diccionario de grafos de las conexiones entre ips por dia
+void Master::generateGraphConnectionsWebSites() {
+    cout << "Generating Network of Websites" << endl;
+    sortByTime();
+    string fechaTemp = lista[0].getFechaDisplay();
+    string withoutDay = to_string(lista[0].getFecha().getDia());
+    string fechaMovible = fechaTemp.substr(withoutDay.size(), fechaTemp.size());
+    for (size_t i = lista[0].getFecha().getDia(); i <= lista[lista.size() - 1].getFecha().getDia(); i++) {
+        string tempFecha = to_string(i) + fechaMovible;
+        Fecha date(tempFecha);
+        computersToWebSitesNetwork[tempFecha] = makeGraphOfDayWebSites(date);
+        cout << "Graph of " << date.display() << " Generated" << endl;
+    }
+    cout << "Generation Finished" << endl;
+}
+
+//este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia,
+vector<pair<string, string>> Master::getConnectionsToWebSite(string _fecha, string WebSite) {
+    Graph gnet = computersToWebSitesNetwork[_fecha];
+    int indice = gnet.findPM(make_pair(HostIP[WebSite], "site"));
+    return (gnet.getConnectionsToVertex(indice));
+}
+
+//este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia pero con la lista de conexiones unica
+vector<pair<string, string>> Master::getConnectionsToWebSiteUnique(string _fecha, string WebSite) {
+    Graph gnet = computersToWebSitesNetwork[_fecha];
+    int indice = gnet.findPM(make_pair(HostIP[WebSite], "site"));
+
+    vector<pair<string, string>> cnx = gnet.getConnectionsToVertex(indice);
+    set<pair<string, string>> UNeighbours;
+    for (size_t i = 0; i < cnx.size(); i++) {
+        UNeighbours.insert(cnx[i]);
+    }
+    cnx.clear();
+    for (auto &x : UNeighbours) {
+        cnx.push_back(x);
+    }
+
+    return (cnx);
 }

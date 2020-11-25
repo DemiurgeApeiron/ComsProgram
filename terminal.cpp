@@ -225,13 +225,81 @@ int terminal() {
 
     cout << endl;
     cout << endl;
-    cout << "pp1" << endl;
+
+    string fecha = program.primeraFecha(false);
+
     program.generateGraphConnections();
-    cout << "pp2" << endl;
-    map<string, Graph<string>> tempMpa = program.tempGetIPNetwork();
-    cout << "pp3" << endl;
-    for (auto &x : tempMpa) {
-        cout << x.first << " :: " << x.second.getNofNodes() << endl;
+    cout << endl;
+    cout << endl;
+
+    string withoutDay = to_string(program.diaRelativo(0, false));
+    string fechaMovible = fecha.substr(withoutDay.size(), fecha.size());
+    for (size_t i = program.diaRelativo(0, false); i <= 21; i++) {
+        string tempFecha = to_string(i) + fechaMovible;
+        Fecha date(tempFecha);
+
+        cout << "In  " << date.display() << endl;
+
+        int Icnx = program.getGraphIncomingConnectionsInternal(date.display(), 59);
+        cout << "Number of connections to IP 10.8.134.59: " << Icnx << endl;
+
+        /*int tempOpt;
+        cout << endl;
+        cout << endl;
+        cout << "Do you want to print the incoming cnnections to IP 10.8.134.59: 0: no 1: yes" << endl;
+        cin >> tempOpt;
+        cout << endl;
+        if (tempOpt == 1) {
+            vector<string> Ucnx = program.getGraphIncomingConnectionsInternalUnique("21-8-2020", 59);
+            for (size_t i = 0; i < Ucnx.size(); i++) {
+                cout << Ucnx[i] << ", ";
+            }
+        }
+        cout << endl;
+        cout << endl;*/
+
+        string topVcnx = program.getGraphTopIPWithConnections(date.display());
+        cout << "top vértice que más conexiones salientes hacia la red interna tiene: " << topVcnx << endl;
+
+        int constoV = program.getGraphOutgoingConnectionsToComputer(date.display(), 59);
+        cout << "# of outgoing connections to 10.8.134.59: " << constoV << endl;
+        cout << endl;
+        cout << endl;
+        /*int tempOpt1;
+        cout << "Do you want to print the outgoing connections to 10.8.134.59: 0: no 1: yes" << endl;
+        cin >> tempOpt1;
+        cout << endl;
+        if (date.getDia() == 10) {
+            vector<string> Ucnx1 = program.getGraphOutgoingConnectionsToComputer("21-8-2020", 59);
+            for (size_t i = 0; i < Ucnx1.size(); i++) {
+                cout << Ucnx1[i] << ", ";
+            }
+        }
+        cout << endl;
+        cout << endl;*/
+    }
+
+    program.generateGraphConnectionsWebSites();
+    cout << endl;
+    cout << endl;
+    withoutDay = to_string(program.diaRelativo(0, false));
+    fechaMovible = fecha.substr(withoutDay.size(), fecha.size());
+    for (size_t i = program.diaRelativo(0, false); i <= 21; i++) {
+        string tempFecha = to_string(i) + fechaMovible;
+        Fecha date(tempFecha);
+
+        cout << "In  " << date.display() << endl;
+
+        vector<pair<string, string>> cnxWS = program.getConnectionsToWebSite(date.display(), "outlook");
+        cout << "Number of connections through port 443 to outlook: " << cnxWS.size() << endl;
+
+        vector<pair<string, string>> cnxWS2 = program.getConnectionsToWebSite(date.display(), "k9oggvetufjky45ogief");
+        cout << "Number of connections through port 443 to k9oggvetufjky45ogief: " << cnxWS2.size() << endl;
+
+        vector<pair<string, string>> cnxWS3 = program.getConnectionsToWebSite(date.display(), "mkevjvtfe6dxajlsdfhb");
+        cout << "Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: " << cnxWS3.size() << endl;
+        cout << endl;
+        cout << endl;
     }
     return (0);
 }
