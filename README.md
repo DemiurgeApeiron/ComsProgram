@@ -58,70 +58,69 @@ Este programa mula la conexión de una red en la que múltiples computadoras se 
 
 Para hacer esto poble se ocuparon dos tipos de estructuras de datos abstractas, una que almacena todos los registros cómo la fecha la hora a la que se envió la IP el puerto y el host tanto para la conexión de origen y destino.
 
-class ADT
-{
-protected:
-int indice;
-Fecha fecha;
-Hora hora;
-IP IPOrigen;
-IP IPDestino;
-HostName HostOrigen;
-HostName HostDestino;
-Puerto PuertoOrigen;
-Puerto PuertoDestino;
+    class ADT
+    {
+    protected:
+        int indice;
+        Fecha fecha;
+        Hora hora;
+        IP IPOrigen;
+        IP IPDestino;
+        HostName HostOrigen;
+        HostName HostDestino;
+        Puerto PuertoOrigen;
+        Puerto PuertoDestino;
 
-public:
-ADT() = default;
-ADT(vector<string> &\_lista, int \_indice);
-~ADT();
-int getIndice() { return indice; }
-Fecha getFecha() { return fecha; }
-Hora getHora() { return hora; }
-IP getIPO() { return IPOrigen; }
-IP getIPD() { return IPDestino; }
-HostName getHostO() { return HostOrigen; }
-HostName getHostD() { return HostDestino; }
-Puerto getPuertoO() { return PuertoOrigen; }
-Puerto getPuertoD() { return PuertoDestino; }
+    public:
+        ADT() = default;
+        ADT(vector<string> &\_lista, int \_indice);
+        ~ADT();
+        int getIndice() { return indice; }
+        Fecha getFecha() { return fecha; }
+        Hora getHora() { return hora; }
+        IP getIPO() { return IPOrigen; }
+        IP getIPD() { return IPDestino; }
+        HostName getHostO() { return HostOrigen; }
+        HostName getHostD() { return HostDestino; }
+        Puerto getPuertoO() { return PuertoOrigen; }
+        Puerto getPuertoD() { return PuertoDestino; }
+        string getFechaDisplay() { return fecha.display(); }
+        string getHoraDisplay() { return hora.display(); }
+        string getIPODisplay() { return IPOrigen.display(); }
+        string getIPDDisplay() { return IPDestino.display(); }
+        string getHostODisplay() { return HostOrigen.display(); }
+        string getHostDDisplay() { return HostDestino.display(); }
+        string getPuertoODisplay() { return PuertoOrigen.display(); }
+        string getPuertoDDisplay() { return PuertoDestino.display(); }
 
-    string getFechaDisplay() { return fecha.display(); }
-    string getHoraDisplay() { return hora.display(); }
-    string getIPODisplay() { return IPOrigen.display(); }
-    string getIPDDisplay() { return IPDestino.display(); }
-    string getHostODisplay() { return HostOrigen.display(); }
-    string getHostDDisplay() { return HostDestino.display(); }
-    string getPuertoODisplay() { return PuertoOrigen.display(); }
-    string getPuertoDDisplay() { return PuertoDestino.display(); }
-
-};
+    };
 
 La otra estructura de datos Almacena las computadoras por las cual es envió una transmisión o se recibió, en esta estructura se se almacena el nombre del host la IP de la computadora y las conexiones que ha realizado Tanto como entrantes como salientes y sus índices. Las conexiones entrantes utilizan la estructura de datos de pilas debido a la naturaleza de los requisitos que se tenían “de manera eficiente obtener la última conexión entrante y que permita leerlas desde la última a la primera.” Ya que las pilas tienen una naturaleza de la primera en entrar es la última en salir. Para las conexiones salientes se decidió utilizar collapse ya que el requisito era el inverso a las conexiones entrantes, en este se pedía que se leyera desde la primera hasta la última y como la naturaleza de las colas es la primera en entrar es la primera en salir estructura iba a ser perfecta para obtener el resultado esperado.
 
-class ConexionesComputadora {
-protected:
-IP ip;
-string nombre;
-int LastConection;
-stack<IP> ConexionesEntrantes;
-stack<int> ConexionesEntrantesIndice;
-vector<IP> ConexionesSalientesV;
-vector<int> ConexionesSalientesVndice;
+    class ConexionesComputadora {
+    protected:
+        IP ip;
+        string nombre;
+        int LastConection;
+        stack<IP> ConexionesEntrantes;
+        stack<int> ConexionesEntrantesIndice;
+        vector<IP> ConexionesSalientesV;
+        vector<int> ConexionesSalientesVndice;
 
-public:
-ConexionesComputadora(IP IPFuente);
-~ConexionesComputadora();
-void conexion(IP \_ip, int \_indice);
-string getComputerIP() { return ip.display(); }
-string getComputerIPUser() { return ip.getUserIP(); }
-string getComputerIPLocal() { return ip.getLocalIp(); }
-stack<IP> getConexionesEntrantes() { return ConexionesEntrantes; }
-vector<IP> getConexionesSalientesV() { return ConexionesSalientesV; }
-stack<int> getConexionesEntrantesIndice() {return ConexionesEntrantesIndice;}
-vector<int> getConexionesSalientesVIndice() {return ConexionesSalientesVndice;}
-string getName() { return nombre; }
-void setName(string name);
-};
+    public:
+        ConexionesComputadora(IP IPFuente);
+        ~ConexionesComputadora();
+        void conexion(IP \_ip, int \_indice);
+        string getComputerIP() { return ip.display(); }
+        string getComputerIPUser() { return ip.getUserIP(); }
+        string getComputerIPLocal() { return ip.getLocalIp(); }
+        stack<IP> getConexionesEntrantes() { return ConexionesEntrantes; }
+        vector<IP> getConexionesSalientesV() { return ConexionesSalientesV; }
+        stack<int> getConexionesEntrantesIndice() {return ConexionesEntrantesIndice;}
+        vector<int> getConexionesSalientesVIndice() {return ConexionesSalientesVndice;}
+        string getName() { return nombre; }
+        void setName(string name);
+    };
 
 para poder ordenar y procesar estos datos se decidieron ocupar diferentes algoritmos. Para poder hacer un ordenamiento de los registros se ocupó el algoritmo merge sort ya que este algoritmo tiene una naturaleza de dividir y conquistar y es 1 de los algoritmos más optimizados para trabajar con grandes cantidades de datos, por lo cual le va a permitir a mi programa poder implementarse de manera eficiente en el futuro con una estabilidad constante. Este algoritmo cuenta con una complejidad de O(n log n). Para realizar las búsquedas a través de los registros ocupo una búsqueda por bifurcación, esta funciona similar a una búsqueda binaria pero su diferencia ya sé en qué está bifurca por ambos lados para encontrar el tipo de datos sin importar el orden de la lista. este algoritmo cuenta con una complejidad de O(log n).
 
