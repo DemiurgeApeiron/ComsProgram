@@ -1076,7 +1076,12 @@ void Master::generateGraphConnectionsWebSites() {
 vector<pair<string, string>> Master::getConnectionsToWebSite(string _fecha, string WebSite) {
     Graph gnet = computersToWebSitesNetwork[_fecha];
     int indice = gnet.findPM(make_pair(HostIP[WebSite], "site"));
-    return (gnet.getConnectionsToVertex(indice));
+    if (indice != -1) {
+        return (gnet.getConnectionsToVertex(indice));
+    } else {
+        vector<pair<string, string>> error{make_pair("error", "error")};
+        return (error);
+    }
 }
 
 //este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia pero con la lista de conexiones unica
