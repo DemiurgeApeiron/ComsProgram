@@ -104,11 +104,11 @@ class Master {
     bool checkIfConnection(string IP1, string IP2);
     void generateGraphConnections();
     void generateGraphConnectionsWebSites();
-    int getGraphIncomingConnectionsInternal(string _fecha, int IP);
+    vector<string> getGraphIncomingConnectionsInternal(string _fecha, int IP);
     vector<string> getGraphIncomingConnectionsInternalUnique(string _fecha, int IP);
     map<string, Graph<string>> tempGetIPNetwork() { return IPNetwork; }
     string getGraphTopIPWithConnections(string _fecha);
-    int getGraphOutgoingConnectionsToComputer(string _fecha, int IP);
+    vector<string> getGraphOutgoingConnectionsToComputer(string _fecha, int IP);
     vector<string> getGraphOutgoingConnectionsToComputerUnique(string _fecha, int IP);
     vector<pair<string, string>> getConnectionsToWebSite(string _fecha, string IP);
     vector<pair<string, string>> getConnectionsToWebSiteUnique(string _fecha, string IP);
@@ -922,21 +922,6 @@ Graph<string> Master::makeGraphOfDay(Fecha date) {
                 Icnx.pop();
             }
         }
-        queue<IP> Scnx = x.second.getConexionesSalientes();
-        if (!Scnx.empty()) {
-            int ScnxS = Scnx.size();
-            for (size_t i = 0; i < ScnxS; i++) {
-                if (indexOfIP.find(Scnx.front().display()) == indexOfIP.end() && Scnx.front().getLocalIp() == LIP) {
-                    tGraph.add_node(Scnx.front().display());
-                    indexOfIP[Scnx.front().display()] = ind;
-                    ind++;
-                }
-                if (Scnx.front().getLocalIp() == LIP && x.second.getComputerIPLocal() == LIP) {
-                    tGraph.add_edge(indexOfIP[x.first], indexOfIP[Scnx.front().display()]);
-                }
-                Scnx.pop();
-            }
-        }
     }
     return (tGraph);
 }
@@ -956,7 +941,7 @@ void Master::generateGraphConnections() {
     cout << "Generation Finished" << endl;
 }
 // este meteodo busca las conexiones recibidas a una ip espesifica en un dia
-int Master::getGraphOutgoingConnectionsToComputer(string _fecha, int IP) {
+vector<string> Master::getGraphOutgoingConnectionsToComputer(string _fecha, int IP) {
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(IP);
     Fecha date(_fecha);
@@ -966,7 +951,7 @@ int Master::getGraphOutgoingConnectionsToComputer(string _fecha, int IP) {
     if (indiceIP != -1) {
         indiceIPNeighbours = dayGraph.getNeighbours(indiceIP);
     }
-    return (indiceIPNeighbours.size() > 0 ? indiceIPNeighbours.size() / 2 : 0);
+    return (indiceIPNeighbours);
 }
 // este meteodo busca las conexiones recibidas a una ip espesifica en un dia pero con la lista de conexiones unica
 vector<string> Master::getGraphOutgoingConnectionsToComputerUnique(string _fecha, int IP) {
@@ -1009,12 +994,12 @@ string Master::getGraphTopIPWithConnections(string _fecha) {
 }
 
 //este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia,
-int Master::getGraphIncomingConnectionsInternal(string _fecha, int IP) {
+vector<string> Master::getGraphIncomingConnectionsInternal(string _fecha, int IP) {
     Graph gnet = IPNetwork[_fecha];
     string sbst = conseguirIpLocal().substr(0, conseguirIpLocal().size() - 1);
     string _IP = sbst + to_string(IP);
     int indice = gnet.find(_IP);
-    return (gnet.getConnectionsToVertex(indice).size() > 0 ? gnet.getConnectionsToVertex(indice).size() / 2 : 0);
+    return (gnet.getConnectionsToVertex(indice));
 }
 
 //este meotodo consige las conexiones a la que una ip espesifica se conecto en un dia pero con la lista de conexiones unica

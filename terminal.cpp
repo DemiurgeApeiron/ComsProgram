@@ -240,8 +240,8 @@ int terminal() {
 
         cout << "In  " << date.display() << endl;
 
-        int Icnx = program.getGraphIncomingConnectionsInternal(date.display(), 59);
-        cout << "Number of connections to IP 10.8.134.59: " << Icnx << endl;
+        vector<string> Icnx = program.getGraphIncomingConnectionsInternal(date.display(), 59);
+        cout << "Number of connections to IP 10.8.134.59: " << Icnx.size() << endl;
 
         /*int tempOpt;
         cout << endl;
@@ -261,8 +261,8 @@ int terminal() {
         string topVcnx = program.getGraphTopIPWithConnections(date.display());
         cout << "top vértice que más conexiones salientes hacia la red interna tiene: " << topVcnx << endl;
 
-        int constoV = program.getGraphOutgoingConnectionsToComputer(date.display(), 59);
-        cout << "# of outgoing connections to 10.8.134.59: " << constoV << endl;
+        vector<string> constoV = program.getGraphOutgoingConnectionsToComputer(date.display(), 59);
+        cout << "# of outgoing connections to 10.8.134.59: " << constoV.size() << endl;
         cout << endl;
         cout << endl;
         /*int tempOpt1;
