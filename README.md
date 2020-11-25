@@ -181,10 +181,12 @@ computer IP: 10.8.134.59
 Last conection: IP: Interna-> 21-8-2020, 17:59:58, 10.8.134.98, 56214, jack.reto.com, 10.8.134.59, 965, kenneth.reto.com ID: 37988
 
 3. ¿Cuántas conexiones entrantes tiene esta computadora?
-   Number of Incoming conections: 3288
+
+    Number of Incoming conections: 3288
 
 4. ¿Cuántas conexiones salientes tiene esta computadora?
-   Number of Outgoing conections: 2898
+
+    Number of Outgoing conections: 2898
 
 5. Extra: ¿Tiene esta computadora 3 conexiones seguidas a un mismo sitio web?
 
@@ -211,6 +213,7 @@ si: k9oggvetufjky45ogief.ru y mkevjvtfe6dxajlsdfhb.com
 2. De los nombres de dominio encontrados en el paso anterior, ¿cuál es su ip? ¿Cómo determinarías esta información de la manera más eficiente en complejidad temporal?
 
 k9oggvetufjky45ogief.ru: 210.245.116.19
+
 mkevjvtfe6dxajlsdfhb.com: 63.5.179.78
 
 3. De las computadoras pertenecientes al dominio reto.com determina la cantidad de ips que tienen al menos una conexión entrante. (Recuerda que ya tienes la dirección de la red y el último octeto puede tener computadoras del .1 al .254). Imprime la cantidad de computadoras.
