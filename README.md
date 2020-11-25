@@ -251,6 +251,7 @@ Para las ips encontradas en el paso anterior, determina si se han comunicado con
 # Avance 4
 
 ¿Existe algún sitio que se mantenga en el top 5 en todos los días?
+
 El elemento k9oggvetufjky45ogief.ru ha estado en el top apartir del 10
 El elemento npr.org ha estado en el top apartir del 10
 El elemento outlook.com ha estado en el top apartir del 10
@@ -270,7 +271,9 @@ outlook ha tiene un alto numero de connexiones 1330, muy sesagado de los otros s
 2. Algún sitio con nombre raro, al cual denominaremos B.
 3. Un sitio web normal que tiene un volumen de tráfico anómalo en un día, el cual denominaremos C.
 
-4. Utilizando un grafo con las conexiones entre las ip de la red interna, determina la cantidad de computadoras con las que se ha conectado A por día. ¿Es A el vértice que más conexiones salientes hacia la red interna tiene?
+---
+
+1. Utilizando un grafo con las conexiones entre las ip de la red interna, determina la cantidad de computadoras con las que se ha conectado A por día. ¿Es A el vértice que más conexiones salientes hacia la red interna tiene?
 
 In 10-8-2020
 top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.106
@@ -480,6 +483,7 @@ getActivePortsOrigin
 diaRelativo
 actividad 3: punto 2, prguntas 2,3,4
 actividad 4: punto 1,2,3
+actividad 5: punto 1,2
 
 Ricardo Uraga de la Fuente:
 Puerto
@@ -498,3 +502,4 @@ conseguirIpLocal
 busquedaMinpuerto
 Actividad 3 : punto 1 , preguntas: 1, 5, 6
 actividad 4 : prguntas
+actividad 5: punto 3,4,5

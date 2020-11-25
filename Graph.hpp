@@ -1,3 +1,8 @@
+/*
+clase para alamcenar datos con una estructura de datos tipo grafo
+javier alejandro martinez noe y Ricardo Uraga
+25/11/20
+*/
 #ifndef _GRAPH_HPP_
 #define _GRAPH_HPP_
 
