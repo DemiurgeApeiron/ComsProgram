@@ -367,133 +367,133 @@ In 21-8-2020
 top vértice que más conexiones salientes hacia la red interna tiene: 10.8.134.24
 #-of outgoing connections to 10.8.134.59: 1
 
-2. Utilizando el grafo del punto anterior, ubica la cantidad de computadoras que se han conectado hacia A por día. ¿Existen conexiones de las demás computadoras hacia A?
+2.  Utilizando el grafo del punto anterior, ubica la cantidad de computadoras que se han conectado hacia A por día. ¿Existen conexiones de las demás computadoras hacia A?
 
-    In 10-8-2020
-    Number of connections to IP 10.8.134.59: 0
+        In 10-8-2020
+        Number of connections to IP 10.8.134.59: 0
 
-    In 11-8-2020
-    Number of connections to IP 10.8.134.59: 0
+        In 11-8-2020
+        Number of connections to IP 10.8.134.59: 0
 
-    In 12-8-2020
-    Number of connections to IP 10.8.134.59: 0
+        In 12-8-2020
+        Number of connections to IP 10.8.134.59: 0
 
-    In 13-8-2020
-    Number of connections to IP 10.8.134.59: 181
+        In 13-8-2020
+        Number of connections to IP 10.8.134.59: 181
 
-    In 14-8-2020
-    Number of connections to IP 10.8.134.59: 504
+        In 14-8-2020
+        Number of connections to IP 10.8.134.59: 504
 
-    In 15-8-2020
-    Number of connections to IP 10.8.134.59: 0
+        In 15-8-2020
+        Number of connections to IP 10.8.134.59: 0
 
-    In 16-8-2020
-    Number of connections to IP 10.8.134.59: 0
+        In 16-8-2020
+        Number of connections to IP 10.8.134.59: 0
 
-    In 17-8-2020
-    Number of connections to IP 10.8.134.59: 515
+        In 17-8-2020
+        Number of connections to IP 10.8.134.59: 515
 
-    In 18-8-2020
-    Number of connections to IP 10.8.134.59: 549
+        In 18-8-2020
+        Number of connections to IP 10.8.134.59: 549
 
-    In 19-8-2020
-    Number of connections to IP 10.8.134.59: 516
+        In 19-8-2020
+        Number of connections to IP 10.8.134.59: 516
 
-    In 20-8-2020
-    Number of connections to IP 10.8.134.59: 532
+        In 20-8-2020
+        Number of connections to IP 10.8.134.59: 532
 
-    In 21-8-2020
-    Number of connections to IP 10.8.134.59: 491
+        In 21-8-2020
+        Number of connections to IP 10.8.134.59: 491
 
-3. Utilizando un grafo de conexiones a sitios web, determina cuántas computadoras se han conectado a B por día.
+3.  Utilizando un grafo de conexiones a sitios web, determina cuántas computadoras se han conectado a B por día.
 
-    In 10-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 10-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 11-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 11-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 12-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 12-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 13-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 1
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 1
+        In 13-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 1
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 1
 
-    In 14-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 14-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 15-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 15-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 16-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 16-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 17-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 17-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 18-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 18-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 19-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 19-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 20-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 20-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-    In 21-8-2020
-    Number of connections through port 443 to k9oggvetufjky45ogief: 0
-    Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
+        In 21-8-2020
+        Number of connections through port 443 to k9oggvetufjky45ogief: 0
+        Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-4. Utilizando el mismo grafo del punto anterior, indica cuántas computadoras se han conectado a C por día.
+4.  Utilizando el mismo grafo del punto anterior, indica cuántas computadoras se han conectado a C por día.
 
-    In 10-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 10-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 11-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 11-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 12-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 12-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 13-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 13-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 14-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 14-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 15-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 15-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 16-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 16-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 17-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 17-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 18-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 18-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 19-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 19-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 20-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 20-8-2020
+        Number of connections through port 443 to outlook: 0
 
-    In 21-8-2020
-    Number of connections through port 443 to outlook: 0
+        In 21-8-2020
+        Number of connections through port 443 to outlook: 0
 
-5. (Pregunta sin código): Investiga que es un ping sweep, un DDoS, un servidor de comando y control y un botmaster. ¿Ves estos elementos en tus datos?
+5.  (Pregunta sin código): Investiga que es un ping sweep, un DDoS, un servidor de comando y control y un botmaster. ¿Ves estos elementos en tus datos?
 
 # División de trabajo:
 
