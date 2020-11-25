@@ -497,53 +497,53 @@ Number of connections through port 443 to outlook: 0
 
 # División de trabajo:
 
-Javier Alejandro Martínez Noe:
-IP
-Hora
-Fecha
-ADT
-terminal
-Master:
-dayCond
-dayBusquedaCond
-horaCond
-quickSort
-partition
-busqueda
-busquedaArbol
-printVector
-getAllServicesCond
-getActivePortsDestinyCond
-getActivePortsOriginCond
-numeroDeRegistros
-addRegister
-sortByTime
-Display
-busquedaDia
-diaRelativo
-GetAllServices
-getActivePortsDestiny
-getActivePortsOrigin
-diaRelativo
-actividad 3: punto 2, prguntas 2,3,4
-actividad 4: punto 1,2,3
-actividad 5: punto 1,2
+    Javier Alejandro Martínez Noe:
+    IP
+    Hora
+    Fecha
+    ADT
+    terminal
+    Master:
+    dayCond
+    dayBusquedaCond
+    horaCond
+    quickSort
+    partition
+    busqueda
+    busquedaArbol
+    printVector
+    getAllServicesCond
+    getActivePortsDestinyCond
+    getActivePortsOriginCond
+    numeroDeRegistros
+    addRegister
+    sortByTime
+    Display
+    busquedaDia
+    diaRelativo
+    GetAllServices
+    getActivePortsDestiny
+    getActivePortsOrigin
+    diaRelativo
+    actividad 3: punto 2, prguntas 2,3,4
+    actividad 4: punto 1,2,3
+    actividad 5: punto 1,2
 
-Ricardo Uraga de la Fuente:
-Puerto
-HostName
-DataBase
-CsvReader
-Master:
-puertoMinBusquedaCond
-OrdenadorBusquedaCond
-ServicioBusquedaCond
-busquedaUsuarioCompletoCond
-busquedaServicio
-busquedaOrdenador
-busquedaUsuarioCompleto
-conseguirIpLocal
-busquedaMinpuerto
-Actividad 3 : punto 1 , preguntas: 1, 5, 6
-actividad 4 : prguntas
-actividad 5: punto 3,4,5
+    Ricardo Uraga de la Fuente:
+    Puerto
+    HostName
+    DataBase
+    CsvReader
+    Master:
+    puertoMinBusquedaCond
+    OrdenadorBusquedaCond
+    ServicioBusquedaCond
+    busquedaUsuarioCompletoCond
+    busquedaServicio
+    busquedaOrdenador
+    busquedaUsuarioCompleto
+    conseguirIpLocal
+    busquedaMinpuerto
+    Actividad 3 : punto 1 , preguntas: 1, 5, 6
+    actividad 4 : prguntas
+    actividad 5: punto 3,4,5
