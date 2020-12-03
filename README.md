@@ -407,91 +407,102 @@ outlook ha tiene un alto numero de connexiones 1330, muy sesagado de los otros s
 
 3.  Utilizando un grafo de conexiones a sitios web, determina cuántas computadoras se han conectado a B por día.
 
-        In 10-8-2020
+        In  10-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 11-8-2020
+
+        In  11-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 12-8-2020
+
+        In  12-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 13-8-2020
+
+        In  13-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 1
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 1
 
-        In 14-8-2020
+
+        In  14-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 15-8-2020
+
+        In  15-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 16-8-2020
+
+        In  16-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 17-8-2020
+
+        In  17-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 18-8-2020
+
+        In  18-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 19-8-2020
+
+        In  19-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 20-8-2020
+
+        In  20-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
-        In 21-8-2020
+
+        In  21-8-2020
         Number of connections through port 443 to k9oggvetufjky45ogief: 0
         Number of connections through port 443 to mkevjvtfe6dxajlsdfhb.com: 0
 
 4.  Utilizando el mismo grafo del punto anterior, indica cuántas computadoras se han conectado a C por día.
 
-        In 10-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  10-8-2020
+        Number of connections through port 443 to npr: 8
 
-        In 11-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  11-8-2020
+        Number of connections through port 443 to npr: 9
 
-        In 12-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  12-8-2020
+        Number of connections through port 443 to npr: 3
 
-        In 13-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  13-8-2020
+        Number of connections through port 443 to npr: 6
 
-        In 14-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  14-8-2020
+        Number of connections through port 443 to npr: 11
 
-        In 15-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  15-8-2020
+        Number of connections through port 443 to npr: 0
 
-        In 16-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  16-8-2020
+        Number of connections through port 443 to npr: 0
 
-        In 17-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  17-8-2020
+        Number of connections through port 443 to npr: 391
 
-        In 18-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  18-8-2020
+        Number of connections through port 443 to npr: 7
 
-        In 19-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  19-8-2020
+        Number of connections through port 443 to npr: 8
 
-        In 20-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  20-8-2020
+        Number of connections through port 443 to npr: 3
 
-        In 21-8-2020
-        Number of connections through port 443 to outlook: 0
+        In  21-8-2020
+        Number of connections through port 443 to npr: 10
 
 5.  (Pregunta sin código): Investiga que es un ping sweep, un DDoS, un servidor de comando y control y un botmaster. ¿Ves estos elementos en tus datos?
 
