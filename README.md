@@ -495,6 +495,8 @@ outlook ha tiene un alto numero de connexiones 1330, muy sesagado de los otros s
 
 5.  (Pregunta sin código): Investiga que es un ping sweep, un DDoS, un servidor de comando y control y un botmaster. ¿Ves estos elementos en tus datos?
 
+Entrega en documento externo
+
 # División de trabajo:
 
     Javier Alejandro Martínez Noe:

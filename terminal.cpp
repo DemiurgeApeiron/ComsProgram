@@ -187,12 +187,21 @@ int terminal() {
     }
     cout << endl;
     cout << endl;
+    cout << "top Conections on 21" << endl;
     vector<string> values = program.top(5, "21-8-2020");
     for (size_t i = 0; i < values.size(); i++) {
         cout << i + 1 << ": " << values[i] << ", ";
     }
     cout << endl;
     cout << endl;
+    cout << "top Conections on 17 through port 443" << endl;
+    vector<string> topHTTP = program.topHTTP(5, "17-8-2020");
+    for (size_t i = 0; i < topHTTP.size(); i++) {
+        cout << i + 1 << ": " << topHTTP[i] << ", ";
+    }
+    cout << endl;
+    cout << endl;
+    cout << "Chronology Of top Conections" << endl;
     vector<vector<string>> cronologia = program.ChronologyOfMostConections(5);
 
     vector<set<string>> setValues;
@@ -242,6 +251,13 @@ int terminal() {
 
         vector<string> Icnx = program.getGraphIncomingConnectionsInternal(date.display(), 59);
         cout << "Number of connections to IP 10.8.134.59: " << Icnx.size() << endl;
+        cout << endl;
+        vector<string> IcnxU = program.getGraphIncomingConnectionsInternalUnique(date.display(), 59);
+
+        for (size_t i = 0; i < IcnxU.size(); i++) {
+            cout << IcnxU[i] << " -> " << program.getComputerNameAll(IcnxU[i]) << ", ";
+        }
+        cout << endl;
 
         string topVcnx = program.getGraphTopIPWithConnections(date.display());
         cout << "top vértice que más conexiones salientes hacia la red interna tiene: " << topVcnx << endl;
@@ -263,8 +279,8 @@ int terminal() {
 
         cout << "In  " << date.display() << endl;
 
-        vector<pair<string, string>> cnxWS = program.getConnectionsToWebSite(date.display(), "outlook");
-        cout << "Number of connections through port 443 to outlook: " << cnxWS.size() << endl;
+        vector<pair<string, string>> cnxWS = program.getConnectionsToWebSite(date.display(), "npr");
+        cout << "Number of connections through port 443 to npr: " << cnxWS.size() << endl;
 
         vector<pair<string, string>> cnxWS2 = program.getConnectionsToWebSite(date.display(), "k9oggvetufjky45ogief");
         cout << "Number of connections through port 443 to k9oggvetufjky45ogief: " << cnxWS2.size() << endl;

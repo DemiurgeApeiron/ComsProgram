@@ -88,6 +88,7 @@ class Master {
     string getLasConection(int _IP);
     string getIncomingConection(int _IP);
     string getComputerName(int _IP);
+    string getComputerNameAll(string _IP);
     void fullConectionStatus(int _IP);
     int getAllIncomingConections(int _IP);
     int getAllOutgoingConections(int _IP);
@@ -100,6 +101,9 @@ class Master {
     map<string, int> conexionesPorDia(Fecha _fecha);
     vector<string> top(int n, string _fecha);
     vector<vector<string>> ChronologyOfMostConections(int num);
+    map<string, int> conexionesPorDiaHTTP(Fecha _fecha);
+    vector<string> topHTTP(int n, string _fecha);
+    vector<vector<string>> ChronologyOfMostConectionsHTTP(int num);
     void getStrangeHost();
     bool checkIfConnection(string IP1, string IP2);
     void generateGraphConnections();
@@ -564,6 +568,15 @@ string Master::getComputerName(int _IPI) {
         return "NULL";
     }
 }
+// regresa el nombre de las la computadora mediante una ip espesifica
+string Master::getComputerNameAll(string _IP) {
+    map<string, ConexionesComputadora>::iterator tempConection = computerDictionary.find(_IP);
+    if (tempConection != computerDictionary.end()) {
+        return tempConection->second.getName();
+    } else {
+        return "NULL";
+    }
+}
 // condicion para la busqueda de una compu por indice se ocupa con la busqueda de registros
 bool Master::busquedaPorIndiceCond(ADT &a, string &_ip) {
     if (to_string(a.getIndice()) == _ip) {
@@ -833,6 +846,54 @@ vector<vector<string>> Master::ChronologyOfMostConections(int num) {
     for (size_t i = lista[0].getFecha().getDia(); i <= lista[lista.size() - 1].getFecha().getDia(); i++) {
         string tempFecha = to_string(i) + fechaMovible;
         storage.push_back(top(num, tempFecha));
+    }
+    return (storage);
+}
+//este metodo crea una estructura de datos tipo diccionario en la que asigna a cada servicio el numero de conecciones.
+map<string, int> Master::conexionesPorDiaHTTP(Fecha _fecha) {
+    map<string, int> tCDictionary;
+    dayComputerDictionary.clear();
+    loadComputers(&Master::dayIntegration, to_string(_fecha.getDia()));
+    for (auto &x : dayComputerDictionary) {
+        string tempIPN = x.second.getName();
+        string tempIPL = x.second.getComputerIPLocal();
+        stack<int> indexPorts = x.second.getConexionesEntrantesIndice();
+        if (!indexPorts.empty()) {
+            int indexPort = x.second.getConexionesEntrantesIndice().top();
+            if (tempIPN != "-" && tempIPN != "" && tempIPL != "10.8.134" && lista[indexPort].getPuertoDDisplay() == "443") {
+                tCDictionary[tempIPN] = x.second.getConexionesEntrantesSize();
+            }
+        }
+    }
+    return (tCDictionary);
+}
+//Este metodo obtiene le numero indicado de de mayores sitios con con conecciones en una espesifica fecha
+vector<string> Master::topHTTP(int n, string _fecha) {
+    Fecha date(_fecha);
+    map<string, int> TCD = conexionesPorDiaHTTP(date);
+    for (auto &x : TCD) {
+        //cout << "pre ins" << endl;
+        BST.insertNodeRecursive({{x.first, x.second}});
+        //cout << "post ins" << endl;
+    }
+    //BST.printV1();
+    vector<string> values;
+    values.reserve(n);
+    //cout << "pre topn" << endl;
+    BST.getTopNvalues(n, values);
+    //cout << "post topn" << endl;
+    return (values);
+}
+// este metodod utiliza la funcion top para realizar el top de connecciones de todos los dias
+vector<vector<string>> Master::ChronologyOfMostConectionsHTTP(int num) {
+    vector<vector<string>> storage;
+    sortByTime();
+    string fechaTemp = lista[0].getFechaDisplay();
+    string withoutDay = to_string(lista[0].getFecha().getDia());
+    string fechaMovible = fechaTemp.substr(withoutDay.size(), fechaTemp.size());
+    for (size_t i = lista[0].getFecha().getDia(); i <= lista[lista.size() - 1].getFecha().getDia(); i++) {
+        string tempFecha = to_string(i) + fechaMovible;
+        storage.push_back(topHTTP(num, tempFecha));
     }
     return (storage);
 }
